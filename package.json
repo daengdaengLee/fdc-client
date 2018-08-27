@@ -1,0 +1,28 @@
+{
+  "name": "fdc-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.8.3",
+    "axios": "^0.18.0",
+    "dygraphs": "^2.1.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.5",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "styled-components": "^3.4.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "prettier-eslint": "^8.8.2"
+  }
+}
