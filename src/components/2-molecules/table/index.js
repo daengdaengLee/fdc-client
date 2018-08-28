@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // import styled, { css } from 'styled-components';
 import styled from 'styled-components';
-import Contextmenu from '../contextmenu/index';
-// import { Table as AntdTable } from 'antd';
 
 const Container = styled.div`
   width: ${props => props.width}
@@ -14,13 +12,6 @@ const Container = styled.div`
   position: relative;
   text-align: left; 
   background-color: #f4f2f4;
-`;
-
-const FilterContainer = styled.div`
-  min-height: 80px;
-  border: 1px solid indianred;
-  background-color: #fff;
-  margin-bottom: 10px;
 `;
 
 const HeaderContainer = styled.div`
@@ -65,79 +56,20 @@ const RowBody = styled.div`
   }
 `;
 
-const contextItems = [
-  { name: 'View Trace Data(Time)', icon: 'area-chart', key: '1' },
-  { name: 'View Trace Data(Lot)', icon: 'pie-chart', key: '2' },
-  { name: 'View Trace Data(Overlay)', icon: 'dot-chart', key: '3' },
-];
-
 class Table extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       scrollTop: 0,
-      contextmenu: {
-        visible: false,
-        x: 0,
-        y: 0,
-      },
     };
     this.table = React.createRef();
-    this._onContextmenu = this._onContextmenu.bind(this);
-    this._onClickOutside = this._onClickOutside.bind(this);
-    this._onFixedHeader = this._onFixedHeader.bind(this);
-  }
-
-  // 메뉴 오픈 위치 잡기, 위치 그지같음
-  _onContextmenu(evt) {
-    console.log(evt);
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    const { button, pageX, pageY } = evt;
-    console.log(pageX);
-    console.log(pageY);
-
-    if (button === 2) {
-      this.setState(prevState => ({
-        ...prevState,
-        contextmenu: {
-          ...prevState.contextmenu,
-          visible: true,
-          x: pageX,
-          y: pageY,
-        },
-      }));
-    }
-  }
-
-  _onClickOutside() {
-    this.setState({
-      contextmenu: {
-        visible: false,
-      },
-    });
-  }
-
-  _onFixedHeader(evt) {
-
   }
 
   render() {
-    const { _handleScroll, _onContextmenu, _onClickOutside, _onFixedHeader } = this;
-    const { width, height, columns, dataSource } = this.props;
+    const { width, height, columns, dataSource, onContextMenuRow } = this.props;
     return (
-      <Container
-        width={width}
-        height={height}
-        ref={this.table}
-        onScroll={_handleScroll}>
-
-        <FilterContainer>
-          <p>filter area</p>
-        </FilterContainer>
-
-        <HeaderContainer onScroll={_onFixedHeader}>
+      <Container width={width} height={height} ref={this.table}>
+        <HeaderContainer>
           <RowHeader head={true}>
             {columns.map(col => (
               <div
@@ -152,14 +84,14 @@ class Table extends Component {
             ))}
           </RowHeader>
         </HeaderContainer>
-        
         <Blank />
-        
         <BodyContainer>
           {dataSource.map(row => (
             <RowBody
-              onContextMenu={_onContextmenu}
-              key={row.key}>
+              key={row.key}
+              data-row-key={row.key}
+              onContextMenu={onContextMenuRow}
+            >
               {columns.map(col => (
                 <div
                   key={col.key}
@@ -176,13 +108,6 @@ class Table extends Component {
             </RowBody>
           ))}
         </BodyContainer>
-        <Contextmenu
-          items={contextItems}
-          visible={this.state.contextmenu.visible}
-          x={this.state.contextmenu.x}
-          y={this.state.contextmenu.y}
-          onClickOutside={_onClickOutside}
-          onClickMenu={e => console.log(e._key)}/>
       </Container>
     );
   }
@@ -193,6 +118,7 @@ Table.defaultProps = {
   height: '100%',
   columns: [],
   dataSource: [],
+  onContextMenuRow: () => console.warn('[Table] No onContextmenuRow prop'),
 };
 
 Table.propTypes = {
@@ -200,6 +126,7 @@ Table.propTypes = {
   height: PropTypes.string,
   columns: PropTypes.array,
   dataSource: PropTypes.array,
+  onContextMenuRow: PropTypes.func,
 };
 
 export default Table;
