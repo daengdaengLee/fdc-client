@@ -5,11 +5,11 @@ import {
   compose,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import samples from './modules/samples';
+import tables from './modules/tables';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
-  samples,
+  tables,
 });
 
 const sagaMiddleware = createSagaMiddleware();
