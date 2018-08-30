@@ -12,15 +12,24 @@ const Search = Input.Search;
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  border-right: 1px solid black;
+  border-right: 1px solid #e3e3e3;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 0 10px;
   overflow: auto;
+  overflow-x: hidden;
 `;
 
-const Title = styled.h1`
+const Logo = styled.div`
+  height: 45px;
+  line-height: 45px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+`;
+
+const SearchContainer = styled.div`
+  width: 270px;
   font-size: 14px;
 `;
 
@@ -116,16 +125,21 @@ class MainNavigation extends Component {
     return (
       // Container 로 변경 
       <Container> 
-        <Title>
+        <Logo>
+          {/* logo image 추가예정 */}
+          FDC정
+        </Logo>
+        <SearchContainer>
           <Icon type="share-alt" />
           Search Condition
-        </Title>
-        <TreeContainer>
           <Search 
             onChange={_onSearchChange}
             placeholder="Search node ..."/>
+        </SearchContainer>
+        <TreeContainer>
           <DirectoryTree
             multiple
+            checkable
             // showLine
             // defaultExpandAll
             // expandedKeys={_filterKeys} //

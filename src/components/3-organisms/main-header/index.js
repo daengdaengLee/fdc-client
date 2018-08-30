@@ -7,21 +7,20 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 10px;
-  background-color: #372f40;
+  background-color: #fff;
+  border-bottom: 1px solid #e3e3e3;
 `;
 
 const Title = styled.h1`
-  font-size: 20px;
-  line-height: 45px;
   font-family: 'Quicksand', sans-serif;
-  color: white;
+  line-height: 40px;
 `;
 
 class MainHeader extends Component {
   render() {
     return (
       <Container>
-        <Title>FDC Chart</Title>
+        <Title>top area</Title>
       </Container>
     );
   }

@@ -18,7 +18,7 @@ const ContextmenuBox = styled.ul`
   padding: 0;
   overflow: hidden;
   animation-name: ContextFadeIn;
-  animation-duration: 0.4s;
+  animation-duration: 0.1s;
   z-index: 50;
   box-shadow: 0 15px 35px rgba(50, 50, 90, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 `;
@@ -31,7 +31,7 @@ const ContextmenuItem = styled.li`
   transition: all 0.3s;
   margin: 0;
   &:hover {
-    background-color: rgb(244, 245, 250);
+    background-color: #eefdff;
   }
 `;
 

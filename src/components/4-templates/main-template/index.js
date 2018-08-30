@@ -6,40 +6,41 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: hidden;
+`;
+
+const Left = styled.div`
+  min-width: 260px;
+  overflow: hidden;
+`;
+
+const Right = styled.div`
+  width: 0;
+  flex-grow: 1;
+  display: flex;
   flex-direction: column;
   overflow: hidden;
 `;
 
 const Top = styled.div`
-  height: 2.8rem;
-  overflow: hidden;
-`;
-
-const Below = styled.div`
-  height: 0;
-  flex-grow: 1;
-  display: flex;
-  overflow: hidden;
-`;
-
-const Left = styled.div`
-  width: 16.8rem;
+  height: 45px;
+  min-height: 45px;
   overflow: hidden;
 `;
 
 const Center = styled.div`
-  width: 0;
+  height: 0;
   flex-grow: 1;
   overflow: hidden;
 `;
 
 const MainTemplate = ({ top, left, center }) => (
   <Container>
-    <Top>{top()}</Top>
-    <Below>
-      <Left>{left()}</Left>
+    <Left>{left()}</Left>
+    <Right>
+      <Top>{top()}</Top>
       <Center>{center()}</Center>
-    </Below>
+    </Right>
   </Container>
 );
 

@@ -47,6 +47,7 @@ time, mark, audio, video {
   vertical-align: baseline;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -66,7 +67,7 @@ table {
 
 /* Contextmenu */
 @keyframes ContextFadeIn {
-  0% {
+  /* 0% {
     transform: translateY(-25%);
   }
   50% {
@@ -80,6 +81,12 @@ table {
   }
   95% {
     transform: translateY(-1%);
+  }
+  100% {
+    transform: translateY(0%);
+  } */
+  0% {
+    transform: translateY(-15%);
   }
   100% {
     transform: translateY(0%);
