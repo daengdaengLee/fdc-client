@@ -116,7 +116,7 @@ class MainTable extends Component {
           <Table
             columns={columns}
             rows={dataSource}
-            onContextMenuRow={_onContextMenuRow}
+            onContextMenu={_onContextMenuRow}
           />
         </TableArea>
         <Contextmenu
@@ -137,18 +137,15 @@ class MainTable extends Component {
     });
   }
 
-  _onContextMenuRow(evt) {
-    evt.preventDefault();
-    console.log(evt.currentTarget.dataset.rowKey);
-    const { button, clientX, clientY } = evt;
-    if (button === 2) {
-      this.setState(prevState => ({
-        ...prevState,
-        onOffContext: true,
-        contextX: clientX,
-        contextY: clientY,
-      }));
-    }
+  _onContextMenuRow({ event, type, row, col }) {
+    event.preventDefault();
+    const { clientX, clientY } = event;
+    this.setState(prevState => ({
+      ...prevState,
+      onOffContext: true,
+      contextX: clientX,
+      contextY: clientY,
+    }));
   }
 }
 
