@@ -1,4 +1,5 @@
 // Actions
+export const INIT_TABLE = 'tables/INIT_TABLE';
 export const PAGINATE_START = 'tables/PAGINATE_START';
 export const PAGINATE_SUCCESS = 'tables/PAGINATE_SUCCESS';
 export const PAGINATE_FAIL = 'tables/PAGINATE_FAIL';
@@ -32,6 +33,12 @@ export default function tablesReducer(state = initState, action = {}) {
 }
 
 // Action Creators
+export function initTable() {
+  return {
+    type: INIT_TABLE,
+  };
+}
+
 export function paginateStart({ page }) {
   return {
     type: PAGINATE_START,

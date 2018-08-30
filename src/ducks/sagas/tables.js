@@ -4,6 +4,9 @@ import {
   paginateFail,
   setPage,
   setRows,
+  INIT_TABLE,
+  paginateStart,
+  paginateSuccess,
 } from '../modules/tables';
 import { getTables as getTablesRequest } from '../../assets/js/requests';
 
@@ -22,16 +25,18 @@ const getAllTables = page =>
     .catch(() => ({ success: false, rows: [] }));
 
 // Workers
+function* initTableSaga() {
+  yield put(setPage({ page: 0 }));
+  yield put(setRows({ rows: [] }));
+  yield put(paginateStart({ page: 2 }));
+}
+
 function* paginateStartSaga({ page }) {
   const {
     page: currentPage,
-    isLoading,
     isError,
     rows: currentRows,
   } = yield select(state => state.tables);
-  if (isLoading) {
-    return;
-  }
   let success;
   let rows;
   if (currentPage === 0 || isError) {
@@ -50,16 +55,20 @@ function* paginateStartSaga({ page }) {
       ? [...result.rows, ...currentRows.slice(0, result.rows.length * 2)]
       : [];
   }
-  yield success || put(paginateFail());
-  yield put(setPage(page));
-  yield put(setRows(rows));
+  yield success ? put(paginateSuccess()) : put(paginateFail());
+  yield put(setPage({ page }));
+  yield put(setRows({ rows }));
 }
 
 // Watchers
+function* watchInitTable() {
+  yield takeEvery(INIT_TABLE, initTableSaga);
+}
+
 function* watchPaginateStart() {
   yield takeEvery(PAGINATE_START, paginateStartSaga);
 }
 
 export default function* tablesSaga() {
-  yield all([watchPaginateStart()]);
+  yield all([watchInitTable(), watchPaginateStart()]);
 }
