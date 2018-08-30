@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Icon } from 'antd';
-import Table from '../../2-molecules/table';
+import { Table } from 'react-table-daeng';
 import Contextmenu from '../../2-molecules/contextmenu';
 
 // Dummy Data
@@ -115,7 +115,7 @@ class MainTable extends Component {
         <TableArea>
           <Table
             columns={columns}
-            dataSource={dataSource}
+            rows={dataSource}
             onContextMenuRow={_onContextMenuRow}
           />
         </TableArea>
