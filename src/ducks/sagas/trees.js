@@ -20,7 +20,9 @@ function* requestFetchSaga({ fab }) {
 function* fetchStartSaga({ fab }) {
   const { data, success } = yield call(getTree, fab);
   yield put(success ? fetchSuccess() : fetchFail());
-  const dummyData = [];
+  const dummyData = [
+    { title: 'test', key: '0' },
+  ];
   yield put(setNodes({ nodes: dummyData }));
 }
 

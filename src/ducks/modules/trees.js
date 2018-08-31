@@ -1,8 +1,10 @@
 // Actions
 export const REQUEST_FETCH = 'trees/REQUEST_FETCH';
-export const FETCH_START = 'trees/FETCH_START';
+export const FETCH_START = 'trees/FETCH_START'; 
 export const FETCH_SUCCESS = 'trees/FETCH_SUCCESS';
 export const FETCH_FAIL = 'trees/FETCH_FAIL';
+// ----- server ------ 
+
 export const SET_NODES = 'trees/SET_NODES';
 
 // Init State
