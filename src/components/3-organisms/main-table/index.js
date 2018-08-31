@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import { paginateStart, initTable } from '../../../ducks/modules/tables';
 import Presenter from './presenter';
 
 const mapStateToProps = state => ({
-  rows: state.tables.rows,
+  rows: state.histories.rows,
+  columns: state.histories.columns,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onInit: () => dispatch(initTable()),
-  onPaginate: page => dispatch(paginateStart(page)),
-});
+const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Presenter);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Presenter);

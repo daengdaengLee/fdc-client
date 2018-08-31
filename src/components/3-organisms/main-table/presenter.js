@@ -4,14 +4,6 @@ import { Icon } from 'antd';
 import { Table } from 'react-table-daeng';
 import Contextmenu from '../../2-molecules/contextmenu';
 
-// Dummy Data
-const columns = [...Array(20)].map((v, i) => ({
-  title: `Column ${i}`,
-  dataIndex: `COL_${i}`,
-  key: i,
-  width: '200px',
-}));
-
 const contextItems = [
   { name: 'View Trace Data(Time)', icon: 'area-chart', key: '1' },
   { name: 'View Trace Data(Lot)', icon: 'pie-chart', key: '2' },
@@ -80,7 +72,7 @@ class MainTable extends Component {
 
   render() {
     const { _onClickOutside, _onContextMenuRow } = this;
-    const { rows } = this.props;
+    const { rows, columns } = this.props;
     const { onOffContext, contextX, contextY } = this.state;
     return (
       <Container>
@@ -125,11 +117,6 @@ class MainTable extends Component {
         />
       </Container>
     );
-  }
-
-  componentDidMount() {
-    const { onInit } = this.props;
-    onInit();
   }
 
   _onClickOutside() {

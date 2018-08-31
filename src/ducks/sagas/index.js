@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import tablesSaga from './tables';
+import historiesSaga from './histories';
 
 export default function* rootSaga() {
-  yield all([tablesSaga()]);
+  yield all([historiesSaga()]);
 }
