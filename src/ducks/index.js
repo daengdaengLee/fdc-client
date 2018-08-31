@@ -7,11 +7,13 @@ import {
 import createSagaMiddleware from 'redux-saga';
 import histories from './modules/histories';
 import trees from './modules/trees';
+import parameters from './modules/parameters';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
   histories,
   trees,
+  parameters,
 });
 
 const sagaMiddleware = createSagaMiddleware();
