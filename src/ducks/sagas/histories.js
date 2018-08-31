@@ -20,7 +20,12 @@ function* requestFetchSaga({ by, fab, eqp, from, to }) {
 function* fetchStartSaga({ by, fab, eqp, from, to }) {
   const { data, success } = yield call(getHistory, by, fab, eqp, from, to);
   yield put(success ? fetchSuccess() : fetchFail());
-  const dummyData = [];
+  const dummyData = [...Array(10)].map((v, i) =>
+    [...Array(20)].reduce(
+      (acc, cur, idx) => ({ ...acc, [`COL_${idx}`]: Math.random() }),
+      { key: `${i}` },
+    ),
+  );
   yield put(setRows({ rows: dummyData }));
 }
 
