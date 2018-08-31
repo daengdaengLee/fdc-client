@@ -8,7 +8,7 @@ const initState = {
   onOff: false,
   x: 0,
   y: 0,
-  theme: '',
+  theme: '', // HISTORY_TABLE, MODULE_TREE
 };
 
 // Reducer
@@ -51,6 +51,7 @@ export function clickMenu({ event, item }) {
 function applyOpen(state, { x, y, theme }) {
   return {
     ...state,
+    onOff: true,
     x,
     y,
     theme,

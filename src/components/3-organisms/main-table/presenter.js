@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Icon } from 'antd';
 import { Table } from 'react-table-daeng';
-import Contextmenu from '../../2-molecules/contextmenu';
-
-const contextItems = [
-  { name: 'View Trace Data(Time)', icon: 'area-chart', key: '1' },
-  { name: 'View Trace Data(Lot)', icon: 'pie-chart', key: '2' },
-  { name: 'View Trace Data(Overlay)', icon: 'dot-chart', key: '3' },
-];
 
 const Container = styled.div`
   width: 100%;
@@ -61,19 +54,12 @@ const FilterContainer = styled.div`
 class MainTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      onOffContext: false,
-      contextX: 0,
-      contextY: 0,
-    };
-    this._onClickOutside = this._onClickOutside.bind(this);
     this._onContextMenuRow = this._onContextMenuRow.bind(this);
   }
 
   render() {
-    const { _onClickOutside, _onContextMenuRow } = this;
+    const { _onContextMenuRow } = this;
     const { rows, columns } = this.props;
-    const { onOffContext, contextX, contextY } = this.state;
     return (
       <Container>
         <TitleContainer>
@@ -106,34 +92,15 @@ class MainTable extends Component {
             onContextMenu={_onContextMenuRow}
           />
         </TableArea>
-        <Contextmenu
-          theme="tables"
-          items={contextItems}
-          visible={onOffContext}
-          x={contextX}
-          y={contextY}
-          onClickOutside={_onClickOutside}
-          onClickMenu={e => console.log(e._key)}
-        />
       </Container>
     );
   }
 
-  _onClickOutside() {
-    this.setState({
-      onOffContext: false,
-    });
-  }
-
   _onContextMenuRow({ event, type, row, col }) {
     event.preventDefault();
-    const { clientX, clientY } = event;
-    this.setState(prevState => ({
-      ...prevState,
-      onOffContext: true,
-      contextX: clientX,
-      contextY: clientY,
-    }));
+    const { onOpenContextMenu } = this.props;
+    const { clientX: x, clientY: y } = event;
+    onOpenContextMenu({ x, y });
   }
 }
 

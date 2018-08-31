@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Contextmenu from '../../2-molecules/contextmenu/index';
 // import './../../../index.css';
 
 import { Tree, Icon } from 'antd';
@@ -45,25 +44,9 @@ const TreeContainer = styled.div`
 //   key: `${i}`,
 // }));
 
-const contextItems = [
-  {name: 'Real Time View', icon: 'star-o', key: '1'},
-  {name: 'Lot/Wafer View', icon: 'star-o', key: '2'},
-];
-
 class MainNavigation extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      treeData: [
-        { title: 'M10', key: '0' },
-        { title: 'M14', key: '1', disabled: true },
-      ],
-      contextmenu: {
-        visible: false,
-        x: 0,
-        y: 0,
-      },
-    };
     this._onContextmenu = this._onContextmenu.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onSelectNode = this._onSelectNode.bind(this);
@@ -73,16 +56,16 @@ class MainNavigation extends Component {
   }
 
   render() {
-    const { 
-      _onContextmenu, 
-      _onClickOutside, 
+    const {
+      _onContextmenu,
+      _onClickOutside,
       _onSelectNode,
       // _onLoadTreeData,
       // _onRenderTreeList,
     } = this;
     const { nodes } = this.props;
     return (
-      <Container> 
+      <Container>
         <Logo>
           {/* logo image 추가예정 */}
           FDC. Title & Logo area
@@ -97,20 +80,15 @@ class MainNavigation extends Component {
             // showLine
             // defaultExpandAll
             onSelect={_onSelectNode}
-            onRightClick={({ event }) => _onContextmenu(event)} 
+            onRightClick={_onContextmenu}
             // loadData={_onLoadTreeData}
             defaultExpandedKeys={['0-0-0-0-0-0']}
           >
             {/* {_onRenderTreeList(this.state.treeData)} */}
 
             <TreeNode title="M10" key="0-0">
-              {nodes.map((node) => {
-                return (
-                  <TreeNode 
-                    title={node.title} 
-                    key='0-0-1'
-                    isLeaf />
-                );
+              {nodes.map(node => {
+                return <TreeNode title={node.title} key="0-0-1" isLeaf />;
               })}
             </TreeNode>
 
@@ -132,42 +110,24 @@ class MainNavigation extends Component {
                 </TreeNode>
               </TreeNode>
             </TreeNode> */}
-
           </DirectoryTree>
         </TreeContainer>
 
         {/* add: from / to */}
         {/* add: bottom */}
-
-        <Contextmenu
-          theme="tree"
-          items={contextItems}
-          visible={this.state.contextmenu.visible}
-          x={this.state.contextmenu.x}
-          y={this.state.contextmenu.y}
-          onClickOutside={_onClickOutside}
-          onClickMenu={e => console.log(e._key)}
-        />
       </Container>
     );
   }
 
   componentDidMount() {
     this.props.onRequestFetch({ fab: 'M14' });
-  };
+  }
 
-  _onContextmenu(evt) {
-    const { clientX, clientY } = evt;
-    this.setState(prevState => ({
-      ...prevState,
-      contextmenu: {
-        ...prevState.contextmenu,
-        visible: true,
-        x: clientX,
-        y: clientY,
-      },
-    }));
-  }; 
+  _onContextmenu({ event }) {
+    const { onOpenContextMenu } = this.props;
+    const { clientX: x, clientY: y } = event;
+    onOpenContextMenu({ x, y });
+  }
 
   _onClickOutside() {
     this.setState({
@@ -175,11 +135,11 @@ class MainNavigation extends Component {
         visible: false,
       },
     });
-  };
+  }
 
   _onSelectNode() {
     console.log('select');
-  };
+  }
 
   // _onLoadTreeData = (treeData) => {
   //   return new Promise ((resolve) => {
@@ -226,7 +186,7 @@ class MainNavigation extends Component {
   //     );
   //   });
   // };
-};
+}
 
 MainNavigation.defaultProps = {
   nodes: [],
