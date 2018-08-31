@@ -51,7 +51,7 @@ const FilterContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-class MainTable extends Component {
+class MainHistoriesTable extends Component {
   constructor(props) {
     super(props);
     this._onContextMenuRow = this._onContextMenuRow.bind(this);
@@ -104,4 +104,4 @@ class MainTable extends Component {
   }
 }
 
-export default MainTable;
+export default MainHistoriesTable;
