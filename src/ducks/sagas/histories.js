@@ -1,11 +1,11 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
 import {
+  REQUEST_FETCH,
   FETCH_START,
   fetchStart,
   fetchSuccess,
   fetchFail,
   setRows,
-  REQUEST_FETCH,
 } from '../modules/histories';
 import { getHistory } from '../../assets/js/requests';
 
