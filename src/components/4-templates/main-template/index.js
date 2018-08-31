@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -34,14 +34,17 @@ const Center = styled.div`
   overflow: hidden;
 `;
 
-const MainTemplate = ({ top, left, center }) => (
-  <Container>
-    <Left>{left()}</Left>
-    <Right>
-      <Top>{top()}</Top>
-      <Center>{center()}</Center>
-    </Right>
-  </Container>
+const MainTemplate = ({ top, left, center, aerial }) => (
+  <Fragment>
+    <Container>
+      <Left>{left()}</Left>
+      <Right>
+        <Top>{top()}</Top>
+        <Center>{center()}</Center>
+      </Right>
+    </Container>
+    {aerial()}
+  </Fragment>
 );
 
 const DefaultEl = styled.div`
@@ -58,12 +61,14 @@ MainTemplate.defaultProps = {
   top: () => <DefaultEl>No top element</DefaultEl>,
   left: () => <DefaultEl>No left element</DefaultEl>,
   center: () => <DefaultEl>No center element</DefaultEl>,
+  aerial: () => null,
 };
 
 MainTemplate.propTypes = {
   top: PropTypes.func,
   left: PropTypes.func,
   center: PropTypes.func,
+  aerial: PropTypes.func,
 };
 
 export default MainTemplate;

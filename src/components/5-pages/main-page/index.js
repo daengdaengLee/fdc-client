@@ -5,6 +5,7 @@ import MainNavigation from '../../3-organisms/main-navigation';
 import MainHeader from '../../3-organisms/main-header';
 import MainTable from '../../3-organisms/main-table';
 import MainChart from '../../3-organisms/main-chart';
+import MainContextMenu from '../../3-organisms/main-context-menu';
 
 const MainPage = () => (
   <MainTemplate
@@ -16,6 +17,7 @@ const MainPage = () => (
         <Route exect path="/charts" component={MainChart} />
       </Switch>
     )}
+    aerial={() => <MainContextMenu />}
   />
 );
 
