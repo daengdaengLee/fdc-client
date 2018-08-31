@@ -9,7 +9,6 @@ const initState = {
   x: 0,
   y: 0,
   theme: '',
-  items: [],
 };
 
 // Reducer
