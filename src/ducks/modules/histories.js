@@ -19,7 +19,7 @@ const initState = {
 };
 
 // Reducer
-export default function tablesReducer(state = initState, action = {}) {
+export default function historiesReducer(state = initState, action = {}) {
   switch (action.type) {
   case FETCH_START:
     return applyFetchStart(state, action);
