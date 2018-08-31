@@ -13,7 +13,7 @@ const MainPage = () => (
     left={() => <MainNavigation />}
     center={() => (
       <Switch>
-        <Route exect path="/tables" component={MainTable} />
+        <Route exect path="/histories" component={MainTable} />
         <Route exect path="/charts" component={MainChart} />
       </Switch>
     )}

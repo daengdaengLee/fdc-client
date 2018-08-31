@@ -50,14 +50,22 @@ const selectItems = theme => {
   }
 };
 
-const MainContextMenu = ({ onOff, x, y, theme, onClickMenu, onClickOutside }) =>
+const MainContextMenu = ({
+  history,
+  onOff,
+  x,
+  y,
+  theme,
+  onClickMenu,
+  onClickOutside,
+}) =>
   onOff && (
     <ContextMenu
       width={calcWidth(theme)}
       items={selectItems(theme)}
       x={x}
       y={y}
-      onClickMenu={onClickMenu}
+      onClickMenu={({ event, item }) => onClickMenu({ event, item, history })}
       onClickOutside={onClickOutside}
     />
   );

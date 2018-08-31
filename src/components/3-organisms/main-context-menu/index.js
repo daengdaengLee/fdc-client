@@ -1,3 +1,4 @@
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { close, clickMenu } from '../../../ducks/modules/context-menus';
 import Presenter from './presenter';
@@ -10,11 +11,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClickMenu: ({ event, item }) => dispatch(clickMenu({ event, item })),
+  onClickMenu: ({ event, item, history }) =>
+    dispatch(clickMenu({ event, item, history })),
   onClickOutside: () => dispatch(close()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Presenter);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Presenter),
+);
