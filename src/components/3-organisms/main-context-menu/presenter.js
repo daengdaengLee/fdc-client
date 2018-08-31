@@ -3,9 +3,9 @@ import ContextMenu from '../../2-molecules/context-menu';
 
 const calcWidth = theme => {
   switch (theme) {
-  case 'table':
+  case 'HISTORY_TABLE':
     return '300px';
-  case 'tree':
+  case 'MODULE_TREE':
     return '200px';
   default:
     return '300px';
@@ -14,24 +14,36 @@ const calcWidth = theme => {
 
 const selectItems = theme => {
   switch (theme) {
-  case 'table':
+  case 'HISTORY_TABLE':
     return [
       {
         name: 'View Trace Data(Time)',
         icon: 'area-chart',
-        key: 'TRACE_TIME',
+        key: 'HISTORY_TABLE/TIME',
       },
-      { name: 'View Trace Data(Lot)', icon: 'pie-chart', key: 'TRACE_LOT' },
+      {
+        name: 'View Trace Data(Lot)',
+        icon: 'pie-chart',
+        key: 'HISTORY_TABLE/LOT',
+      },
       {
         name: 'View Trace Data(Overlay)',
         icon: 'dot-chart',
-        key: 'TRACE_OVERLAY',
+        key: 'HISTORY_TABLE/OVERLAY',
       },
     ];
-  case 'tree':
+  case 'MODULE_TREE':
     return [
-      { name: 'Real Time View', icon: 'star-o', key: 'VIEW_REAL_TIME' },
-      { name: 'Lot/Wafer View', icon: 'star-o', key: 'VIEW_LOT_WAFER' },
+      {
+        name: 'Real Time View',
+        icon: 'star-o',
+        key: 'MODULE_TREE/REAL_TIME',
+      },
+      {
+        name: 'Lot/Wafer View',
+        icon: 'star-o',
+        key: 'MODULE_TREE/LOT_WAFER',
+      },
     ];
   default:
     return [];
