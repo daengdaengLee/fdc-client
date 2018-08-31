@@ -127,7 +127,7 @@ class MainNavigation extends Component {
       <Container> 
         <Logo>
           {/* logo image 추가예정 */}
-          FDC정
+          FDC
         </Logo>
         <SearchContainer>
           <Icon type="share-alt" />
@@ -182,6 +182,7 @@ class MainNavigation extends Component {
 
         {/* context menu -> visible */}
         <Contextmenu
+          theme="tree"
           items={contextItems}
           visible={this.state.contextmenu.visible}
           x={this.state.contextmenu.x}

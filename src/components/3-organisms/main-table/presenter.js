@@ -115,6 +115,7 @@ class MainTable extends Component {
           />
         </TableArea>
         <Contextmenu
+          theme="tables"
           items={contextItems}
           visible={onOffContext}
           x={contextX}

@@ -3,13 +3,27 @@ import styled from 'styled-components';
 import { Icon } from 'antd';
 import '../../../index.css';
 
+const contextStyles = (theme) => {
+  switch (theme) {
+  case 'tree': {
+    return '200px';
+  }
+  case 'tables': {
+    return '300px';
+  }
+  default: return null;
+  }
+};
+
 const ContextmenuBox = styled.ul`
-  width: 200px;
+  width: ${props => contextStyles(props.theme)};
+  max-width: ${props => contextStyles(props.theme)};
   position: absolute;
   display: flex;
   flex-direction: column;
   background-color: #fff;
   background-clip: padding-box;
+  border: 1px solid #e3e3e3;
   border-radius: 3px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   left: 0;
@@ -30,8 +44,12 @@ const ContextmenuItem = styled.li`
   cursor: pointer;
   transition: all 0.3s;
   margin: 0;
+  line-height: 35px;
+  font-size: 13px;
+  padding: 0 14px;
   &:hover {
-    background-color: #eefdff;
+    background-color: #f8f8f8;
+    color: #69cedf;
   }
 `;
 

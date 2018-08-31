@@ -48,6 +48,7 @@ time, mark, audio, video {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   box-sizing: border-box;
+  color: #454545;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -67,24 +68,6 @@ table {
 
 /* Contextmenu */
 @keyframes ContextFadeIn {
-  /* 0% {
-    transform: translateY(-25%);
-  }
-  50% {
-    transform: translateY(4%);
-  }
-  65% {
-    transform: translateY(-2%);
-  }
-  80% {
-    transform: translateY(2%);
-  }
-  95% {
-    transform: translateY(-1%);
-  }
-  100% {
-    transform: translateY(0%);
-  } */
   0% {
     transform: translateY(-15%);
   }
@@ -97,12 +80,6 @@ table {
 .anticon {
   padding-right: 5px;
 }
-
-/* .context-disable {
-  color: #ccc;
-  cursor: default;
-  background-color: white;
-} */
 
 /* tree -> 해당 파일 묶는 라인 css */
 /* .ant-tree li {
@@ -117,6 +94,11 @@ table {
   width: 1px;
   background-color: tomato;
 } */
+
+/* 
+  Checkbox 
+*/
+
 
 /* 
   Scroll
