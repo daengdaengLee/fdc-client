@@ -3,21 +3,14 @@ import styled from 'styled-components';
 import { Icon } from 'antd';
 import '../../../index.css';
 
-const contextStyles = (theme) => {
-  switch (theme) {
-  case 'tree': {
-    return '200px';
-  }
-  case 'tables': {
-    return '300px';
-  }
-  default: return null;
-  }
-};
-
-const ContextmenuBox = styled.ul`
-  width: ${props => contextStyles(props.theme)};
-  max-width: ${props => contextStyles(props.theme)};
+const ContextMenuBox = styled.ul.attrs({
+  style: props => ({
+    left: props.left,
+    top: props.top,
+    width: props.width,
+    maxWidth: props.width,
+  }),
+})`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -37,7 +30,7 @@ const ContextmenuBox = styled.ul`
   box-shadow: 0 15px 35px rgba(50, 50, 90, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 `;
 
-const ContextmenuItem = styled.li`
+const ContextMenuItem = styled.li`
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -53,25 +46,23 @@ const ContextmenuItem = styled.li`
   }
 `;
 
-class Contextmenu extends Component {
+class ContextMenu extends Component {
   render() {
-    const { visible, x, y, items, onClickMenu } = this.props;
+    const { width, x, y, items, onClickMenu } = this.props;
     return (
-      visible && (
-        <ContextmenuBox style={{ left: `${x}px`, top: `${y}px` }}>
-          {items.map(item => {
-            return (
-              <ContextmenuItem
-                key={item.name}
-                onClick={e => onClickMenu({ ...e, _key: item.key })}
-              >
-                <Icon type={item.icon} />
-                {item.name}
-              </ContextmenuItem>
-            );
-          })}
-        </ContextmenuBox>
-      )
+      <ContextMenuBox left={`${x}px`} top={`${y}px`} width={width}>
+        {items.map(item => {
+          return (
+            <ContextMenuItem
+              key={item.key}
+              onClick={event => onClickMenu({ event, item: item.key })}
+            >
+              <Icon type={item.icon} />
+              {item.name}
+            </ContextMenuItem>
+          );
+        })}
+      </ContextMenuBox>
     );
   }
 
@@ -84,4 +75,4 @@ class Contextmenu extends Component {
   }
 }
 
-export default Contextmenu;
+export default ContextMenu;
