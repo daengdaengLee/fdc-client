@@ -20,12 +20,50 @@ function* requestFetchSaga({ by, fab, eqp, from, to }) {
 function* fetchStartSaga({ by, fab, eqp, from, to }) {
   const { data, success } = yield call(getHistory, by, fab, eqp, from, to);
   yield put(success ? fetchSuccess() : fetchFail());
-  const dummyData = [...Array(10)].map((v, i) =>
-    [...Array(20)].reduce(
-      (acc, cur, idx) => ({ ...acc, [`COL_${idx}`]: Math.random() }),
-      { key: `${i}` },
-    ),
-  );
+  const dummyData = [
+    {
+      key: '1',
+      EQP_NAME: 'EAD303',
+      CHAMBER: 'A',
+      START_DT: '03.33.6',
+      END_DT: '09.05.6',
+      LOT_ID: 'TCH2184',
+      SLOT_NO: '3',
+      PRODUCT: '',
+      OPER: 'R4073000A',
+      RECIPE: 'CH_GBLHMPL_R7_A',
+      PPID: 'CH_GBLHMPL_R7_ABCD',
+      SAMPLE_CNT: '333',
+    },
+    {
+      key: '2',
+      EQP_NAME: 'EAD303',
+      CHAMBER: 'A',
+      START_DT: '04.14.4',
+      END_DT: '09.38.4',
+      LOT_ID: 'TCH2210',
+      SLOT_NO: '10',
+      PRODUCT: '',
+      OPER: 'R4073000A',
+      RECIPE: 'CH_GBLHMPL_R7_A',
+      PPID: 'CH_GBLHMPL_R7_ABCD',
+      SAMPLE_CNT: '325',
+    },
+    {
+      key: '3',
+      EQP_NAME: 'EAD303',
+      CHAMBER: 'A',
+      START_DT: '09:15.6',
+      END_DT: '14:39.6',
+      LOT_ID: 'TCH2184',
+      SLOT_NO: '6',
+      PRODUCT: '',
+      OPER: 'R4073000A',
+      RECIPE: 'CH_GBLHMPL_R7_A',
+      PPID: 'CH_GBLHMPL_R7_ABCD',
+      SAMPLE_CNT: '297',
+    },
+  ];
   yield put(setRows({ rows: dummyData }));
 }
 
