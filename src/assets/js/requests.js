@@ -16,41 +16,41 @@ export const getTree = fab =>
  *
  * @param {string} by lot or wafer
  * @param {string} fab fab id
- * @param {string} eqp eqp list
+ * @param {string} mod module list
  * @param {string} from from date
  * @param {string} to to date
  */
-export const getHistory = (by, fab, eqp, from, to) =>
+export const getHistory = (by, fab, mod, from, to) =>
   axios
-    .get(`${BASE_URL}/fdc/history/${by}/${fab}/${eqp}/${from}/${to}`)
+    .get(`${BASE_URL}/fdc/history/${by}/${fab}/${mod}/${from}/${to}`)
     .then(({ data }) => ({ success: true, data }))
     .catch(() => ({ success: false, data: [] }));
 
 /**
  *
  * @param {string} fab fab id
- * @param {string} eqp eqp list
+ * @param {string} mod module list
  * @param {string} from from date
  * @param {string} to to date
  * @param {string} lot lot id
  */
-export const getParameters = (fab, eqp, from, to, lot) =>
+export const getParameters = (fab, mod, from, to, lot) =>
   axios
-    .get(`${BASE_URL}/fdc/param/${fab}/${eqp}/${from}/${to}/${lot}`)
+    .get(`${BASE_URL}/fdc/param/${fab}/${mod}/${from}/${to}/${lot}`)
     .then(({ data }) => ({ success: true, data }))
     .catch(() => ({ success: false, data: [] }));
 
 /**
  *
  * @param {string} fab fab id
- * @param {string} eqp eqp list
+ * @param {string} mod module list
  * @param {string} from from date
  * @param {string} to to date
  * @param {string} lot lot id
  * @param {string} param param list
  */
-export const getTraceData = (fab, eqp, from, to, lot, param) =>
+export const getTraceData = (fab, mod, from, to, lot, param) =>
   axios
-    .get(`${BASE_URL}/fdc/data/${fab}/${eqp}/${from}/${to}/${lot}/${param}`)
+    .get(`${BASE_URL}/fdc/data/${fab}/${mod}/${from}/${to}/${lot}/${param}`)
     .then(({ data }) => ({ success: true, data }))
     .catch(() => ({ success: false, data: {} }));
