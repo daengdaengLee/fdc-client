@@ -11,7 +11,7 @@ function* clickMenuSaga({ event, item, history }) {
       requestFetchHistories({
         by: 'lot',
         fab: 'M14',
-        eqp: 'EQP_1',
+        mod: 'MODULE_1',
         from: '2018-08-31',
         to: '2018-09-01',
       }),

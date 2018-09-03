@@ -11,73 +11,28 @@ const initState = {
   isError: false,
   rows: [],
   columns: [
-    {
-      title: 'Equipment Name',
-      dataIndex: 'EQP_NAME',
-      key: 'EQP_NAME',
-      width: '200px',
-    },
-    {
-      title: 'Chamber Name',
-      dataIndex: 'CHAMBER',
-      key: 'CHAMBER',
-      width: '200px',
-    },
-    {
-      title: 'Start Time',
-      dataIndex: 'START_DT',
-      key: 'START_DT',
-      width: '200px',
-    },
-    {
-      title: 'End Time',
-      dataIndex: 'END_DT',
-      key: 'END_DT',
-      width: '200px',
-    },
-    {
-      title: 'Lot ID',
-      dataIndex: 'LOT_ID',
-      key: 'LOT_ID',
-      width: '200px',
-    },
-    {
-      title: 'Slot No',
-      dataIndex: 'SLOT_NO',
-      key: 'SLOT_NO',
-      width: '200px',
-    },
-    {
-      title: 'Product',
-      dataIndex: 'PRODUCT',
-      key: 'PRODUCT',
-      width: '200px',
-    },
-    {
-      title: 'Operation',
-      dataIndex: 'OPER',
-      key: 'OPER',
-      width: '200px',
-    },
-    {
-      title: 'Recipe',
-      dataIndex: 'RECIPE',
-      key: 'RECIPE',
-      width: '200px',
-    },
-    {
-      title: 'PPID',
-      dataIndex: 'PPID',
-      key: 'PPID',
-      width: '200px',
-    },
-    {
-      title: 'Sample Count',
-      dataIndex: 'SAMPLE_CNT',
-      key: 'SAMPLE_CNT',
-      width: '200px',
-    },
-  ],
+    'EQP_ID',
+    'LOT_CODE',
+    'RECIPE_ID',
+    'LOT_ID',
+    'START_DTTS',
+    'END_DTTS',
+    'SAMPLE_COUNT',
+    'WAFER_COUNT',
+    'TRACE_FAULT_COUNT',
+    'TRACE_WARNING_COUNT',
+    'ALARM_COUNT',
+    'LOT_TYPE_CD',
+    'PRODUCT_ID',
+    'OPERATION_ID',
+    'OPERATION_NAME',
+    'STATUS_CD',
+    'DATA_QUALITY_INDEX',
+    'PPID_ID',
+    'BATCH_ID',
+    'PORT_ID',
+    'CASSETTE_SLOT',
+  ].map(str => ({ title: str, dataIndex: str, key: str, width: '200px' })),
 };
 
 // Reducer
@@ -97,23 +52,23 @@ export default function historiesReducer(state = initState, action = {}) {
 }
 
 // Action Creators
-export function requestFetch({ by, fab, eqp, from, to }) {
+export function requestFetch({ by, fab, mod, from, to }) {
   return {
     type: REQUEST_FETCH,
     by,
     fab,
-    eqp,
+    mod,
     from,
     to,
   };
 }
 
-export function fetchStart({ by, fab, eqp, from, to }) {
+export function fetchStart({ by, fab, mod, from, to }) {
   return {
     type: FETCH_START,
     by,
     fab,
-    eqp,
+    mod,
     from,
     to,
   };
