@@ -10,7 +10,8 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-  min-width: 260px;
+  width: 270px;
+  min-width: 270px;
   overflow: hidden;
 `;
 

@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import './../../../index.css';
 
-import { Tree, Icon } from 'antd';
+import { Tree, Icon, DatePicker, Button } from 'antd';
+import moment from 'moment';
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
+
 const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;
 
@@ -34,21 +38,22 @@ const SearchTitle = styled.div`
 
 const TreeContainer = styled.div`
   width: 100%;
-  height: 70%;
+  height: 50%;
   border: 1px solid olive;
 `;
 
-// TODO: [EUNJU]_TEST용 data, 추후삭제예정
-// const dummyDatas = [...Array(20)].map((v, i) => ({
-//   chName: `CH Name${i}`,
-//   key: `${i}`,
-// }));
+const PickerContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const ButtonContainer = styled.div`
+  margin-bottom: 10px;
+`;
 
 class MainNavigation extends Component {
   constructor(props) {
     super(props);
     this._onContextmenu = this._onContextmenu.bind(this);
-    this._onClickOutside = this._onClickOutside.bind(this);
     this._onSelectNode = this._onSelectNode.bind(this);
     // this.onRequestFetch = this.onRequestFetch.bind(this);
     // this._onLoadTreeData = this._onLoadTreeData.bind(this);
@@ -58,7 +63,6 @@ class MainNavigation extends Component {
   render() {
     const {
       _onContextmenu,
-      _onClickOutside,
       _onSelectNode,
       // _onLoadTreeData,
       // _onRenderTreeList,
@@ -80,41 +84,46 @@ class MainNavigation extends Component {
             // showLine
             // defaultExpandAll
             onSelect={_onSelectNode}
+            // onExpand={() => {}}
             onRightClick={_onContextmenu}
             // loadData={_onLoadTreeData}
-            defaultExpandedKeys={['0-0-0-0-0-0']}
+            defaultExpandedKeys={['0-0']}
           >
             {/* {_onRenderTreeList(this.state.treeData)} */}
 
-            <TreeNode title="M10" key="0-0">
-              {nodes.map(node => {
-                return <TreeNode title={node.title} key="0-0-1" isLeaf />;
-              })}
-            </TreeNode>
-
-            {/* <TreeNode title="M10" key="0-0">
-              <TreeNode title="Area" key="0-0-0">
-                <TreeNode title="SDPT" key="0-0-0-0">
-                  <TreeNode title="EQP Model" key="0-0-0-0-0">
-                    <TreeNode title="EQP ID" key="0-0-0-0-0-0">
-                      {dummyDatas.map((dummyData) => {
-                        return (
-                          <TreeNode 
-                            title={dummyData.chName} 
-                            key={`0-0-0-0-0-0-0-${dummyData.key}`} 
-                            isLeaf/>
-                        );
-                      })}
-                    </TreeNode>
-                  </TreeNode>
-                </TreeNode>
-              </TreeNode>
-            </TreeNode> */}
+            {
+              nodes.map(node => {
+                return <TreeNode title={node.fab.name} key={node.fab.key}>
+                  {/* {node.fab.child.map(child => {
+                      return <Fragment>
+                        <TreeNode title={child.area.name} key={child.area.key} />
+                        <TreeNode title={child.sdpt.name} key={child.sdpt.key} />
+                        <TreeNode title={child.eqp_model.name} key={child.eqp_model.key} />
+                        <TreeNode title={child.eqp_id.name} key={child.eqp_id.key} />
+                      </Fragment>;
+                      })}; */}
+                </TreeNode>;
+              })
+            }
+  
           </DirectoryTree>
         </TreeContainer>
 
         {/* add: from / to */}
+        <PickerContainer>
+          <RangePicker
+            // 현재날짜로 셋팅
+            defaultValue={[ moment('2018/9/1', dateFormat), moment('2018/09/1', dateFormat) ]}
+            format={dateFormat} />
+        </PickerContainer>
+        
+
         {/* add: bottom */}
+        <ButtonContainer>
+          <Button block>go</Button>
+        </ButtonContainer>
+        
+
       </Container>
     );
   }
@@ -127,14 +136,6 @@ class MainNavigation extends Component {
     const { onOpenContextMenu } = this.props;
     const { clientX: x, clientY: y } = event;
     onOpenContextMenu({ x, y });
-  }
-
-  _onClickOutside() {
-    this.setState({
-      contextmenu: {
-        visible: false,
-      },
-    });
   }
 
   _onSelectNode() {

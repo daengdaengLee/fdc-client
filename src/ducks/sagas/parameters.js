@@ -20,7 +20,17 @@ function* requestFetchSaga({ fab, eqp, from, to, lot }) {
 function* fetchStartSaga({ fab, eqp, from, to, lot }) {
   const { data, success } = yield call(getTree, fab, eqp, from, to, lot);
   yield put(success ? fetchSuccess() : fetchFail());
-  const dummyData = [];
+  const dummyData = [
+    // data형식.
+    {
+      test:
+      {
+        PARAM_NAME: 'parameter_1',
+        PARAM_INFO: 'paremeter_1',
+      },
+    },
+  ];
+
   yield put(setParams({ nodes: dummyData }));
 }
 
