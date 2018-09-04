@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Dygraph from 'dygraphs';
+import { notification } from 'antd';
 import { getTraceData } from '../../../assets/js/requests';
 
 const Container = styled.div`
@@ -38,10 +39,44 @@ class Chart extends Component {
   _drawChart() {
     const { container } = this;
     const { fab, mod, from, to, lot, param } = this.props;
-    getTraceData(fab, mod, from, to, lot, param).then(
-      ({ success, data }) =>
-        success && new Dygraph(container.current, data.data),
-    );
+    getTraceData(fab, mod, from, to, lot, param)
+      .then(({ success, data }) => {
+        // if (!success) return Promise.reject({ message: 'Fetch failed' });
+        // if (!data.data) return Promise.reject({ message: 'No data' });
+        // const { csv } = data.data.split('\n').reduce(
+        //   (acc, cur) => {
+        //     const row = cur.split(',').map(str => str.trim());
+        //     const x = row[0];
+        //     const [slot] = row.splice(1, 1);
+        //     const [step] = row.splice(1, 1);
+        //     return {
+        //       csv: [...acc, csv, row],
+        //       step: {
+        //         ...acc.step,
+        //         [x]: step,
+        //       },
+        //       slot: {
+        //         ...acc.slot,
+        //         [x]: slot,
+        //       },
+        //     };
+        //   },
+        //   { csv: [], step: {}, slot: {} },
+        // );
+        // new Dygraph(container.current, csv);
+        new Dygraph(container.current, data.data);
+      })
+      .catch(error =>
+        notification.error({
+          message: 'Failed to draw chart!',
+          description: error.message,
+          placement: 'bottomRight',
+          style: {
+            width: 660,
+            marginLeft: -260,
+          },
+        }),
+      );
   }
 }
 
