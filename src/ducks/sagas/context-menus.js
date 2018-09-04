@@ -8,12 +8,13 @@ function* clickMenuSaga({ event, item, history }) {
   yield put(close());
   const {
     dates: { from, to },
+    histories: { by },
   } = yield select(state => state);
   switch (item) {
   case 'MODULE_TREE/LOT_WAFER':
     yield put(
       requestFetchHistories({
-        by: 'lot',
+        by,
         fab: 'M14',
         mod: 'MODULE_1',
         from,

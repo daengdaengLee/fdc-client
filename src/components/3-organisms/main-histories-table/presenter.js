@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Icon } from 'antd';
+import { Icon, Select } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
+
+const { Option } = Select;
 
 const Container = styled.div`
   width: 100%;
@@ -44,13 +46,6 @@ const TableArea = styled.div`
   background-color: #f4f2f4;
 `;
 
-const FilterContainer = styled.div`
-  min-height: 80px;
-  border: 1px solid indianred;
-  background-color: #fff;
-  margin-bottom: 10px;
-`;
-
 class MainHistoriesTable extends Component {
   constructor(props) {
     super(props);
@@ -59,7 +54,7 @@ class MainHistoriesTable extends Component {
 
   render() {
     const { _onContextMenuRow } = this;
-    const { rows, columns } = this.props;
+    const { rows, columns, by, onSelectBy } = this.props;
     return (
       <Container>
         <TitleContainer>
@@ -82,9 +77,10 @@ class MainHistoriesTable extends Component {
             {/* 페이지 이동: table / chart */}
           </Location>
         </TitleContainer>
-        <FilterContainer>
-          <p>filter area</p>
-        </FilterContainer>
+        <Select value={by} onSelect={onSelectBy} style={{ width: '200px' }}>
+          <Option value="lot">Lot</Option>
+          <Option value="wafer">Wafer</Option>
+        </Select>
         <TableArea>
           <HistoryTable
             columns={columns}

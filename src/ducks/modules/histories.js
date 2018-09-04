@@ -5,11 +5,14 @@ export const FETCH_SUCCESS = 'histories/FETCH_SUCCESS';
 export const FETCH_FAIL = 'histories/FETCH_FAIL';
 export const SET_ROWS = 'histories/SET_ROWS';
 export const SET_SELECTED_ROW_KEYS = 'histories/SET_SELECTED_ROW_KEYS';
+export const SELECT_BY = 'histories/SELECT_BY';
+export const SET_BY = 'histories/SET_BY';
 
 // Init State
 const initState = {
   isLoading: false,
   isError: false,
+  by: 'lot',
   rows: [],
   columns: [
     'EQP_ID',
@@ -50,6 +53,8 @@ export default function historiesReducer(state = initState, action = {}) {
     return applySetRows(state, action);
   case SET_SELECTED_ROW_KEYS:
     return applySetSelectedRowKeys(state, action);
+  case SET_BY:
+    return applySetBy(state, action);
   default:
     return state;
   }
@@ -104,6 +109,20 @@ export function setSelectedRowKeys({ keys }) {
   };
 }
 
+export function selectBy({ by }) {
+  return {
+    type: SELECT_BY,
+    by,
+  };
+}
+
+export function setBy({ by }) {
+  return {
+    type: SET_BY,
+    by,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return {
@@ -140,5 +159,12 @@ function applySetSelectedRowKeys(state, { keys }) {
   return {
     ...state,
     selectedRowKeys: keys,
+  };
+}
+
+function applySetBy(state, { by }) {
+  return {
+    ...state,
+    by,
   };
 }

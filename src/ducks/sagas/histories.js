@@ -6,6 +6,9 @@ import {
   fetchSuccess,
   fetchFail,
   setRows,
+  SELECT_BY,
+  setBy,
+  requestFetch,
 } from '../modules/histories';
 import { getHistory } from '../../assets/js/requests';
 
@@ -32,6 +35,18 @@ function* fetchStartSaga({ by, fab, mod, from, to }) {
   );
 }
 
+function* selectBySaga({ by }) {
+  const {
+    histories: { isLoading, by: prevBy },
+    dates: { from, to },
+  } = yield select(state => state);
+  if (isLoading || prevBy === by || !from || !to) {
+    return;
+  }
+  yield put(setBy({ by }));
+  yield put(requestFetch({ by, fab: 'M14', mod: 'MODULE_1', from, to }));
+}
+
 // Watchers
 function* watchRequestFetch() {
   yield takeEvery(REQUEST_FETCH, requestFetchSaga);
@@ -41,6 +56,10 @@ function* watchFetchStart() {
   yield takeEvery(FETCH_START, fetchStartSaga);
 }
 
+function* watchSelectBy() {
+  yield takeEvery(SELECT_BY, selectBySaga);
+}
+
 export default function* historiesSaga() {
-  yield all([watchRequestFetch(), watchFetchStart()]);
+  yield all([watchRequestFetch(), watchFetchStart(), watchSelectBy()]);
 }
