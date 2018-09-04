@@ -7,8 +7,8 @@ const mapStateToProps = state => ({
   selectedParams: state.parameters.selected,
   fab: 'M14',
   mod: 'MODULE_1',
-  from: '2018-08-01',
-  to: '2018-08-02',
+  from: state.dates.from,
+  to: state.dates.to,
   lot: 'LOT_1',
 });
 

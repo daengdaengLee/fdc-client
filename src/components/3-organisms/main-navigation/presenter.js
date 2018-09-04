@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Tree, Icon, DatePicker, Button } from 'antd';
 import moment from 'moment';
 const { RangePicker } = DatePicker;
-const DATE_FORMAT = 'YYYY/MM/DD';
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;

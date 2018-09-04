@@ -6,7 +6,9 @@ import { requestFetch as requestFetchParameters } from '../modules/parameters';
 // Workers
 function* clickMenuSaga({ event, item, history }) {
   yield put(close());
-  console.log(item);
+  const {
+    dates: { from, to },
+  } = yield select(state => state);
   switch (item) {
   case 'MODULE_TREE/LOT_WAFER':
     yield put(
@@ -14,8 +16,8 @@ function* clickMenuSaga({ event, item, history }) {
         by: 'lot',
         fab: 'M14',
         mod: 'MODULE_1',
-        from: '2018-08-31',
-        to: '2018-09-01',
+        from,
+        to,
       }),
     );
     history.push('/histories');
@@ -27,8 +29,8 @@ function* clickMenuSaga({ event, item, history }) {
       requestFetchParameters({
         fab: 'M14',
         mod: 'MODULE_1',
-        from: '2018-08-01',
-        to: '2018-08-02',
+        from,
+        to,
         lot: selectedRow.LOT_ID,
       }),
     );
