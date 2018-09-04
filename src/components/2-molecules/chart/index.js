@@ -1,0 +1,92 @@
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Dygraph from 'dygraphs';
+import { notification } from 'antd';
+import { getTraceData } from '../../../assets/js/requests';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+class Chart extends Component {
+  constructor(props) {
+    super(props);
+    this.container = React.createRef();
+    this._validate = this._validate.bind(this);
+    this._drawChart = this._drawChart.bind(this);
+  }
+
+  render() {
+    const { container, _validate } = this;
+    const valid = _validate();
+    return valid ? <Container innerRef={container} /> : null;
+  }
+
+  componentDidMount() {
+    this._validate() && this._drawChart();
+  }
+
+  componentDidUpdate() {
+    this._validate() && this._drawChart();
+  }
+
+  _validate() {
+    const { fab, mod, from, to, lot, param } = this.props;
+    return !!fab && !!mod && !!from && !!to && !!lot && !!param;
+  }
+
+  _drawChart() {
+    const { container } = this;
+    const { fab, mod, from, to, lot, param } = this.props;
+    getTraceData(fab, mod, from, to, lot, param)
+      .then(({ success, data }) => {
+        if (!success) return Promise.reject({ message: 'Fetch failed' });
+        if (!data.data) return Promise.reject({ message: 'No data' });
+        const matrix = data.data.split('\n');
+        const labels = matrix[0]
+          .split(',')
+          .map(str => str.trim())
+          .filter(str => str !== 'STEP' && str !== 'SLOT');
+        const { csv, steps, slots } = matrix.slice(1).reduce(
+          (acc, cur) => {
+            const arrRow = cur.split(',').map(str => str.trim());
+            const [slot] = arrRow.splice(1, 1);
+            const [step] = arrRow.splice(1, 1);
+            const row = arrRow.map(parseFloat);
+            // .map((v, i) => (i === 0 ? new Date(v) : parseFloat(v)));
+            const timestamp =
+              row[0] instanceof Date ? row[0].toISOString() : row[0];
+            return {
+              csv: [...acc.csv, row],
+              steps: {
+                ...acc.steps,
+                [timestamp]: step,
+              },
+              slots: {
+                ...acc.slots,
+                [timestamp]: slot,
+              },
+            };
+          },
+          { csv: [], steps: {}, slots: {} },
+        );
+        new Dygraph(container.current, csv, {
+          labels,
+        });
+      })
+      .catch(error =>
+        notification.error({
+          message: 'Failed to draw chart!',
+          description: error.message,
+          placement: 'bottomRight',
+          style: {
+            width: 660,
+            marginLeft: -260,
+          },
+        }),
+      );
+  }
+}
+
+export default Chart;

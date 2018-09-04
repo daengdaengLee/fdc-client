@@ -5,11 +5,19 @@ import {
   compose,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import samples from './modules/samples';
+import histories from './modules/histories';
+import trees from './modules/trees';
+import parameters from './modules/parameters';
+import contextMenus from './modules/context-menus';
+import dates from './modules/dates';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
-  samples,
+  histories,
+  trees,
+  parameters,
+  contextMenus,
+  dates,
 });
 
 const sagaMiddleware = createSagaMiddleware();

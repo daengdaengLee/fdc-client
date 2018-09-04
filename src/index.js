@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './ducks';
 import MainPage from './components/5-pages/main-page';
 import 'antd/dist/antd.css';
+import './index.css';
 
 injectGlobal`
   html, body, #root {

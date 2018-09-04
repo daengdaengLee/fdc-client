@@ -1,0 +1,125 @@
+/* 
+  Common CSS 
+   :공통 CSS Code만을 작성함.
+*/
+
+/* 
+  Font 규정.
+   1. Poppins : Default font
+        Default 정의:
+          Size: 12px
+          Weight: 400;
+          Color: 미정;
+   2. Quicksand : Title에만 부분적용하여 사용
+        Default 정의:
+          Size: 16(Sub Title) or 18px(Title);
+          Weight: 500;
+          Color: 미정;
+          *사용코드참고 = font-family: 'Quicksand', sans-serif;
+*/
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700');
+
+/* 
+  Reset Code.
+   http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+  vertical-align: baseline;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  box-sizing: border-box;
+  color: #454545;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Contextmenu */
+@keyframes ContextFadeIn {
+  0% {
+    transform: translateY(-15%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+/* Contextmenu의 icon */
+.anticon {
+  padding-right: 5px;
+}
+
+/* tree -> 해당 파일 묶는 라인 css */
+/* .ant-tree li {
+  position: relative;
+}
+.ant-tree li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -6px;
+  height: 100%;
+  width: 1px;
+  background-color: tomato;
+} */
+
+/* 
+  Checkbox 
+*/
+
+
+/* 
+  Scroll
+*/
+
+/* 
+  Tree Style
+*/
+/* DCP 이하 node ...처리 */
+.ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper, .ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper {
+  width: 85%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before {
+  background: #ccc !important;
+  /* width: 120px; */
+}
+
+.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: transparent !important;
+}

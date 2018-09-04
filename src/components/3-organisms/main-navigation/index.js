@@ -1,22 +1,27 @@
-import React from 'react';
-import styled from 'styled-components';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { requestFetch, slectNode } from '../../../ducks/modules/trees';
+import { open } from '../../../ducks/modules/context-menus';
+import { selectFrom, selectTo } from '../../../ducks/modules/dates';
+import Presenter from './presenter';
 
-const Default = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const mapStateToProps = state => ({
+  nodes: state.trees.nodes,
+  selected: state.trees.selected,
+  from: state.dates.from,
+  to: state.dates.to,
+});
 
-const MainNavigation = () => (
-  <Default>
-    Tree View
-    <br />
-    (MainNavigation component)
-  </Default>
-);
+const mapDispatchToProps = dispatch => ({
+  onRequestFetch: bindActionCreators(requestFetch, dispatch),
+  onOpenContextMenu: ({ x, y }) =>
+    dispatch(open({ x, y, theme: 'MODULE_TREE' })),
+  onSelectFrom: date => dispatch(selectFrom({ date })),
+  onSelectTo: date => dispatch(selectTo({ date })),
+  onSelectNode: moduleId => dispatch(slectNode( moduleId )),
+});
 
-export default MainNavigation;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Presenter);
