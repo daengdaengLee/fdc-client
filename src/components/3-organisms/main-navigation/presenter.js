@@ -68,9 +68,8 @@ class MainNavigation extends Component {
       // _onRenderTreeList,
     } = this;
     const { nodes, from, to, onSelectFrom, onSelectTo } = this.props;
-    const tree = _encodeTree(nodes);
-    // const treeM10 = _encodeTree(nodes.M10); 
-    // const treeM14 = _encodeTree(nodes.M14);
+    const treeM10 = _encodeTree(nodes.M10);
+    const treeM14 = _encodeTree(nodes.M14);
     return (
       <Container>
         <Logo>
@@ -92,25 +91,13 @@ class MainNavigation extends Component {
             // loadData={_onLoadTreeData}
             defaultExpandedKeys={['0-0']}
           >
-
             <TreeNode title="M10" key="M10">
-              {
-                // m10
-                // treeM10.map(node => _renderNode(node))
-              }
+              {treeM10.map(node => _renderNode(node))}
             </TreeNode>
 
             <TreeNode title="M14" key="M14">
-              {
-                // m14
-                // treeM14.map(node => _renderNode(node))
-              }
+              {treeM14.map(node => _renderNode(node))}
             </TreeNode>
-
-            {
-              tree.map(node => _renderNode(node))
-            }
-
           </DirectoryTree>
         </TreeContainer>
 
@@ -197,10 +184,11 @@ class MainNavigation extends Component {
 }
 
 // tree
-const _renderNode = node => 
+const _renderNode = node => (
   <TreeNode title={node.TEXT} key={node.VALUE} isLeaf={!node.children}>
     {!node.children ? null : node.children.map(child => _renderNode(child))}
-  </TreeNode>;
+  </TreeNode>
+);
 
 // const encodeTree = (nodes, tree, depth) => {
 //   if (depth === 0) {
@@ -213,10 +201,13 @@ const _renderNode = node =>
 //     }
 //     return encodeTree(nodes, rootNodes, depth + 1);
 //   }
-//   const currentDepthNodes = 
+//   const currentDepthNodes =
 // };
 
 const _encodeTree = nodes => {
+  if (!nodes) {
+    return [];
+  }
   const copy = nodes.map(node => ({ ...node }));
   copy.forEach((node, idx, list) => {
     if (node.VALUE === node.PARENT) {
@@ -234,17 +225,14 @@ const _encodeTree = nodes => {
   return tree;
 };
 
-
 MainNavigation.defaultProps = {
-  nodes: [],
+  nodes: {},
   onRequestFetch: evt =>
     console.log('[WARNNING] There is no onChangeFabs handler', evt),
 };
 
 MainNavigation.propTypes = {
-  nodes: PropTypes.arrayOf(() => {
-    //
-  }),
+  nodes: PropTypes.objectOf(PropTypes.array),
   onRequestFetch: PropTypes.func,
 };
 
