@@ -1,9 +1,9 @@
 // Actions
 export const REQUEST_FETCH = 'trees/REQUEST_FETCH';
-export const FETCH_START = 'trees/FETCH_START'; 
+export const FETCH_START = 'trees/FETCH_START';
 export const FETCH_SUCCESS = 'trees/FETCH_SUCCESS';
 export const FETCH_FAIL = 'trees/FETCH_FAIL';
-// ----- server ------ 
+// ----- server ------
 
 export const SET_NODES = 'trees/SET_NODES';
 
@@ -11,7 +11,7 @@ export const SET_NODES = 'trees/SET_NODES';
 const initState = {
   isLoading: false,
   isError: false,
-  nodes: [],
+  nodes: {},
 };
 
 // Reducer
@@ -31,17 +31,15 @@ export default function treesReducer(state = initState, action = {}) {
 }
 
 // Action Creators
-export function requestFetch({ fab }) {
+export function requestFetch() {
   return {
     type: REQUEST_FETCH,
-    fab,
   };
 }
 
-export function fetchStart({ fab }) {
+export function fetchStart() {
   return {
     type: FETCH_START,
-    fab,
   };
 }
 

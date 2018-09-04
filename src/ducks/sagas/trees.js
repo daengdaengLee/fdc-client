@@ -14,13 +14,16 @@ import { getTree } from '../../assets/js/requests';
 // Workers
 function* requestFetchSaga({ fab }) {
   const { isLoading } = yield select(state => state.trees);
-  yield isLoading || put(fetchStart({ fab }));
+  yield isLoading || put(fetchStart());
 }
 
-function* fetchStartSaga({ fab }) {
-  const { data, success } = yield call(getTree, fab);
+function* fetchStartSaga() {
+  const { data: dataM10, success: successM10 } = yield call(getTree, 'M10');
+  const { data: dataM14, success: successM14 } = yield call(getTree, 'M14');
+  const success = successM10 && successM14;
+  const nodes = { M10: dataM10, M14: dataM14 };
   yield put(success ? fetchSuccess() : fetchFail());
-  yield put(setNodes({ nodes: data }));
+  yield put(setNodes({ nodes }));
 }
 
 // Watchers
