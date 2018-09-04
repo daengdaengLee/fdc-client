@@ -4,12 +4,14 @@ export const FETCH_START = 'parameters/FETCH_START';
 export const FETCH_SUCCESS = 'parameters/FETCH_SUCCESS';
 export const FETCH_FAIL = 'parameters/FETCH_FAIL';
 export const SET_PARAMS = 'parameters/SET_PARAMS';
+export const SET_SELECTED = 'parameters/SET_SELECTED';
 
 // Init State
 const initState = {
   isLoading: false,
   isError: false,
   params: [],
+  selected: [],
 };
 
 // Reducer
@@ -23,6 +25,8 @@ export default function parametersReducer(state = initState, action = {}) {
     return applyFetchFail(state, action);
   case SET_PARAMS:
     return applySetParams(state, action);
+  case SET_SELECTED:
+    return applySetSelected(state, action);
   default:
     return state;
   }
@@ -70,6 +74,13 @@ export function setParams({ params }) {
   };
 }
 
+export function setSelected({ selected }) {
+  return {
+    type: SET_SELECTED,
+    selected,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return {
@@ -99,5 +110,12 @@ function applySetParams(state, { params }) {
   return {
     ...state,
     params,
+  };
+}
+
+function applySetSelected(state, { selected }) {
+  return {
+    ...state,
+    selected,
   };
 }
