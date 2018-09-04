@@ -56,7 +56,7 @@ class MainNavigation extends Component {
   constructor(props) {
     super(props);
     this._onContextmenu = this._onContextmenu.bind(this);
-    this._onSelectNode = this._onSelectNode.bind(this);
+    this._onCheckedKey = this._onCheckedKey.bind(this);
     // this.onRequestFetch = this.onRequestFetch.bind(this);
     // this._onLoadTreeData = this._onLoadTreeData.bind(this);
     // this._onRenderTreeList = this._onRenderTreeList.bind(this);
@@ -65,11 +65,11 @@ class MainNavigation extends Component {
   render() {
     const {
       _onContextmenu,
-      _onSelectNode,
+      _onCheckedKey,
       // _onLoadTreeData,
       // _onRenderTreeList,
     } = this;
-    const { nodes, from, to, onSelectFrom, onSelectTo } = this.props;
+    const { nodes, from, to, onSelectFrom, onSelectTo, onSelectNode } = this.props;
     const treeM10 = _encodeTree(nodes.M10);
     const treeM14 = _encodeTree(nodes.M14);
     return (
@@ -85,12 +85,12 @@ class MainNavigation extends Component {
         <TreeContainer>
           <DirectoryTree
             multiple
-            // showLine
-            // defaultExpandAll
-            onSelect={_onSelectNode}
-            // onExpand={() => {}}
+            checkable
+            // checkedKeys={_onCheckedKey}
+            onSelect={(selectedNodes) => {
+              onSelectNode(selectedNodes);
+            }}
             onRightClick={_onContextmenu}
-            // loadData={_onLoadTreeData}
             defaultExpandedKeys={['0-0']}
           >
             <TreeNode title="M10" key="M10">
@@ -134,8 +134,24 @@ class MainNavigation extends Component {
     onOpenContextMenu({ x, y });
   }
 
-  _onSelectNode() {
-    console.log('select');
+  // _onSelectNode(selectedNodes, node, evt) {
+  //   const nodes = this.props.nodes;
+  //   const selected = this.props.selected;
+
+  //   console.log('nodes', nodes);
+  //   console.log('key :', selectedNodes);
+
+  //   const selectedInfo = []; // m구분도 필요
+  //   selected.push(selected[selectedNodes]);
+    
+  //   // this.props.store.dispatch();
+
+  //   console.log('전달합시다', selectedInfo);
+
+  // }
+
+  _onCheckedKey() {
+    console.log('checked checkBox');
   }
 
   // _onLoadTreeData = (treeData) => {
@@ -187,7 +203,7 @@ class MainNavigation extends Component {
 
 // tree
 const _renderNode = node => (
-  <TreeNode title={node.TEXT} key={node.VALUE} isLeaf={!node.children}>
+  <TreeNode title={node.TEXT} key={!node.children ? node.MODULE_ID : node.VALUE} isLeaf={!node.children}>
     {!node.children ? null : node.children.map(child => _renderNode(child))}
   </TreeNode>
 );
@@ -229,12 +245,14 @@ const _encodeTree = nodes => {
 
 MainNavigation.defaultProps = {
   nodes: {},
+  selected: [],
   onRequestFetch: evt =>
     console.log('[WARNNING] There is no onChangeFabs handler', evt),
 };
 
 MainNavigation.propTypes = {
   nodes: PropTypes.objectOf(PropTypes.array),
+  selected: PropTypes.array,
   onRequestFetch: PropTypes.func,
 };
 
