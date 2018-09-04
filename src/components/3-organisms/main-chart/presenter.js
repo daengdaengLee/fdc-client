@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Select } from 'antd';
+import Chart from '../../2-molecules/chart';
 
 const Container = styled.div`
   width: 100%;
@@ -19,11 +20,21 @@ const ParameterArea = styled.div`
 const ChartArea = styled.div`
   height: 0;
   flex-grow: 1;
+  padding: 20px;
 `;
 
 const Option = Select.Option;
 
-const MainChartPresenter = ({ parameters, selectedParams, onClickParam }) => (
+const MainChartPresenter = ({
+  parameters,
+  selectedParams,
+  onClickParam,
+  fab,
+  mod,
+  from,
+  to,
+  lot,
+}) => (
   <Container>
     <ParameterArea>
       <span style={{ marginRight: '10px' }}>Parameters: </span>
@@ -39,7 +50,16 @@ const MainChartPresenter = ({ parameters, selectedParams, onClickParam }) => (
         ))}
       </Select>
     </ParameterArea>
-    <ChartArea>Chart</ChartArea>
+    <ChartArea>
+      <Chart
+        fab={fab}
+        mod={mod}
+        from={from}
+        to={to}
+        lot={lot}
+        param={selectedParams[0]}
+      />
+    </ChartArea>
   </Container>
 );
 
