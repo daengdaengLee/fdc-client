@@ -41,30 +41,39 @@ class Chart extends Component {
     const { fab, mod, from, to, lot, param } = this.props;
     getTraceData(fab, mod, from, to, lot, param)
       .then(({ success, data }) => {
-        // if (!success) return Promise.reject({ message: 'Fetch failed' });
-        // if (!data.data) return Promise.reject({ message: 'No data' });
-        // const { csv } = data.data.split('\n').reduce(
-        //   (acc, cur) => {
-        //     const row = cur.split(',').map(str => str.trim());
-        //     const x = row[0];
-        //     const [slot] = row.splice(1, 1);
-        //     const [step] = row.splice(1, 1);
-        //     return {
-        //       csv: [...acc, csv, row],
-        //       step: {
-        //         ...acc.step,
-        //         [x]: step,
-        //       },
-        //       slot: {
-        //         ...acc.slot,
-        //         [x]: slot,
-        //       },
-        //     };
-        //   },
-        //   { csv: [], step: {}, slot: {} },
-        // );
-        // new Dygraph(container.current, csv);
-        new Dygraph(container.current, data.data);
+        if (!success) return Promise.reject({ message: 'Fetch failed' });
+        if (!data.data) return Promise.reject({ message: 'No data' });
+        const matrix = data.data.split('\n');
+        const labels = matrix[0]
+          .split(',')
+          .map(str => str.trim())
+          .filter(str => str !== 'STEP' && str !== 'SLOT');
+        const { csv, steps, slots } = matrix.slice(1).reduce(
+          (acc, cur) => {
+            const arrRow = cur.split(',').map(str => str.trim());
+            const [slot] = arrRow.splice(1, 1);
+            const [step] = arrRow.splice(1, 1);
+            const row = arrRow.map(parseFloat);
+            // .map((v, i) => (i === 0 ? new Date(v) : parseFloat(v)));
+            const timestamp =
+              row[0] instanceof Date ? row[0].toISOString() : row[0];
+            return {
+              csv: [...acc.csv, row],
+              steps: {
+                ...acc.steps,
+                [timestamp]: step,
+              },
+              slots: {
+                ...acc.slots,
+                [timestamp]: slot,
+              },
+            };
+          },
+          { csv: [], steps: {}, slots: {} },
+        );
+        new Dygraph(container.current, csv, {
+          labels,
+        });
       })
       .catch(error =>
         notification.error({
