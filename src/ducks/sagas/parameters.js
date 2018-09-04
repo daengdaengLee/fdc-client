@@ -6,6 +6,7 @@ import {
   fetchSuccess,
   fetchFail,
   setParams,
+  setSelected,
 } from '../modules/parameters';
 import { getParameters } from '../../assets/js/requests';
 
@@ -30,6 +31,11 @@ function* fetchStartSaga({ fab, mod, from, to, lot }) {
   yield put(
     setParams({
       params: params.map(param => ({ ...param, key: param.PARAM_NAME })),
+    }),
+  );
+  yield put(
+    setSelected({
+      selected: params.slice(0, 1).map(param => param.PARAM_NAME),
     }),
   );
 }
