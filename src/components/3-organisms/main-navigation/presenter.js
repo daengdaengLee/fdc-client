@@ -40,6 +40,8 @@ const TreeContainer = styled.div`
   width: 100%;
   height: 50%;
   border: 1px solid olive;
+  overflow: auto;
+  overflow-x: hidden;
 `;
 
 const PickerContainer = styled.div`
