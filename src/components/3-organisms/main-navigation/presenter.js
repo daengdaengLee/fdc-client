@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import './../../../index.css';
@@ -68,6 +68,7 @@ class MainNavigation extends Component {
       // _onRenderTreeList,
     } = this;
     const { nodes, from, to, onSelectFrom, onSelectTo } = this.props;
+    const tree = _encodeTree(nodes);
     return (
       <Container>
         <Logo>
@@ -89,22 +90,11 @@ class MainNavigation extends Component {
             // loadData={_onLoadTreeData}
             defaultExpandedKeys={['0-0']}
           >
-            {/* {_onRenderTreeList(this.state.treeData)} */}
 
-            {nodes.map(node => {
-              return (
-                <TreeNode title={node.fab.name} key={node.fab.key}>
-                  {/* {node.fab.child.map(child => {
-                      return <Fragment>
-                        <TreeNode title={child.area.name} key={child.area.key} />
-                        <TreeNode title={child.sdpt.name} key={child.sdpt.key} />
-                        <TreeNode title={child.eqp_model.name} key={child.eqp_model.key} />
-                        <TreeNode title={child.eqp_id.name} key={child.eqp_id.key} />
-                      </Fragment>;
-                      })}; */}
-                </TreeNode>
-              );
-            })}
+            {
+              tree.map(node => _renderNode(node))
+            }
+
           </DirectoryTree>
         </TreeContainer>
 
@@ -189,6 +179,45 @@ class MainNavigation extends Component {
   //   });
   // };
 }
+
+// tree
+const _renderNode = node => 
+  <TreeNode title={node.TEXT} key={node.VALUE} isLeaf={!node.children}>
+    {!node.children ? null : node.children.map(child => _renderNode(child))}
+  </TreeNode>;
+
+// const encodeTree = (nodes, tree, depth) => {
+//   if (depth === 0) {
+//     const len = nodes.length;
+//     for (let i = 0; i < len; i += 1) {
+//       const node = nodes[i];
+//       if (node.VALUE === node.PARENT) {
+//         tree.push(node);
+//       }
+//     }
+//     return encodeTree(nodes, rootNodes, depth + 1);
+//   }
+//   const currentDepthNodes = 
+// };
+
+const _encodeTree = nodes => {
+  const copy = nodes.map(node => ({ ...node }));
+  copy.forEach((node, idx, list) => {
+    if (node.VALUE === node.PARENT) {
+      return;
+    }
+    const parent = list.find(pNode => pNode.VALUE === node.PARENT);
+    if (!parent) return;
+    if (!parent.children) {
+      parent.children = [node];
+      return;
+    }
+    parent.children.push(node);
+  });
+  const tree = copy.filter(node => node.VALUE === node.PARENT);
+  return tree;
+};
+
 
 MainNavigation.defaultProps = {
   nodes: [],
