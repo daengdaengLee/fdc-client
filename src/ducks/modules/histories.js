@@ -4,6 +4,7 @@ export const FETCH_START = 'histories/FETCH_START';
 export const FETCH_SUCCESS = 'histories/FETCH_SUCCESS';
 export const FETCH_FAIL = 'histories/FETCH_FAIL';
 export const SET_ROWS = 'histories/SET_ROWS';
+export const SET_SELECTED_ROW_KEYS = 'histories/SET_SELECTED_ROW_KEYS';
 
 // Init State
 const initState = {
@@ -32,7 +33,8 @@ const initState = {
     'BATCH_ID',
     'PORT_ID',
     'CASSETTE_SLOT',
-  ].map(str => ({ title: str, dataIndex: str, key: str, width: '200px' })),
+  ].map(str => ({ title: str, dataIndex: str, key: str, width: 200 })),
+  selectedRowKeys: [],
 };
 
 // Reducer
@@ -46,6 +48,8 @@ export default function historiesReducer(state = initState, action = {}) {
     return applyFetchFail(state, action);
   case SET_ROWS:
     return applySetRows(state, action);
+  case SET_SELECTED_ROW_KEYS:
+    return applySetSelectedRowKeys(state, action);
   default:
     return state;
   }
@@ -93,6 +97,13 @@ export function setRows({ rows }) {
   };
 }
 
+export function setSelectedRowKeys({ keys }) {
+  return {
+    type: SET_SELECTED_ROW_KEYS,
+    keys,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return {
@@ -122,5 +133,12 @@ function applySetRows(state, { rows }) {
   return {
     ...state,
     rows,
+  };
+}
+
+function applySetSelectedRowKeys(state, { keys }) {
+  return {
+    ...state,
+    selectedRowKeys: keys,
   };
 }

@@ -28,9 +28,7 @@ function* fetchStartSaga({ by, fab, mod, from, to }) {
   );
   yield put(success ? fetchSuccess() : fetchFail());
   yield put(
-    setRows({
-      rows: rows.map((row, i) => ({ ...row, width: '200px', key: `${i}` })),
-    }),
+    setRows({ rows: rows.map(row => ({ ...row, key: JSON.stringify(row) })) }),
   );
 }
 

@@ -7,31 +7,31 @@ import {
   fetchFail,
   setParams,
 } from '../modules/parameters';
-import { getTree } from '../../assets/js/requests';
+import { getParameters } from '../../assets/js/requests';
 
 // Helpers
 
 // Workers
-function* requestFetchSaga({ fab, eqp, from, to, lot }) {
+function* requestFetchSaga({ fab, mod, from, to, lot }) {
   const { isLoading } = yield select(state => state.trees);
-  yield isLoading || put(fetchStart({ fab, eqp, from, to, lot }));
+  yield isLoading || put(fetchStart({ fab, mod, from, to, lot }));
 }
 
-function* fetchStartSaga({ fab, eqp, from, to, lot }) {
-  const { data, success } = yield call(getTree, fab, eqp, from, to, lot);
+function* fetchStartSaga({ fab, mod, from, to, lot }) {
+  const { data: params, success } = yield call(
+    getParameters,
+    fab,
+    mod,
+    from,
+    to,
+    lot,
+  );
   yield put(success ? fetchSuccess() : fetchFail());
-  const dummyData = [
-    // data형식.
-    {
-      test:
-      {
-        PARAM_NAME: 'parameter_1',
-        PARAM_INFO: 'paremeter_1',
-      },
-    },
-  ];
-
-  yield put(setParams({ nodes: dummyData }));
+  yield put(
+    setParams({
+      params: params.map(param => ({ ...param, key: param.PARAM_NAME })),
+    }),
+  );
 }
 
 // Watchers

@@ -98,9 +98,10 @@ class MainHistoriesTable extends Component {
 
   _onContextMenuRow({ event, type, row, col }) {
     event.preventDefault();
-    const { onOpenContextMenu } = this.props;
+    const { onOpenContextMenu, onSetSelectedRows } = this.props;
     const { clientX: x, clientY: y } = event;
     onOpenContextMenu({ x, y });
+    onSetSelectedRows({ keys: [row.key] });
   }
 }
 

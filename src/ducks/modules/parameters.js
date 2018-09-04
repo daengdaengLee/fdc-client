@@ -29,22 +29,22 @@ export default function parametersReducer(state = initState, action = {}) {
 }
 
 // Action Creators
-export function requestFetch({ fab, eqp, from, to, lot }) {
+export function requestFetch({ fab, mod, from, to, lot }) {
   return {
     type: REQUEST_FETCH,
     fab,
-    eqp,
+    mod,
     from,
     to,
     lot,
   };
 }
 
-export function fetchStart({ fab, eqp, from, to, lot }) {
+export function fetchStart({ fab, mod, from, to, lot }) {
   return {
     type: FETCH_START,
     fab,
-    eqp,
+    mod,
     from,
     to,
     lot,
