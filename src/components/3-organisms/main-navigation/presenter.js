@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Tree, Icon, DatePicker, Button } from 'antd';
 import moment from 'moment';
 const { RangePicker } = DatePicker;
-const dateFormat = 'YYYY/MM/DD';
+const DATE_FORMAT = 'YYYY/MM/DD';
 
 const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;
@@ -67,7 +67,7 @@ class MainNavigation extends Component {
       // _onLoadTreeData,
       // _onRenderTreeList,
     } = this;
-    const { nodes } = this.props;
+    const { nodes, from, to, onSelectFrom, onSelectTo } = this.props;
     return (
       <Container>
         <Logo>
@@ -91,9 +91,9 @@ class MainNavigation extends Component {
           >
             {/* {_onRenderTreeList(this.state.treeData)} */}
 
-            {
-              nodes.map(node => {
-                return <TreeNode title={node.fab.name} key={node.fab.key}>
+            {nodes.map(node => {
+              return (
+                <TreeNode title={node.fab.name} key={node.fab.key}>
                   {/* {node.fab.child.map(child => {
                       return <Fragment>
                         <TreeNode title={child.area.name} key={child.area.key} />
@@ -102,10 +102,9 @@ class MainNavigation extends Component {
                         <TreeNode title={child.eqp_id.name} key={child.eqp_id.key} />
                       </Fragment>;
                       })}; */}
-                </TreeNode>;
-              })
-            }
-  
+                </TreeNode>
+              );
+            })}
           </DirectoryTree>
         </TreeContainer>
 
@@ -113,17 +112,19 @@ class MainNavigation extends Component {
         <PickerContainer>
           <RangePicker
             // 현재날짜로 셋팅
-            defaultValue={[ moment('2018/9/1', dateFormat), moment('2018/09/1', dateFormat) ]}
-            format={dateFormat} />
+            value={[moment(from, DATE_FORMAT), moment(to, DATE_FORMAT)]}
+            format={DATE_FORMAT}
+            onChange={(moments, [from, to]) => {
+              onSelectFrom(from);
+              onSelectTo(to);
+            }}
+          />
         </PickerContainer>
-        
 
         {/* add: bottom */}
         <ButtonContainer>
           <Button block>go</Button>
         </ButtonContainer>
-        
-
       </Container>
     );
   }

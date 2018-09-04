@@ -9,6 +9,7 @@ import histories from './modules/histories';
 import trees from './modules/trees';
 import parameters from './modules/parameters';
 import contextMenus from './modules/context-menus';
+import dates from './modules/dates';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   trees,
   parameters,
   contextMenus,
+  dates,
 });
 
 const sagaMiddleware = createSagaMiddleware();
