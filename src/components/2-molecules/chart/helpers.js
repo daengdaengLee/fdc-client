@@ -159,10 +159,13 @@ export const _zoomReset = id => () => {
   g.__zoomStack__ = [{ x: null, y: null }];
 };
 
-export const _onZoomCallback = (minX, maxX, yRanges, g) =>
+export const _onZoomCallback = (minX, maxX, yRanges, id) => {
+  const g = _dygraph[id];
   g.__zoomStack__.push({ x: [minX, maxX], y: yRanges[0] });
+};
 
-export const _onClickCallback = (evt, x, points, g, legend) => {
+export const _onClickCallback = (evt, x, points, id, legend) => {
+  const g = _dygraph[id];
   const [xDomCor, yDomCor] = g.eventToDomCoords(evt);
   const [, yDataCor] = g.toDataCoords(xDomCor, yDomCor);
   const closestSeries = points.reduce((acc, cur) => {
@@ -183,7 +186,8 @@ export const _onClickCallback = (evt, x, points, g, legend) => {
   );
 };
 
-export const _onHighlightCallback = (evt, x, points, row, seriesName, g) => {
+export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
+  const g = _dygraph[id];
   const [xDomCor, yDomCor] = g.eventToDomCoords(evt);
   const [, yDataCor] = g.toDataCoords(xDomCor, yDomCor);
   const closestSeries = points.reduce((acc, cur) => {

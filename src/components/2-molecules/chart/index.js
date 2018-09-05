@@ -168,11 +168,11 @@ class Chart extends Component {
             // mousemove: _onMouseMoveInteraction,
           },
           zoomCallback: (minX, maxX, yRanges) =>
-            _onZoomCallback(minX, maxX, yRanges, g),
+            _onZoomCallback(minX, maxX, yRanges, id),
           clickCallback: (evt, x, points) =>
-            _onClickCallback(evt, x, points, g, legend.current),
+            _onClickCallback(evt, x, points, id, legend.current),
           highlightCallback: (evt, x, points, row, seriesName) =>
-            _onHighlightCallback(evt, x, points, row, seriesName, g),
+            _onHighlightCallback(evt, x, points, row, seriesName, id),
         });
         g.__zoomStack__ = [{ x: null, y: null }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
