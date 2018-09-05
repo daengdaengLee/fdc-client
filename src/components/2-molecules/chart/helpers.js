@@ -1,3 +1,9 @@
+const _dygraph = {};
+
+export const _registerG = (id, g) => (_dygraph[id] = g);
+
+export const _releaseG = id => delete _dygraph[id];
+
 export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   const ctx = e.drawingContext;
   const uclPoints = e.allSeriesPoints.find(
@@ -145,6 +151,12 @@ export const _drawHighlightPoint = (g, x, y) => {
 export const _updateLegend = (legend, x, y, label) => {
   if (label === undefined) return (legend.innerText = '');
   legend.innerText = `${label} (${x}, ${y})`;
+};
+
+export const _zoomReset = id => () => {
+  const g = _dygraph[id];
+  g.resetZoom();
+  g.__zoomStack__ = [{ x: null, y: null }];
 };
 
 export const _onZoomCallback = (minX, maxX, yRanges, g) =>

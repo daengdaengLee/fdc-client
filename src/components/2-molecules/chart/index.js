@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Dygraph from 'dygraphs';
 import { notification } from 'antd';
+import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
 import {
+  _registerG,
+  _releaseG,
   _plotter,
+  _zoomReset,
   _onZoomCallback,
   _onClickCallback,
   _onHighlightCallback,
@@ -37,6 +41,9 @@ const ChartContainer = styled.div`
 class Chart extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      id: uuid(),
+    };
     this.container = React.createRef();
     this.legend = React.createRef();
     this._validate = this._validate.bind(this);
@@ -45,11 +52,13 @@ class Chart extends Component {
 
   render() {
     const { container, legend, _validate } = this;
+    const { id } = this.state;
     const valid = _validate();
     return valid ? (
       <Container>
         <ChartHeader>
           <Legend innerRef={legend} />
+          <button onClick={_zoomReset(id)}>Zoom Out</button>
         </ChartHeader>
         <ChartContainer innerRef={container} />
       </Container>
@@ -94,6 +103,11 @@ class Chart extends Component {
     this._validate() && this._drawChart();
   }
 
+  componentWillUnmount() {
+    const { id } = this.state;
+    _releaseG(id);
+  }
+
   _validate() {
     const { fab, mod, from, to, lot, param } = this.props;
     return !!fab && !!mod && !!from && !!to && !!lot && !!param;
@@ -102,6 +116,7 @@ class Chart extends Component {
   _drawChart() {
     const { container, legend } = this;
     const { fab, mod, from, to, lot, param } = this.props;
+    const { id } = this.state;
     getTraceData(fab, mod, from, to, lot, param)
       .then(({ success, data }) => {
         if (!success) return Promise.reject({ message: 'Fetch failed' });
@@ -162,6 +177,7 @@ class Chart extends Component {
         g.__zoomStack__ = [{ x: null, y: null }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
         g.__seriesOrigin__ = series;
+        _registerG(id, g);
         window.g = g;
       })
       .catch(error =>
