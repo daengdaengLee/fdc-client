@@ -9,8 +9,8 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: #f8f8f8;
 `;
-// background-color: #f4f2f4;
 
 const HeaderContainer = styled.div`
   height: 60px;
@@ -29,7 +29,6 @@ const TableArea = styled.div`
   overflow: hidden;
   padding: 20px;
 `;
-// background-color: #f4f2f4;
 
 class MainHistoriesTable extends Component {
   constructor(props) {

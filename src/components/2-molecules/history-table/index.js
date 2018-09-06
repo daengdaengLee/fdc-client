@@ -85,49 +85,85 @@ const RowContainer = styled.div`
   display: flex;
   height: 40px;
   min-height: 40px;
-  background-color: ${props => (props.isSelected ? '#eefdff' : '#ffffff')}
-  &:hover {
-    background-color: #f8f8f8;
-  }
 `;
 
-const Row = ({
-  row,
-  columns,
-  selectedRows,
-  idx: rowIdx,
-  onContextMenu,
-  onClick,
-}) => (
-  <RowContainer
-    isSelected={selectedRows.includes(row.key)}
-    onClick={event => onClick({ event, type: 'cell', row })}
-  >
-    {columns.map((col, colIdx) => {
-      const label = row[col.dataIndex];
-      return (
-        <RowCell
-          key={col.key}
-          label={label === undefined ? '' : label}
-          width={col.width}
-          rowIdx={rowIdx}
-          colIdx={colIdx}
-          onContextMenu={event =>
-            onContextMenu({ event, type: 'cell', row, col })
-          }
-        />
-      );
-    })}
-  </RowContainer>
-);
+class Row extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isHover: false,
+    };
+    this._onMouseOver = this._onMouseOver.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
+  }
 
-const RowCell = ({ label, width, rowIdx, colIdx, onContextMenu }) => {
+  render() {
+    const { _onMouseLeave, _onMouseOver } = this;
+    const {
+      row,
+      columns,
+      selectedRows,
+      idx: rowIdx,
+      onContextMenu,
+      onClick,
+    } = this.props;
+    const { isHover } = this.state;
+    const isSelected = selectedRows.includes(row.key);
+    return (
+      <RowContainer
+        onClick={event => onClick({ event, type: 'cell', row })}
+        onMouseOver={_onMouseOver}
+        onMouseLeave={_onMouseLeave}
+      >
+        {columns.map((col, colIdx) => {
+          const label = row[col.dataIndex];
+          return (
+            <RowCell
+              key={col.key}
+              label={label === undefined ? '' : label}
+              width={col.width}
+              rowIdx={rowIdx}
+              colIdx={colIdx}
+              isSelected={isSelected}
+              isHover={isHover}
+              onContextMenu={event =>
+                onContextMenu({ event, type: 'cell', row, col })
+              }
+            />
+          );
+        })}
+      </RowContainer>
+    );
+  }
+
+  _onMouseOver() {
+    this.setState({ isHover: true });
+  }
+
+  _onMouseLeave() {
+    this.setState({ isHover: false });
+  }
+}
+
+const RowCell = ({
+  label,
+  width,
+  rowIdx,
+  colIdx,
+  isSelected,
+  isHover,
+  onContextMenu,
+}) => {
   return (
     <div
       style={{
         width,
         minWidth: width,
-        backgroundColor: 'transparent',
+        backgroundColor: isHover
+          ? '#f8f8f8'
+          : isSelected
+            ? '#eefdff'
+            : '#ffffff',
         borderTop: rowIdx === 0 ? 'none' : '1px #ebebeb solid',
         borderLeft: colIdx === 0 ? 'none' : '1px #ebebeb solid',
         boxSizing: 'border-box',
