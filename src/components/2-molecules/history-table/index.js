@@ -17,7 +17,7 @@ class ColCell extends Component {
 
   render() {
     const { _onClickFilter, _onClickAddFilter, _onClickResetFilters } = this;
-    const { col, idx, filters, onContextMenu } = this.props;
+    const { col, idx, filters, onContextMenu, popTableFilter } = this.props;
     const { filterOnOff } = this.state;
     const colFilters = filters.filter(obj => obj.col === col.key);
     return (
@@ -55,6 +55,7 @@ class ColCell extends Component {
             filters={colFilters}
             onClickAdd={_onClickAddFilter}
             onClickReset={_onClickResetFilters}
+            onClickRemove={popTableFilter}
           />
         ) : null}
       </div>

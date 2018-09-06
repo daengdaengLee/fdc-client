@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button, Input } from 'antd';
+import { Button, Input, Icon } from 'antd';
 
 const Container = styled.div.attrs({
   style: props => ({
@@ -54,6 +54,7 @@ class TableFilter extends Component {
     };
     this._onClickAddButton = this._onClickAddButton.bind(this);
     this._onClickResetButton = this._onClickResetButton.bind(this);
+    this._onClickRemoveButton = this._onClickRemoveButton.bind(this);
     this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
   }
 
@@ -61,6 +62,7 @@ class TableFilter extends Component {
     const {
       _onClickAddButton,
       _onClickResetButton,
+      _onClickRemoveButton,
       _onChangeFilterValue,
     } = this;
     const { filters, width, maxHeight, x, y } = this.props;
@@ -88,7 +90,23 @@ class TableFilter extends Component {
         </SearchArea>
         <FilterListArea onScroll={e => e.stopPropagation()}>
           {filters.map(filter => (
-            <div key={`${filter.col}_${filter.value}`}>{filter.value}</div>
+            <div
+              key={`${filter.col}_${filter.value}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 4px',
+              }}
+            >
+              {filter.value}
+              <Icon
+                type="close-circle"
+                theme="outlined"
+                style={{ cursor: 'pointer' }}
+                onClick={event => _onClickRemoveButton({ event, filter })}
+              />
+            </div>
           ))}
         </FilterListArea>
         <ButtonArea>
@@ -112,6 +130,12 @@ class TableFilter extends Component {
     event.stopPropagation();
     const { onClickReset } = this.props;
     onClickReset();
+  }
+
+  _onClickRemoveButton({ event, filter }) {
+    event.stopPropagation();
+    const { onClickRemove } = this.props;
+    onClickRemove(filter);
   }
 
   _onChangeFilterValue(event) {
