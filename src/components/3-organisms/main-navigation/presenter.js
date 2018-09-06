@@ -100,7 +100,7 @@ class MainNavigation extends Component {
       onSelectFab,
     } = this.props;
     // const treeM10 = _encodeTree(nodes.M10);
-    // const treeM14 = _encodeTree(nodes.M14);
+    const treeData = _encodeTree(nodes);
     return (
       <Container className="navigation">
         <LogoContainer>
@@ -140,12 +140,10 @@ class MainNavigation extends Component {
             onChange={(value) => {
               _onChangedFabValue(value);
               onSelectFab(value);
-            }}
-          >
+            }} >
             <Option value="M10">M10</Option>
             <Option value="M14">M14</Option>
           </Select>
-
 
         </FabContainer>
         
@@ -168,19 +166,8 @@ class MainNavigation extends Component {
               onSelectNode(selectedNodes);
             }}
             onRightClick={_onContextmenu}
-            defaultExpandedKeys={['0-0']}
-          >
-            {/* <TreeNode title="M10" key="M10">
-              {treeM10.map(node => _renderNode(node))}
-            </TreeNode>
-
-            <TreeNode title="M14" key="M14">
-              {treeM14.map(node => _renderNode(node))}
-            </TreeNode> */}
-
-            {nodes.map(node => _renderNode(node))}
-
-
+            defaultExpandedKeys={['0-0']} >
+            {treeData.map(node => _renderNode(node))}
           </Tree>
         </TreeContainer>
 
@@ -192,8 +179,7 @@ class MainNavigation extends Component {
               onSelectFrom(from);
               onSelectTo(to);
             }}
-            style={{ borderRadius: '0' }}
-          />
+            style={{ borderRadius: '0' }} />
         </PickerContainer>
 
         <ButtonContainer>
@@ -203,9 +189,9 @@ class MainNavigation extends Component {
     );
   }
 
-  // componentDidMount() {
-  //   this.props.onRequestFetch({ fab: 'M14' });
-  // }
+  componentDidMount() {
+    this.props.onRequestFetch({ fab: 'M14' });
+  }
 
   /**
    * 
@@ -312,7 +298,6 @@ const _encodeTree = nodes => {
     return [];
   }
   const copy = nodes.map(node => ({ ...node }));
-  // [{}, {}, ...]
   copy.forEach((node, idx, list) => {
     if (node.VALUE === node.PARENT) {
       return;
