@@ -63,7 +63,7 @@ class MainHistoriesTable extends Component {
       onSelectBy,
       pushTableFilter,
       popTableFilter,
-      setTableFilters,
+      resetTableFilters,
     } = this.props;
     return (
       <Container>
@@ -101,7 +101,7 @@ class MainHistoriesTable extends Component {
             filters={tableFilters}
             pushTableFilter={pushTableFilter}
             popTableFilter={popTableFilter}
-            setTableFilters={setTableFilters}
+            resetTableFilters={resetTableFilters}
           />
         </TableArea>
       </Container>

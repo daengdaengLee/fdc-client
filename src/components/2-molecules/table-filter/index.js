@@ -106,6 +106,7 @@ class TableFilter extends Component {
     const { onClickAdd } = this.props;
     const { value } = this.state;
     onClickAdd(value);
+    this.setState({ value: '' });
   }
 
   _onClickSearchButton(event) {
@@ -116,6 +117,7 @@ class TableFilter extends Component {
   _onClickResetButton(event) {
     event.stopPropagation();
     const { onClickReset } = this.props;
+    onClickReset();
   }
 
   _onChangeFilterValue(event) {

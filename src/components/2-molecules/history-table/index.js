@@ -12,12 +12,14 @@ class ColCell extends Component {
     };
     this._onClickFilter = this._onClickFilter.bind(this);
     this._onClickAddFilter = this._onClickAddFilter.bind(this);
+    this._onClickResetFilters = this._onClickResetFilters.bind(this);
   }
 
   render() {
-    const { _onClickFilter, _onClickAddFilter } = this;
+    const { _onClickFilter, _onClickAddFilter, _onClickResetFilters } = this;
     const { col, idx, filters, onContextMenu } = this.props;
     const { filterOnOff } = this.state;
+    const colFilters = filters.filter(obj => obj.col === col.key);
     return (
       <div
         style={{
@@ -47,8 +49,9 @@ class ColCell extends Component {
             width="240px"
             x={160}
             y={40}
-            filters={filters}
+            filters={colFilters}
             onClickAdd={_onClickAddFilter}
+            onClickReset={_onClickResetFilters}
           />
         ) : null}
       </div>
@@ -67,9 +70,9 @@ class ColCell extends Component {
     pushTableFilter({ col: col.key, value });
   }
 
-  _onClickResetFilter() {
-    const { setTableFilters } = this.props;
-    setTableFilters({ filters: [] });
+  _onClickResetFilters() {
+    const { col, resetTableFilters } = this.props;
+    resetTableFilters({ col: col.key });
   }
 }
 
@@ -146,7 +149,7 @@ class HistoryTable extends Component {
       onClick,
       pushTableFilter,
       popTableFilter,
-      setTableFilters,
+      resetTableFilters,
     } = this.props;
     const columns = _columns.map((col, idx) => ({
       ...col,
@@ -159,7 +162,7 @@ class HistoryTable extends Component {
           onContextMenu={onContextMenu}
           pushTableFilter={pushTableFilter}
           popTableFilter={popTableFilter}
-          setTableFilters={setTableFilters}
+          resetTableFilters={resetTableFilters}
         />
       ),
     }));

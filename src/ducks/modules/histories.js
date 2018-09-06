@@ -7,9 +7,9 @@ export const SET_ROWS = 'histories/SET_ROWS';
 export const SET_SELECTED_ROW_KEYS = 'histories/SET_SELECTED_ROW_KEYS';
 export const SELECT_BY = 'histories/SELECT_BY';
 export const SET_BY = 'histories/SET_BY';
-export const SET_TABLE_FILTERS = 'histories/SET_TABLE_FILTERS';
 export const PUSH_TABLE_FILTER = 'histories/ADD_TABLE_FILTER';
 export const POP_TABLE_FILTER = 'histories/POP_TABLE_FILTER';
+export const RESET_TABLE_FILTERS = 'histories/RESET_TABLE_FILTERS';
 
 // Init State
 const initState = {
@@ -59,8 +59,8 @@ export default function historiesReducer(state = initState, action = {}) {
     return applySetSelectedRowKeys(state, action);
   case SET_BY:
     return applySetBy(state, action);
-  case SET_TABLE_FILTERS:
-    return applySetTableFilters(state, action);
+  case RESET_TABLE_FILTERS:
+    return applyResetTableFilters(state, action);
   case PUSH_TABLE_FILTER:
     return applyPushTableFilter(state, action);
   case POP_TABLE_FILTER:
@@ -133,10 +133,10 @@ export function setBy({ by }) {
   };
 }
 
-export function setTableFilters({ filters }) {
+export function resetTableFilters({ col }) {
   return {
-    type: SET_TABLE_FILTERS,
-    filters,
+    type: RESET_TABLE_FILTERS,
+    col,
   };
 }
 
@@ -202,7 +202,9 @@ function applySetBy(state, { by }) {
   };
 }
 
-function applySetTableFilters(state, { filters }) {
+function applyResetTableFilters(state, { col }) {
+  const { tableFilters } = state;
+  const filters = tableFilters.filter(filter => filter.col !== col);
   return {
     ...state,
     tableFilters: filters,

@@ -6,7 +6,7 @@ import {
   selectBy,
   pushTableFilter,
   popTableFilter,
-  setTableFilters,
+  resetTableFilters,
 } from '../../../ducks/modules/histories';
 import Presenter from './presenter';
 
@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
   onSelectBy: by => dispatch(selectBy({ by })),
   pushTableFilter: bindActionCreators(pushTableFilter, dispatch),
   popTableFilter: bindActionCreators(popTableFilter, dispatch),
-  setTableFilters: bindActionCreators(setTableFilters, dispatch),
+  resetTableFilters: bindActionCreators(resetTableFilters, dispatch),
 });
 
 export default connect(
