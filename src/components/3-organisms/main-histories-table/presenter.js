@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Icon, Select } from 'antd';
+import { Menu } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
-
-const { Option } = Select;
 
 const Container = styled.div`
   width: 100%;
@@ -14,25 +12,12 @@ const Container = styled.div`
 `;
 // background-color: #f4f2f4;
 
-const TitleContainer = styled.div`
-  height: 100px;
+const HeaderContainer = styled.div`
+  height: 60px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding: 10px 10px 0 10px;
-`;
-
-const Title = styled.h2`
-  font-size: 26px;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-`;
-
-const Location = styled.div`
-  margin: 10px;
-  padding: 5px 10px;
-  background-color: #fff;
-  border-radius: 3px;
+  padding: 0 20px;
 `;
 
 const TableArea = styled.div`
@@ -42,6 +27,7 @@ const TableArea = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  padding: 20px;
 `;
 // background-color: #f4f2f4;
 
@@ -67,30 +53,34 @@ class MainHistoriesTable extends Component {
     } = this.props;
     return (
       <Container>
-        <TitleContainer>
-          <Title>
-            {/* <Icon type="table"/> */}
-            Lot/Wafer
-            <br />
-            View
-          </Title>
-          <Location>
-            <span style={{ marginRight: '10px', color: 'rgba(0, 0, 0, 0.85)' }}>
-              <Icon type="table" />
-              Table
-            </span>
-            /
-            <span style={{ margin: '10px' }}>
-              <Icon type="area-chart" />
-              Chart
-            </span>
-            {/* 페이지 이동: table / chart */}
-          </Location>
-        </TitleContainer>
-        <Select value={by} onSelect={onSelectBy} style={{ width: '200px' }}>
-          <Option value="lot">Lot</Option>
-          <Option value="wafer">Wafer</Option>
-        </Select>
+        <HeaderContainer>
+          <Menu
+            onClick={({ key }) => onSelectBy(key)}
+            selectedKeys={[by]}
+            mode="horizontal"
+          >
+            <Menu.Item
+              key="lot"
+              style={{
+                width: '140px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              Lot
+            </Menu.Item>
+            <Menu.Item
+              key="wafer"
+              style={{
+                width: '140px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              Wafer
+            </Menu.Item>
+          </Menu>
+        </HeaderContainer>
         <TableArea>
           <HistoryTable
             columns={columns}
