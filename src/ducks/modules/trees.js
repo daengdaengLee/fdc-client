@@ -4,6 +4,7 @@ export const FETCH_START = 'trees/FETCH_START';
 export const FETCH_SUCCESS = 'trees/FETCH_SUCCESS';
 export const FETCH_FAIL = 'trees/FETCH_FAIL';
 export const SELECT_NODE = 'trees/SELECT_NODE';
+export const SELECT_FAB = 'trees/SELECT_FAB';
 // ----- server ------
 
 export const SET_NODES = 'trees/SET_NODES';
@@ -13,7 +14,8 @@ const initState = {
   isLoading: false,
   isError: false,
   selected: [],
-  nodes: {},
+  nodes: [],
+  fab: '',
 };
 
 // Reducer
@@ -28,22 +30,26 @@ export default function treesReducer(state = initState, action = {}) {
   case SET_NODES:
     return applySetNodes(state, action);
   case SELECT_NODE:
-    return applySelectNodes(state, action);
+    return applySelectNode(state, action);
+  case SELECT_FAB:
+    return applySelectFab(state, action);
   default:
     return state;
   }
 }
 
 // Action Creators
-export function requestFetch() {
+export function requestFetch({ fab }) {
   return {
     type: REQUEST_FETCH,
+    fab,
   };
 }
 
-export function fetchStart() {
+export function fetchStart({ fab }) {
   return {
     type: FETCH_START,
+    fab,
   };
 }
 
@@ -66,10 +72,17 @@ export function setNodes({ nodes }) {
   };
 }
 
-export function slectNode(moduleId) {
+export function selectNode({ selectedNodes }) {
   return {
     type: SELECT_NODE,
-    moduleId,
+    selectedNodes,
+  };
+}
+
+export function selectFab({ fab }) {
+  return {
+    type: SELECT_FAB,
+    fab,
   };
 }
 
@@ -105,9 +118,16 @@ function applySetNodes(state, { nodes }) {
   };
 }
 
-function applySelectNodes(state, { moduleId }) {
+function applySelectNode(state, { selectedNodes }) {
   return {
     ...state,
-    selected: moduleId,
+    selected: selectedNodes,
+  };
+}
+
+function applySelectFab(state, { fab }) {
+  return {
+    ...state,
+    fab, 
   };
 }

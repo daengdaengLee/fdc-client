@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
   x: state.contextMenus.x,
   y: state.contextMenus.y,
   theme: state.contextMenus.theme,
+  selected: state.contextMenus.selected,
 });
 
 const mapDispatchToProps = dispatch => ({

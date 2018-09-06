@@ -1,11 +1,12 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { requestFetch, slectNode } from '../../../ducks/modules/trees';
+import { requestFetch, selectNode, selectFab } from '../../../ducks/modules/trees';
 import { open } from '../../../ducks/modules/context-menus';
 import { selectFrom, selectTo } from '../../../ducks/modules/dates';
 import Presenter from './presenter';
 
 const mapStateToProps = state => ({
+  fab: state.trees.fab,
   nodes: state.trees.nodes,
   selected: state.trees.selected,
   from: state.dates.from,
@@ -18,7 +19,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(open({ x, y, theme: 'MODULE_TREE' })),
   onSelectFrom: date => dispatch(selectFrom({ date })),
   onSelectTo: date => dispatch(selectTo({ date })),
-  onSelectNode: moduleId => dispatch(slectNode( moduleId )),
+  onSelectNode: selectedNodes => dispatch(selectNode({ selectedNodes })),
+  onSelectFab: fab => dispatch(selectFab({ fab })),
 });
 
 export default connect(
