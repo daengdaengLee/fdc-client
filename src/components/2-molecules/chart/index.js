@@ -4,6 +4,7 @@ import Dygraph from 'dygraphs';
 import { notification } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
+import { getTimeString } from '../../../assets/js/utils';
 import {
   _registerG,
   _releaseG,
@@ -153,12 +154,20 @@ class Chart extends Component {
             drawPoints: false,
           },
         };
+        const axes = {
+          x: {
+            axisLabelFormatter: (date, granularity, opts, dygraph) =>
+              getTimeString(date),
+            axisLabelWidth: 160,
+          },
+        };
         const g = new Dygraph(container.current, data.data, {
           xRangePad: 2.4,
           drawPoints: false,
           highlightCircleSize: 0,
           highlightSeriesBackgroundAlpha: 1,
           legendFormatter: () => '',
+          axes,
           series: { ...series },
           interactionModel: {
             ...Dygraph.defaultInteractionModel,
