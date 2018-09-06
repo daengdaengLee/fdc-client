@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   rows: state.histories.rows,
   columns: state.histories.columns,
   by: state.histories.by,
+  selectedRows: state.histories.selectedRowKeys,
 });
 
 const mapDispatchToProps = dispatch => ({

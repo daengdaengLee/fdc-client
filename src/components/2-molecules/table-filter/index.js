@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Button, Input } from 'antd';
 
@@ -45,64 +45,105 @@ const ButtonArea = styled.div`
   box-sizing: border-box;
 `;
 
-const TableFilter = ({
-  value,
-  filters,
-  width,
-  maxHeight,
-  x,
-  y,
-  onClickAdd,
-  onClickReset,
-  onClickSearch,
-  onChangeValue,
-}) => (
-  <Container width={width} top={`${y}px`} left={`${x}px`}>
-    <SearchArea>
-      <Input placeholder="Input filter" />
-      <Button style={{ marginLeft: '8px' }}>Add</Button>
-    </SearchArea>
-    <FilterListArea>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-    </FilterListArea>
-    <ButtonArea>
-      <Button>Search</Button>
-      <Button style={{ marginLeft: '8px' }}>Reset</Button>
-    </ButtonArea>
-  </Container>
-);
+class TableFilter extends Component {
+  constructor(props) {
+    super(props);
+    this._onClickAddButton = this._onClickAddButton.bind(this);
+    this._onClickSearchButton = this._onClickSearchButton.bind(this);
+    this._onClickResetButton = this._onClickResetButton.bind(this);
+  }
+
+  render() {
+    const {
+      _onClickAddButton,
+      _onClickSearchButton,
+      _onClickResetButton,
+    } = this;
+    const {
+      value,
+      filters,
+      width,
+      maxHeight,
+      x,
+      y,
+      onChangeValue,
+    } = this.props;
+    return (
+      <Container
+        width={width}
+        top={`${y}px`}
+        left={`${x}px`}
+        onClick={e => {
+          e.stopPropagation();
+          e.nativeEvent.stopImmediatePropagation();
+        }}
+      >
+        <SearchArea>
+          <Input placeholder="Input filter" />
+          <Button style={{ marginLeft: '8px' }} onClick={_onClickAddButton}>
+            Add
+          </Button>
+        </SearchArea>
+        <FilterListArea onScroll={e => e.stopPropagation()}>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+          <div>hi</div>
+        </FilterListArea>
+        <ButtonArea>
+          <Button onClick={_onClickSearchButton}>Search</Button>
+          <Button style={{ marginLeft: '8px' }} onClick={_onClickResetButton}>
+            Reset
+          </Button>
+        </ButtonArea>
+      </Container>
+    );
+  }
+
+  _onClickAddButton(event) {
+    event.stopPropagation();
+    const { onClickAdd } = this.props;
+  }
+
+  _onClickSearchButton(event) {
+    event.stopPropagation();
+    const { onClickSearch } = this.props;
+  }
+
+  _onClickResetButton(event) {
+    event.stopPropagation();
+    const { onClickReset } = this.props;
+  }
+}
 
 export default TableFilter;

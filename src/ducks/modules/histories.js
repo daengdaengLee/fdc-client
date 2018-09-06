@@ -36,7 +36,7 @@ const initState = {
     'BATCH_ID',
     'PORT_ID',
     'CASSETTE_SLOT',
-  ].map(str => ({ title: str, dataIndex: str, key: str, width: 200 })),
+  ].map(str => ({ title: str, dataIndex: str, key: str, width: '200px' })),
   selectedRowKeys: [],
 };
 

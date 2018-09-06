@@ -11,8 +11,8 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: #f4f2f4;
 `;
+// background-color: #f4f2f4;
 
 const TitleContainer = styled.div`
   height: 100px;
@@ -42,19 +42,19 @@ const TableArea = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding-left: 10px;
-  background-color: #f4f2f4;
 `;
+// background-color: #f4f2f4;
 
 class MainHistoriesTable extends Component {
   constructor(props) {
     super(props);
-    this._onContextMenuRow = this._onContextMenuRow.bind(this);
+    this._onClickTable = this._onClickTable.bind(this);
+    this._onContextMenuTable = this._onContextMenuTable.bind(this);
   }
 
   render() {
-    const { _onContextMenuRow } = this;
-    const { rows, columns, by, onSelectBy } = this.props;
+    const { _onContextMenuTable, _onClickTable } = this;
+    const { rows, columns, by, selectedRows, onSelectBy } = this.props;
     return (
       <Container>
         <TitleContainer>
@@ -85,15 +85,24 @@ class MainHistoriesTable extends Component {
           <HistoryTable
             columns={columns}
             rows={rows}
-            onContextMenu={_onContextMenuRow}
+            onClick={_onClickTable}
+            onContextMenu={_onContextMenuTable}
+            selectedRows={selectedRows}
           />
         </TableArea>
       </Container>
     );
   }
 
-  _onContextMenuRow({ event, type, row, col }) {
+  _onClickTable({ event, type, row }) {
+    if (type !== 'cell') return;
+    const { onSetSelectedRows } = this.props;
+    onSetSelectedRows({ keys: [row.key] });
+  }
+
+  _onContextMenuTable({ event, type, row, col }) {
     event.preventDefault();
+    if (type !== 'cell') return;
     const { onOpenContextMenu, onSetSelectedRows } = this.props;
     const { clientX: x, clientY: y } = event;
     onOpenContextMenu({ x, y });
