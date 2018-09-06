@@ -11,11 +11,12 @@ class ColCell extends Component {
       filterOnOff: false,
     };
     this._onClickFilter = this._onClickFilter.bind(this);
+    this._onClickAddFilter = this._onClickAddFilter.bind(this);
   }
 
   render() {
-    const { _onClickFilter } = this;
-    const { col, idx, onContextMenu } = this.props;
+    const { _onClickFilter, _onClickAddFilter } = this;
+    const { col, idx, filters, onContextMenu } = this.props;
     const { filterOnOff } = this.state;
     return (
       <div
@@ -41,7 +42,15 @@ class ColCell extends Component {
           style={{ cursor: 'pointer' }}
           onClick={_onClickFilter}
         />
-        {filterOnOff ? <TableFilter width="240px" x={160} y={40} /> : null}
+        {filterOnOff ? (
+          <TableFilter
+            width="240px"
+            x={160}
+            y={40}
+            filters={filters}
+            onClickAdd={_onClickAddFilter}
+          />
+        ) : null}
       </div>
     );
   }
@@ -51,6 +60,16 @@ class ColCell extends Component {
       ...prevState,
       filterOnOff: !prevState.filterOnOff,
     }));
+  }
+
+  _onClickAddFilter(value) {
+    const { col, pushTableFilter } = this.props;
+    pushTableFilter({ col: col.key, value });
+  }
+
+  _onClickResetFilter() {
+    const { setTableFilters } = this.props;
+    setTableFilters({ filters: [] });
   }
 }
 
@@ -122,8 +141,12 @@ class HistoryTable extends Component {
       columns: _columns,
       rows: _rows,
       selectedRows,
+      filters,
       onContextMenu,
       onClick,
+      pushTableFilter,
+      popTableFilter,
+      setTableFilters,
     } = this.props;
     const columns = _columns.map((col, idx) => ({
       ...col,
@@ -132,7 +155,11 @@ class HistoryTable extends Component {
           key={col.key}
           col={col}
           idx={idx}
+          filters={filters}
           onContextMenu={onContextMenu}
+          pushTableFilter={pushTableFilter}
+          popTableFilter={popTableFilter}
+          setTableFilters={setTableFilters}
         />
       ),
     }));

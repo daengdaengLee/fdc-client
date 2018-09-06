@@ -54,7 +54,17 @@ class MainHistoriesTable extends Component {
 
   render() {
     const { _onContextMenuTable, _onClickTable } = this;
-    const { rows, columns, by, selectedRows, onSelectBy } = this.props;
+    const {
+      rows,
+      columns,
+      by,
+      selectedRows,
+      tableFilters,
+      onSelectBy,
+      pushTableFilter,
+      popTableFilter,
+      setTableFilters,
+    } = this.props;
     return (
       <Container>
         <TitleContainer>
@@ -88,6 +98,10 @@ class MainHistoriesTable extends Component {
             onClick={_onClickTable}
             onContextMenu={_onContextMenuTable}
             selectedRows={selectedRows}
+            filters={tableFilters}
+            pushTableFilter={pushTableFilter}
+            popTableFilter={popTableFilter}
+            setTableFilters={setTableFilters}
           />
         </TableArea>
       </Container>

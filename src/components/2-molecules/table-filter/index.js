@@ -48,9 +48,13 @@ const ButtonArea = styled.div`
 class TableFilter extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      value: '',
+    };
     this._onClickAddButton = this._onClickAddButton.bind(this);
     this._onClickSearchButton = this._onClickSearchButton.bind(this);
     this._onClickResetButton = this._onClickResetButton.bind(this);
+    this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
   }
 
   render() {
@@ -58,16 +62,10 @@ class TableFilter extends Component {
       _onClickAddButton,
       _onClickSearchButton,
       _onClickResetButton,
+      _onChangeFilterValue,
     } = this;
-    const {
-      value,
-      filters,
-      width,
-      maxHeight,
-      x,
-      y,
-      onChangeValue,
-    } = this.props;
+    const { filters, width, maxHeight, x, y } = this.props;
+    const { value } = this.state;
     return (
       <Container
         width={width}
@@ -79,46 +77,19 @@ class TableFilter extends Component {
         }}
       >
         <SearchArea>
-          <Input placeholder="Input filter" />
+          <Input
+            placeholder="Input filter"
+            value={value}
+            onChange={_onChangeFilterValue}
+          />
           <Button style={{ marginLeft: '8px' }} onClick={_onClickAddButton}>
             Add
           </Button>
         </SearchArea>
         <FilterListArea onScroll={e => e.stopPropagation()}>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
-          <div>hi</div>
+          {filters.map(filter => (
+            <div key={`${filter.col}_${filter.value}`}>{filter.value}</div>
+          ))}
         </FilterListArea>
         <ButtonArea>
           <Button onClick={_onClickSearchButton}>Search</Button>
@@ -133,6 +104,8 @@ class TableFilter extends Component {
   _onClickAddButton(event) {
     event.stopPropagation();
     const { onClickAdd } = this.props;
+    const { value } = this.state;
+    onClickAdd(value);
   }
 
   _onClickSearchButton(event) {
@@ -143,6 +116,15 @@ class TableFilter extends Component {
   _onClickResetButton(event) {
     event.stopPropagation();
     const { onClickReset } = this.props;
+  }
+
+  _onChangeFilterValue(event) {
+    const {
+      target: { value },
+    } = event;
+    this.setState({
+      value,
+    });
   }
 }
 
