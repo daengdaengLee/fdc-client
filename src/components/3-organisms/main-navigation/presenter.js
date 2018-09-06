@@ -65,11 +65,18 @@ class MainNavigation extends Component {
   render() {
     const {
       _onContextmenu,
-      _onCheckedKey,
+      // _onCheckedKey,
       // _onLoadTreeData,
       // _onRenderTreeList,
     } = this;
-    const { nodes, from, to, onSelectFrom, onSelectTo, onSelectNode } = this.props;
+    const {
+      nodes,
+      from,
+      to,
+      onSelectFrom,
+      onSelectTo,
+      onSelectNode,
+    } = this.props;
     const treeM10 = _encodeTree(nodes.M10);
     const treeM14 = _encodeTree(nodes.M14);
     return (
@@ -87,7 +94,7 @@ class MainNavigation extends Component {
             multiple
             checkable
             // checkedKeys={_onCheckedKey}
-            onSelect={(selectedNodes) => {
+            onSelect={selectedNodes => {
               onSelectNode(selectedNodes);
             }}
             onRightClick={_onContextmenu}
@@ -143,7 +150,7 @@ class MainNavigation extends Component {
 
   //   const selectedInfo = []; // m구분도 필요
   //   selected.push(selected[selectedNodes]);
-    
+
   //   // this.props.store.dispatch();
 
   //   console.log('전달합시다', selectedInfo);
@@ -203,7 +210,11 @@ class MainNavigation extends Component {
 
 // tree
 const _renderNode = node => (
-  <TreeNode title={node.TEXT} key={!node.children ? node.MODULE_ID : node.VALUE} isLeaf={!node.children}>
+  <TreeNode
+    title={node.TEXT}
+    key={!node.children ? node.MODULE_ID : node.VALUE}
+    isLeaf={!node.children}
+  >
     {!node.children ? null : node.children.map(child => _renderNode(child))}
   </TreeNode>
 );

@@ -4,15 +4,16 @@ import Dygraph from 'dygraphs';
 import { notification } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
-import { getTimeString } from '../../../assets/js/utils';
 import {
   _registerG,
   _releaseG,
   _plotter,
   _zoomReset,
+  // _generateTicks,
   _onZoomCallback,
   _onClickCallback,
   _onHighlightCallback,
+  // _onDrawCallback,
   _onDoubleClickInteraction,
 } from './helpers';
 
@@ -21,6 +22,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding-bottom: 30px;
 `;
 
 const ChartHeader = styled.div`
@@ -118,12 +120,20 @@ class Chart extends Component {
     const { container, legend } = this;
     const { fab, mod, from, to, lot, param } = this.props;
     const { id } = this.state;
+    console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
       .then(({ success, data }) => {
+        console.timeEnd('fetch');
+        console.time('render');
         if (!success) return Promise.reject({ message: 'Fetch failed' });
         if (!data.data) return Promise.reject({ message: 'No data' });
-        const firstLfIdx = data.data.indexOf('\n');
-        const labels = data.data
+        const {
+          data: csv,
+          // slot,
+          // step,
+        } = data;
+        const firstLfIdx = csv.indexOf('\n');
+        const labels = csv
           .slice(0, firstLfIdx)
           .split(',')
           .map(label => label.trim());
@@ -156,12 +166,12 @@ class Chart extends Component {
         };
         const axes = {
           x: {
-            axisLabelFormatter: (date, granularity, opts, dygraph) =>
-              getTimeString(date),
             axisLabelWidth: 160,
+            // ticker: (min, max, pixels, opt, g) =>
+            //   _generateTicks(min, max, g, step, slot),
           },
         };
-        const g = new Dygraph(container.current, data.data, {
+        const g = new Dygraph(container.current, csv, {
           xRangePad: 2.4,
           drawPoints: false,
           highlightCircleSize: 0,
@@ -182,12 +192,14 @@ class Chart extends Component {
             _onClickCallback(evt, x, points, id, legend.current),
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),
+          // drawCallback: g => _onDrawCallback(g, step, slot),
         });
         g.__zoomStack__ = [{ x: null, y: null }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
         g.__seriesOrigin__ = series;
         _registerG(id, g);
         window.g = g;
+        console.timeEnd('render');
       })
       .catch(error =>
         notification.error({
