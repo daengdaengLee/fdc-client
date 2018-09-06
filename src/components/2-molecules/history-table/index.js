@@ -41,7 +41,10 @@ class ColCell extends Component {
         <Icon
           type="filter"
           theme="outlined"
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            color: colFilters.length === 0 ? 'black' : 'skyblue',
+          }}
           onClick={_onClickFilter}
         />
         {filterOnOff ? (
@@ -166,20 +169,29 @@ class HistoryTable extends Component {
         />
       ),
     }));
-    const rows = _rows.map((row, idx) => {
-      row.renderRow = (row, columns, selectedRows) => (
-        <Row
-          key={row.key}
-          row={row}
-          columns={columns}
-          selectedRows={selectedRows}
-          idx={idx}
-          onClick={onClick}
-          onContextMenu={onContextMenu}
-        />
-      );
-      return row;
-    });
+    const rows = _rows
+      .filter(
+        row =>
+          filters.length === 0 ||
+          filters.reduce(
+            (valid, filter) => valid && row[filter.col].includes(filter.value),
+            true,
+          ),
+      )
+      .map((row, idx) => {
+        row.renderRow = (row, columns, selectedRows) => (
+          <Row
+            key={row.key}
+            row={row}
+            columns={columns}
+            selectedRows={selectedRows}
+            idx={idx}
+            onClick={onClick}
+            onContextMenu={onContextMenu}
+          />
+        );
+        return row;
+      });
     return (
       <Table
         columns={columns}

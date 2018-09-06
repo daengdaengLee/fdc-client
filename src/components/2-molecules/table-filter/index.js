@@ -6,6 +6,7 @@ const Container = styled.div.attrs({
   style: props => ({
     width: props.width,
     minWidth: props.width,
+    maxHeight: props.maxHeight && '300px',
     top: props.top,
     left: props.left,
   }),
@@ -52,7 +53,6 @@ class TableFilter extends Component {
       value: '',
     };
     this._onClickAddButton = this._onClickAddButton.bind(this);
-    this._onClickSearchButton = this._onClickSearchButton.bind(this);
     this._onClickResetButton = this._onClickResetButton.bind(this);
     this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
   }
@@ -60,7 +60,6 @@ class TableFilter extends Component {
   render() {
     const {
       _onClickAddButton,
-      _onClickSearchButton,
       _onClickResetButton,
       _onChangeFilterValue,
     } = this;
@@ -69,6 +68,7 @@ class TableFilter extends Component {
     return (
       <Container
         width={width}
+        maxHeight={maxHeight}
         top={`${y}px`}
         left={`${x}px`}
         onClick={e => {
@@ -92,7 +92,6 @@ class TableFilter extends Component {
           ))}
         </FilterListArea>
         <ButtonArea>
-          <Button onClick={_onClickSearchButton}>Search</Button>
           <Button style={{ marginLeft: '8px' }} onClick={_onClickResetButton}>
             Reset
           </Button>
@@ -107,11 +106,6 @@ class TableFilter extends Component {
     const { value } = this.state;
     onClickAdd(value);
     this.setState({ value: '' });
-  }
-
-  _onClickSearchButton(event) {
-    event.stopPropagation();
-    const { onClickSearch } = this.props;
   }
 
   _onClickResetButton(event) {
