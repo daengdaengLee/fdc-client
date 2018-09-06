@@ -34,6 +34,7 @@ class ColCell extends Component {
           padding: '0 16px 0 20px',
           fontWeight: '600',
           position: 'relative',
+          fontSize: '12px',
         }}
         onContextMenu={event => onContextMenu({ event, type: 'col', col })}
       >
@@ -134,6 +135,7 @@ const RowCell = ({ label, width, rowIdx, colIdx, onContextMenu }) => {
         alignItems: 'center',
         paddingLeft: '20px',
         fontWeight: '400',
+        fontSize: '12px',
       }}
       onContextMenu={onContextMenu}
     >
@@ -174,10 +176,14 @@ class HistoryTable extends Component {
       .filter(
         row =>
           filters.length === 0 ||
-          filters.reduce(
-            (valid, filter) => valid && row[filter.col].includes(filter.value),
-            true,
-          ),
+          filters.reduce((valid, filter) => {
+            let label = row[filter.col];
+            if (label === undefined) return valid;
+            label = `${label}`;
+            label = label.toLowerCase();
+            const filterValue = `${filter.value}`.toLowerCase();
+            return valid && label.includes(filterValue);
+          }, true),
       )
       .map((row, idx) => {
         row.renderRow = (row, columns, selectedRows) => (
