@@ -7,18 +7,25 @@ import TableFilter from '../table-filter';
 class ColCell extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      filterOnOff: false,
-    };
-    this._onClickFilter = this._onClickFilter.bind(this);
+    this._onClickFilterIcon = this._onClickFilterIcon.bind(this);
     this._onClickAddFilter = this._onClickAddFilter.bind(this);
     this._onClickResetFilters = this._onClickResetFilters.bind(this);
   }
 
   render() {
-    const { _onClickFilter, _onClickAddFilter, _onClickResetFilters } = this;
-    const { col, idx, filters, onContextMenu, popTableFilter } = this.props;
-    const { filterOnOff } = this.state;
+    const {
+      _onClickFilterIcon,
+      _onClickAddFilter,
+      _onClickResetFilters,
+    } = this;
+    const {
+      col,
+      idx,
+      filters,
+      onContextMenu,
+      popTableFilter,
+      whichFilterOpen,
+    } = this.props;
     const colFilters = filters.filter(obj => obj.col === col.key);
     return (
       <div
@@ -46,9 +53,9 @@ class ColCell extends Component {
             cursor: 'pointer',
             color: colFilters.length === 0 ? 'black' : 'skyblue',
           }}
-          onClick={_onClickFilter}
+          onClick={_onClickFilterIcon}
         />
-        {filterOnOff ? (
+        {whichFilterOpen === col.key ? (
           <TableFilter
             width="240px"
             x={160}
@@ -63,11 +70,10 @@ class ColCell extends Component {
     );
   }
 
-  _onClickFilter(event) {
-    this.setState(prevState => ({
-      ...prevState,
-      filterOnOff: !prevState.filterOnOff,
-    }));
+  _onClickFilterIcon(event) {
+    event.stopPropagation();
+    const { col, whichFilterOpen, setWhichFilterOpen } = this.props;
+    setWhichFilterOpen(whichFilterOpen === col.key ? '' : col.key);
   }
 
   _onClickAddFilter(value) {
@@ -181,7 +187,17 @@ const RowCell = ({
 };
 
 class HistoryTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      whichFilterOpen: '',
+    };
+    this._onClickTable = this._onClickTable.bind(this);
+    this._setWhichFilterOpen = this._setWhichFilterOpen.bind(this);
+  }
+
   render() {
+    const { _onClickTable, _setWhichFilterOpen } = this;
     const {
       columns: _columns,
       rows: _rows,
@@ -193,6 +209,7 @@ class HistoryTable extends Component {
       popTableFilter,
       resetTableFilters,
     } = this.props;
+    const { whichFilterOpen } = this.state;
     const columns = _columns.map((col, idx) => ({
       ...col,
       renderCell: col => (
@@ -205,6 +222,8 @@ class HistoryTable extends Component {
           pushTableFilter={pushTableFilter}
           popTableFilter={popTableFilter}
           resetTableFilters={resetTableFilters}
+          whichFilterOpen={whichFilterOpen}
+          setWhichFilterOpen={_setWhichFilterOpen}
         />
       ),
     }));
@@ -241,8 +260,20 @@ class HistoryTable extends Component {
         rows={rows}
         selectedRows={selectedRows}
         cellHeight="40px"
+        onClickTable={_onClickTable}
       />
     );
+  }
+
+  _onClickTable() {
+    const { _setWhichFilterOpen } = this;
+    _setWhichFilterOpen('');
+  }
+
+  _setWhichFilterOpen(col) {
+    this.setState({
+      whichFilterOpen: col,
+    });
   }
 }
 
