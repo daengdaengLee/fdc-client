@@ -1,20 +1,19 @@
 // Actions
-export const REQUEST_FETCH = 'trees/REQUEST_FETCH';
 export const FETCH_START = 'trees/FETCH_START';
 export const FETCH_SUCCESS = 'trees/FETCH_SUCCESS';
 export const FETCH_FAIL = 'trees/FETCH_FAIL';
-export const SELECT_NODE = 'trees/SELECT_NODE';
-export const SELECT_FAB = 'trees/SELECT_FAB';
-// ----- server ------
-
 export const SET_NODES = 'trees/SET_NODES';
+export const CLICK_NODE = 'trees/CLICK_NODE';
+export const SET_SELECTED_NODES = 'trees/SET_SELECTED_NODE';
+export const CLICK_FAB = 'trees/CLICK_FAB';
+export const SET_FAB = 'trees/SET_FAB';
 
 // Init State
 const initState = {
   isLoading: false,
   isError: false,
-  selected: [],
   nodes: [],
+  selected: [],
   fab: '',
 };
 
@@ -29,23 +28,16 @@ export default function treesReducer(state = initState, action = {}) {
     return applyFetchFail(state, action);
   case SET_NODES:
     return applySetNodes(state, action);
-  case SELECT_NODE:
-    return applySelectNode(state, action);
-  case SELECT_FAB:
-    return applySelectFab(state, action);
+  case SET_SELECTED_NODES:
+    return applySetSelectedNodes(state, action);
+  case SET_FAB:
+    return applySetFab(state, action);
   default:
     return state;
   }
 }
 
 // Action Creators
-export function requestFetch({ fab }) {
-  return {
-    type: REQUEST_FETCH,
-    fab,
-  };
-}
-
 export function fetchStart({ fab }) {
   return {
     type: FETCH_START,
@@ -72,16 +64,30 @@ export function setNodes({ nodes }) {
   };
 }
 
-export function selectNode({ selectedNodes }) {
+export function clickNode({ node }) {
   return {
-    type: SELECT_NODE,
-    selectedNodes,
+    type: CLICK_NODE,
+    node,
   };
 }
 
-export function selectFab({ fab }) {
+export function setSelectedNodes({ nodes }) {
   return {
-    type: SELECT_FAB,
+    type: SET_SELECTED_NODES,
+    nodes,
+  };
+}
+
+export function clickFab({ fab }) {
+  return {
+    type: CLICK_FAB,
+    fab,
+  };
+}
+
+export function setFab({ fab }) {
+  return {
+    type: SET_FAB,
     fab,
   };
 }
@@ -118,16 +124,16 @@ function applySetNodes(state, { nodes }) {
   };
 }
 
-function applySelectNode(state, { selectedNodes }) {
+function applySetSelectedNodes(state, { nodes }) {
   return {
     ...state,
-    selected: selectedNodes,
+    selected: nodes,
   };
 }
 
-function applySelectFab(state, { fab }) {
+function applySetFab(state, { fab }) {
   return {
     ...state,
-    fab, 
+    fab,
   };
 }
