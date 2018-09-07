@@ -86,19 +86,21 @@ class TableFilter extends Component {
             placeholder="Input filter"
             value={value}
             onChange={_onChangeFilterValue}
-            style={{ 
-              borderRadius: '0', 
+            style={{
+              borderRadius: '0',
               fontSize: '12px',
-              borderColor: '#dedede' }}
+              borderColor: '#dedede',
+            }}
           />
-          <Button 
-            type='primary'
-            style={{ 
+          <Button
+            type="primary"
+            style={{
               marginLeft: '5px',
               borderRadius: '0',
               // backgroundColor: '#da5e53'
-            }} 
-            onClick={_onClickAddButton}>
+            }}
+            onClick={_onClickAddButton}
+          >
             Add
           </Button>
         </SearchArea>
@@ -125,14 +127,15 @@ class TableFilter extends Component {
           ))}
         </FilterListArea>
         <ButtonArea>
-          <Button 
-            className='resetButton'
-            style={{ 
+          <Button
+            className="resetButton"
+            style={{
               width: '55px',
-              borderRadius: '0', 
+              borderRadius: '0',
               fontSize: '12px',
-            }}   
-            onClick={_onClickResetButton}>
+            }}
+            onClick={_onClickResetButton}
+          >
             Reset
           </Button>
         </ButtonArea>
@@ -140,8 +143,17 @@ class TableFilter extends Component {
     );
   }
 
+  componentDidMount() {
+    document.addEventListener('click', this.props.onClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.props.onClickOutside);
+  }
+
   _onClickAddButton(event) {
     event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
     const { onClickAdd } = this.props;
     const { value } = this.state;
     onClickAdd(value);
@@ -150,12 +162,14 @@ class TableFilter extends Component {
 
   _onClickResetButton(event) {
     event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
     const { onClickReset } = this.props;
     onClickReset();
   }
 
   _onClickRemoveButton({ event, filter }) {
     event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
     const { onClickRemove } = this.props;
     onClickRemove(filter);
   }

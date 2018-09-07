@@ -39,13 +39,13 @@ function* selectBySaga({ by }) {
   const {
     histories: { isLoading, by: prevBy },
     dates: { from, to },
-    trees: { selected: selectedMod },
+    trees: { selected: selectedMod, fab },
   } = yield select(state => state);
   if (isLoading || prevBy === by || !from || !to) {
     return;
   }
   yield put(setBy({ by }));
-  yield put(requestFetch({ by, fab: 'M14', mod: selectedMod[0], from, to }));
+  yield put(requestFetch({ by, fab, mod: selectedMod[0], from, to }));
 }
 
 // Watchers
