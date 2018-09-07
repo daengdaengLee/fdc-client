@@ -17,6 +17,8 @@ import {
   _onDoubleClickInteraction,
 } from './helpers';
 
+import iconZoomOut from '../../../assets/img/ic-zoom-out.png';
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -50,9 +52,14 @@ const IconContainer = styled.div`
   margin-right: 30px;
   margin-top: 15px;
 `;
-
 // height: 25px;
 //   width: 25px;
+
+const ZoomOutImg = styled.img`
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+`;
 
 const ChartContainer = styled.div`
   width: clac(100% - 80px);
@@ -87,7 +94,7 @@ class Chart extends Component {
           </LegendContainer>
 
           <IconContainer>
-            <Button shape="circle" icon="search" onClick={_zoomReset(id)} />
+            <ZoomOutImg src={iconZoomOut} alt='zoom out' onClick={_zoomReset(id)} />
             {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
           </IconContainer>
 
