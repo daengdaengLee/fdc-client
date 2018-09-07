@@ -19,6 +19,7 @@ class ColCell extends Component {
     this._onClickFilterIcon = this._onClickFilterIcon.bind(this);
     this._onClickAddFilter = this._onClickAddFilter.bind(this);
     this._onClickResetFilters = this._onClickResetFilters.bind(this);
+    this._onClickOutside = this._onClickOutside.bind(this);
   }
 
   render() {
@@ -26,6 +27,7 @@ class ColCell extends Component {
       _onClickFilterIcon,
       _onClickAddFilter,
       _onClickResetFilters,
+      _onClickOutside,
     } = this;
     const {
       col,
@@ -72,6 +74,7 @@ class ColCell extends Component {
             onClickAdd={_onClickAddFilter}
             onClickReset={_onClickResetFilters}
             onClickRemove={popTableFilter}
+            onClickOutside={_onClickOutside}
           />
         ) : null}
       </div>
@@ -80,6 +83,7 @@ class ColCell extends Component {
 
   _onClickFilterIcon(event) {
     event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
     const { col, whichFilterOpen, setWhichFilterOpen } = this.props;
     setWhichFilterOpen(whichFilterOpen === col.key ? '' : col.key);
   }
@@ -92,6 +96,10 @@ class ColCell extends Component {
   _onClickResetFilters() {
     const { col, resetTableFilters } = this.props;
     resetTableFilters({ col: col.key });
+  }
+
+  _onClickOutside() {
+    this.props.setWhichFilterOpen('');
   }
 }
 
@@ -200,12 +208,11 @@ class HistoryTable extends Component {
     this.state = {
       whichFilterOpen: '',
     };
-    this._onClickTable = this._onClickTable.bind(this);
     this._setWhichFilterOpen = this._setWhichFilterOpen.bind(this);
   }
 
   render() {
-    const { _onClickTable, _setWhichFilterOpen } = this;
+    const { _setWhichFilterOpen } = this;
     const {
       columns: _columns,
       rows: _rows,
@@ -268,14 +275,8 @@ class HistoryTable extends Component {
         rows={rows}
         selectedRows={selectedRows}
         cellHeight="40px"
-        onClickTable={_onClickTable}
       />
     );
-  }
-
-  _onClickTable() {
-    const { _setWhichFilterOpen } = this;
-    _setWhichFilterOpen('');
   }
 
   _setWhichFilterOpen(col) {
