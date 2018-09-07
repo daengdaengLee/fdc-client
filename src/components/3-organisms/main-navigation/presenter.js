@@ -30,10 +30,8 @@ const LogoContainer = styled.div`
   font-family: 'Quicksand', sans-serif;
   font-weight: 900;
 
-
   font-size: 20px;
   color: #333d77;
-
 `;
 
 // const LogoImg = styled.img`
@@ -152,20 +150,18 @@ class MainNavigation extends Component {
         </TreeContainer>
 
         <PickerContainer>
-          <DatePicker 
+          <DatePicker
             value={!from ? null : moment(from, DATE_FORMAT)}
             format={DATE_FORMAT}
-            onChange={(from) => {
-              onSelectFrom(from);
-            }}
-            style={{ width: 'calc(50% - 3px)', marginRight: '6px' }} />
-          <DatePicker 
+            onChange={(_, from) => onSelectFrom(from)}
+            style={{ width: 'calc(50% - 3px)', marginRight: '6px' }}
+          />
+          <DatePicker
             value={!to ? null : moment(to, DATE_FORMAT)}
             format={DATE_FORMAT}
-            onChange={(to) => {
-              onSelectTo(to);
-            }}
-            style={{ width: 'calc(50% - 3px)' }} />
+            onChange={(_, to) => onSelectTo(to)}
+            style={{ width: 'calc(50% - 3px)' }}
+          />
         </PickerContainer>
 
         <ButtonContainer>
