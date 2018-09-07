@@ -9,8 +9,13 @@ import {
   SELECT_BY,
   setBy,
   requestFetch,
+  SET_SELECTED_ROW_KEYS,
+  SET_BY,
+  setSelectedRowKeys,
+  SET_ROWS,
 } from '../modules/histories';
 import { getHistory } from '../../assets/js/requests';
+import { setSelected, setParams } from '../modules/parameters';
 
 // Helpers
 
@@ -48,6 +53,19 @@ function* selectBySaga({ by }) {
   yield put(requestFetch({ by, fab, mod: selectedMod[0], from, to }));
 }
 
+function* setBySaga() {
+  yield put(setRows({ rows: [] }));
+}
+
+function* setRowsSaga() {
+  yield put(setSelectedRowKeys({ keys: [] }));
+}
+
+function* setSelectedRowKeysSaga() {
+  yield put(setSelected({ selected: [] }));
+  yield put(setParams({ params: [] }));
+}
+
 // Watchers
 function* watchRequestFetch() {
   yield takeEvery(REQUEST_FETCH, requestFetchSaga);
@@ -61,6 +79,25 @@ function* watchSelectBy() {
   yield takeEvery(SELECT_BY, selectBySaga);
 }
 
+function* watchSetBy() {
+  yield takeEvery(SET_BY, setBySaga);
+}
+
+function* watchSetRows() {
+  yield takeEvery(SET_ROWS, setRowsSaga);
+}
+
+function* watchSetSelectedRowKeys() {
+  yield takeEvery(SET_SELECTED_ROW_KEYS, setSelectedRowKeysSaga);
+}
+
 export default function* historiesSaga() {
-  yield all([watchRequestFetch(), watchFetchStart(), watchSelectBy()]);
+  yield all([
+    watchRequestFetch(),
+    watchFetchStart(),
+    watchSelectBy(),
+    watchSetBy(),
+    watchSetRows(),
+    watchSetSelectedRowKeys(),
+  ]);
 }

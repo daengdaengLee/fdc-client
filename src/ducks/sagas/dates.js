@@ -1,13 +1,18 @@
-import { takeEvery, all, put } from 'redux-saga/effects';
+import { takeEvery, all, put, select } from 'redux-saga/effects';
 import { SELECT_FROM, SELECT_TO, setFrom, setTo } from '../modules/dates';
+import { setBy } from '../modules/histories';
 
 // Workers
 function* selectFromSaga({ date }) {
+  const { by } = yield select(state => state.histories);
   yield put(setFrom({ date }));
+  yield put(setBy({ by }));
 }
 
 function* selectToSaga({ date }) {
+  const { by } = yield select(state => state.histories);
   yield put(setTo({ date }));
+  yield put(setBy({ by }));
 }
 
 // Watchers
