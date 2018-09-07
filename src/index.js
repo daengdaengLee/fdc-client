@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import store from './ducks';
+import store, { history } from './ducks';
 import MainPage from './components/5-pages/main-page';
 import 'antd/dist/antd.css';
 import './index.css';
@@ -16,9 +17,9 @@ injectGlobal`
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <Route component={MainPage} />
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root'),
 );
