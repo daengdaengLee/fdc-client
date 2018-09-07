@@ -10,8 +10,11 @@ import {
   setNodes,
   setFab,
   setSelectedNodes,
+  CLICK_REAL_TIME_VIEW,
+  CLICK_LOT_WAFER_VIEW,
 } from '../modules/trees';
 import { getTree } from '../../assets/js/requests';
+import { requestFetch as requestFetchHistories } from '../modules/histories';
 
 // Helpers
 const VALID_FABS = ['M10', 'M14'];
@@ -43,6 +46,25 @@ function* clickNodeSaga({ node }) {
   yield put(setSelectedNodes({ nodes: selectedNodes }));
 }
 
+function* clickRealTimeViewSaga() {}
+
+function* clickLotWaferViewSaga() {
+  const {
+    dates: { from, to },
+    histories: { by },
+    trees: { selected: selectedMod, fab },
+  } = yield select(state => state);
+  yield put(
+    requestFetchHistories({
+      by,
+      fab,
+      mod: selectedMod[0],
+      from,
+      to,
+    }),
+  );
+}
+
 // Watchers
 function* watchFetchStart() {
   yield takeEvery(FETCH_START, fetchStartSaga);
@@ -60,11 +82,21 @@ function* watchClickNode() {
   yield takeEvery(CLICK_NODE, clickNodeSaga);
 }
 
+function* watchClickRealTimeView() {
+  yield takeEvery(CLICK_REAL_TIME_VIEW, clickRealTimeViewSaga);
+}
+
+function* watchClickLotWaferView() {
+  yield takeEvery(CLICK_LOT_WAFER_VIEW, clickLotWaferViewSaga);
+}
+
 export default function* treesSaga() {
   yield all([
     watchFetchStart(),
     watchClickFab(),
     watchSetFab(),
     watchClickNode(),
+    watchClickRealTimeView(),
+    watchClickLotWaferView(),
   ]);
 }
