@@ -152,31 +152,20 @@ class MainNavigation extends Component {
         </TreeContainer>
 
         <PickerContainer>
-          {/* <RangePicker
-            value={[moment(from, DATE_FORMAT), moment(to, DATE_FORMAT)]}
-            format={DATE_FORMAT}
-            onChange={(_, [from, to]) => {
-              onSelectFrom(from);
-              onSelectTo(to);
-            }}
-            style={{ borderRadius: '0' }}
-          /> */}
-
           <DatePicker 
-            value={moment(from, DATE_FORMAT)}
+            value={!from ? null : moment(from, DATE_FORMAT)}
             format={DATE_FORMAT}
             onChange={(from) => {
               onSelectFrom(from);
             }}
             style={{ width: 'calc(50% - 3px)', marginRight: '6px' }} />
           <DatePicker 
-            value={moment(to, DATE_FORMAT)}
+            value={!to ? null : moment(to, DATE_FORMAT)}
             format={DATE_FORMAT}
             onChange={(to) => {
               onSelectTo(to);
             }}
             style={{ width: 'calc(50% - 3px)' }} />
-
         </PickerContainer>
 
         <ButtonContainer>
