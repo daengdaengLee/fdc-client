@@ -206,11 +206,18 @@ class MainNavigation extends Component {
     });
   }
 
-  _onRightClickNode({ event, node }) {
-    const { onOpenContextMenu, onClickNode } = this.props;
+  _onRightClickNode({
+    event,
+    node: {
+      props: { eventKey: key, isLeaf },
+    },
+  }) {
+    const { selected, onOpenContextMenu, onClickNode } = this.props;
     const { clientX: x, clientY: y } = event;
-    onOpenContextMenu({ x, y });
-    onClickNode(node.props.eventKey);
+    if (isLeaf) {
+      onOpenContextMenu({ x, y });
+      !selected.includes(key) && onClickNode(key);
+    }
   }
 
   _onSearchFilter(value) {
