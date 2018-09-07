@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Icon, Select } from 'antd';
+import { Menu } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
-
-const { Option } = Select;
+import '../../../index.css';
 
 const Container = styled.div`
   width: 100%;
@@ -11,28 +10,16 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: #f4f2f4;
+  background-color: #f8f8f8;
 `;
 
-const TitleContainer = styled.div`
-  height: 100px;
+const HeaderContainer = styled.div`
+  height: 60px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding: 10px 10px 0 10px;
-`;
-
-const Title = styled.h2`
-  font-size: 26px;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-`;
-
-const Location = styled.div`
-  margin: 10px;
-  padding: 5px 10px;
-  background-color: #fff;
-  border-radius: 3px;
+  padding: 0 20px;
+  margin-bottom: -15px;
 `;
 
 const TableArea = styled.div`
@@ -42,58 +29,86 @@ const TableArea = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding-left: 10px;
-  background-color: #f4f2f4;
+  padding: 20px;
 `;
 
 class MainHistoriesTable extends Component {
   constructor(props) {
     super(props);
-    this._onContextMenuRow = this._onContextMenuRow.bind(this);
+    this._onClickTable = this._onClickTable.bind(this);
+    this._onContextMenuTable = this._onContextMenuTable.bind(this);
   }
 
   render() {
-    const { _onContextMenuRow } = this;
-    const { rows, columns, by, onSelectBy } = this.props;
+    const { _onContextMenuTable, _onClickTable } = this;
+    const {
+      rows,
+      columns,
+      by,
+      selectedRows,
+      tableFilters,
+      onSelectBy,
+      pushTableFilter,
+      popTableFilter,
+      resetTableFilters,
+    } = this.props;
     return (
-      <Container>
-        <TitleContainer>
-          <Title>
-            {/* <Icon type="table"/> */}
-            Lot/Wafer
-            <br />
-            View
-          </Title>
-          <Location>
-            <span style={{ marginRight: '10px', color: 'rgba(0, 0, 0, 0.85)' }}>
-              <Icon type="table" />
-              Table
-            </span>
-            /
-            <span style={{ margin: '10px' }}>
-              <Icon type="area-chart" />
-              Chart
-            </span>
-            {/* 페이지 이동: table / chart */}
-          </Location>
-        </TitleContainer>
-        <Select value={by} onSelect={onSelectBy} style={{ width: '200px' }}>
-          <Option value="lot">Lot</Option>
-          <Option value="wafer">Wafer</Option>
-        </Select>
+      <Container className="lot-wafer">
+        <HeaderContainer>
+          <Menu
+            onClick={({ key }) => onSelectBy(key)}
+            selectedKeys={[by]}
+            mode="horizontal"
+            style={{ backgroundColor: 'transparent', fontSize: '12px' }}
+          >
+            <Menu.Item
+              key="lot"
+              style={{
+                width: '140px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              Lot
+            </Menu.Item>
+            <Menu.Item
+              key="wafer"
+              style={{
+                width: '140px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              Wafer
+            </Menu.Item>
+          </Menu>
+        </HeaderContainer>
         <TableArea>
           <HistoryTable
             columns={columns}
             rows={rows}
-            onContextMenu={_onContextMenuRow}
+            onClick={_onClickTable}
+            onContextMenu={_onContextMenuTable}
+            selectedRows={selectedRows}
+            filters={tableFilters}
+            pushTableFilter={pushTableFilter}
+            popTableFilter={popTableFilter}
+            resetTableFilters={resetTableFilters}
           />
         </TableArea>
       </Container>
     );
   }
 
-  _onContextMenuRow({ event, type, row, col }) {
+  _onClickTable({ event, type, row }) {
+    if (type !== 'cell') return;
+    const { onSetSelectedRows } = this.props;
+    onSetSelectedRows({ keys: [row.key] });
+  }
+
+  _onContextMenuTable({ event, type, row, col }) {
     event.preventDefault();
+    if (type !== 'cell') return;
     const { onOpenContextMenu, onSetSelectedRows } = this.props;
     const { clientX: x, clientY: y } = event;
     onOpenContextMenu({ x, y });

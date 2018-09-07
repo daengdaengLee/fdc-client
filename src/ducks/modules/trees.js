@@ -1,19 +1,20 @@
 // Actions
-export const REQUEST_FETCH = 'trees/REQUEST_FETCH';
 export const FETCH_START = 'trees/FETCH_START';
 export const FETCH_SUCCESS = 'trees/FETCH_SUCCESS';
 export const FETCH_FAIL = 'trees/FETCH_FAIL';
-export const SELECT_NODE = 'trees/SELECT_NODE';
-// ----- server ------
-
 export const SET_NODES = 'trees/SET_NODES';
+export const CLICK_NODE = 'trees/CLICK_NODE';
+export const SET_SELECTED_NODES = 'trees/SET_SELECTED_NODE';
+export const CLICK_FAB = 'trees/CLICK_FAB';
+export const SET_FAB = 'trees/SET_FAB';
 
 // Init State
 const initState = {
   isLoading: false,
   isError: false,
+  nodes: [],
   selected: [],
-  nodes: {},
+  fab: '',
 };
 
 // Reducer
@@ -27,23 +28,20 @@ export default function treesReducer(state = initState, action = {}) {
     return applyFetchFail(state, action);
   case SET_NODES:
     return applySetNodes(state, action);
-  case SELECT_NODE:
-    return applySelectNodes(state, action);
+  case SET_SELECTED_NODES:
+    return applySetSelectedNodes(state, action);
+  case SET_FAB:
+    return applySetFab(state, action);
   default:
     return state;
   }
 }
 
 // Action Creators
-export function requestFetch() {
-  return {
-    type: REQUEST_FETCH,
-  };
-}
-
-export function fetchStart() {
+export function fetchStart({ fab }) {
   return {
     type: FETCH_START,
+    fab,
   };
 }
 
@@ -66,10 +64,31 @@ export function setNodes({ nodes }) {
   };
 }
 
-export function slectNode(moduleId) {
+export function clickNode({ node }) {
   return {
-    type: SELECT_NODE,
-    moduleId,
+    type: CLICK_NODE,
+    node,
+  };
+}
+
+export function setSelectedNodes({ nodes }) {
+  return {
+    type: SET_SELECTED_NODES,
+    nodes,
+  };
+}
+
+export function clickFab({ fab }) {
+  return {
+    type: CLICK_FAB,
+    fab,
+  };
+}
+
+export function setFab({ fab }) {
+  return {
+    type: SET_FAB,
+    fab,
   };
 }
 
@@ -105,9 +124,16 @@ function applySetNodes(state, { nodes }) {
   };
 }
 
-function applySelectNodes(state, { moduleId }) {
+function applySetSelectedNodes(state, { nodes }) {
   return {
     ...state,
-    selected: moduleId,
+    selected: nodes,
+  };
+}
+
+function applySetFab(state, { fab }) {
+  return {
+    ...state,
+    fab,
   };
 }

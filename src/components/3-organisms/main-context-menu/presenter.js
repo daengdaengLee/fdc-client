@@ -4,11 +4,11 @@ import ContextMenu from '../../2-molecules/context-menu';
 const calcWidth = theme => {
   switch (theme) {
   case 'HISTORY_TABLE':
-    return '300px';
+    return '220px';
   case 'MODULE_TREE':
-    return '200px';
+    return '150px';
   default:
-    return '300px';
+    return '150px';
   }
 };
 
@@ -25,23 +25,26 @@ const selectItems = theme => {
         name: 'View Trace Data(Lot)',
         icon: 'pie-chart',
         key: 'HISTORY_TABLE/LOT',
+        disabled: true,
       },
       {
         name: 'View Trace Data(Overlay)',
         icon: 'dot-chart',
         key: 'HISTORY_TABLE/OVERLAY',
+        disabled: true,
       },
     ];
   case 'MODULE_TREE':
     return [
       {
         name: 'Real Time View',
-        icon: 'star-o',
+        icon: 'area-chart',
         key: 'MODULE_TREE/REAL_TIME',
+        disabled: true,
       },
       {
         name: 'Lot/Wafer View',
-        icon: 'star-o',
+        icon: 'pie-chart',
         key: 'MODULE_TREE/LOT_WAFER',
       },
     ];
@@ -51,10 +54,10 @@ const selectItems = theme => {
 };
 
 const MainContextMenu = ({
-  history,
   onOff,
   x,
   y,
+  selected,
   theme,
   onClickMenu,
   onClickOutside,
@@ -65,7 +68,8 @@ const MainContextMenu = ({
       items={selectItems(theme)}
       x={x}
       y={y}
-      onClickMenu={({ event, item }) => onClickMenu({ event, item, history })}
+      selected={selected}
+      onClickMenu={onClickMenu}
       onClickOutside={onClickOutside}
     />
   );

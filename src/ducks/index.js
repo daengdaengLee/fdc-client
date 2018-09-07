@@ -5,12 +5,16 @@ import {
   compose,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { createBrowserHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import histories from './modules/histories';
 import trees from './modules/trees';
 import parameters from './modules/parameters';
 import contextMenus from './modules/context-menus';
 import dates from './modules/dates';
 import rootSaga from './sagas';
+
+export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   histories,
@@ -29,9 +33,11 @@ const composeEnhancers =
 
 const createStore = initState => {
   const store = _createStore(
-    rootReducer,
+    connectRouter(history)(rootReducer),
     initState,
-    composeEnhancers(applyMiddleware(sagaMiddleware)),
+    composeEnhancers(
+      applyMiddleware(routerMiddleware(history), sagaMiddleware),
+    ),
   );
   sagaMiddleware.run(rootSaga);
   return store;

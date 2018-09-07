@@ -7,6 +7,9 @@ export const SET_ROWS = 'histories/SET_ROWS';
 export const SET_SELECTED_ROW_KEYS = 'histories/SET_SELECTED_ROW_KEYS';
 export const SELECT_BY = 'histories/SELECT_BY';
 export const SET_BY = 'histories/SET_BY';
+export const PUSH_TABLE_FILTER = 'histories/ADD_TABLE_FILTER';
+export const POP_TABLE_FILTER = 'histories/POP_TABLE_FILTER';
+export const RESET_TABLE_FILTERS = 'histories/RESET_TABLE_FILTERS';
 
 // Init State
 const initState = {
@@ -36,8 +39,9 @@ const initState = {
     'BATCH_ID',
     'PORT_ID',
     'CASSETTE_SLOT',
-  ].map(str => ({ title: str, dataIndex: str, key: str, width: 200 })),
+  ].map(str => ({ title: str, dataIndex: str, key: str, width: '200px' })),
   selectedRowKeys: [],
+  tableFilters: [],
 };
 
 // Reducer
@@ -55,6 +59,12 @@ export default function historiesReducer(state = initState, action = {}) {
     return applySetSelectedRowKeys(state, action);
   case SET_BY:
     return applySetBy(state, action);
+  case RESET_TABLE_FILTERS:
+    return applyResetTableFilters(state, action);
+  case PUSH_TABLE_FILTER:
+    return applyPushTableFilter(state, action);
+  case POP_TABLE_FILTER:
+    return applyPopTableFilter(state, action);
   default:
     return state;
   }
@@ -123,6 +133,29 @@ export function setBy({ by }) {
   };
 }
 
+export function resetTableFilters({ col }) {
+  return {
+    type: RESET_TABLE_FILTERS,
+    col,
+  };
+}
+
+export function pushTableFilter({ col, value }) {
+  return {
+    type: PUSH_TABLE_FILTER,
+    col,
+    value,
+  };
+}
+
+export function popTableFilter({ col, value }) {
+  return {
+    type: POP_TABLE_FILTER,
+    col,
+    value,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return {
@@ -167,4 +200,39 @@ function applySetBy(state, { by }) {
     ...state,
     by,
   };
+}
+
+function applyResetTableFilters(state, { col }) {
+  const { tableFilters } = state;
+  const filters = tableFilters.filter(filter => filter.col !== col);
+  return {
+    ...state,
+    tableFilters: filters,
+  };
+}
+
+function applyPushTableFilter(state, { col, value }) {
+  const { tableFilters } = state;
+  const idx = tableFilters.findIndex(
+    filter => filter.col === col && filter.value === value,
+  );
+  return idx === -1
+    ? { ...state, tableFilters: [...tableFilters, { col, value }] }
+    : state;
+}
+
+function applyPopTableFilter(state, { col, value }) {
+  const { tableFilters } = state;
+  const idx = tableFilters.findIndex(
+    filter => filter.col === col && filter.value === value,
+  );
+  return idx === -1
+    ? state
+    : {
+      ...state,
+      tableFilters: [
+        ...tableFilters.slice(0, idx),
+        ...tableFilters.slice(idx + 1),
+      ],
+    };
 }

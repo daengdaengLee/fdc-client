@@ -21,6 +21,7 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: #f8f8f8;
 `;
 
 const Top = styled.div`

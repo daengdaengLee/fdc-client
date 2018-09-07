@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import './../../../index.css';
+import './../../../index.css';
+// import logoImg from '../../../assets/img/logo.jpg';
 
-import { Tree, Icon, DatePicker, Button } from 'antd';
+import { Tree, Icon, DatePicker, Button, Select, Input } from 'antd';
 import moment from 'moment';
 const { RangePicker } = DatePicker;
 const DATE_FORMAT = 'YYYY-MM-DD';
-
-const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;
+const Search = Input.Search;
+const Option = Select.Option;
 
 const Container = styled.div`
   width: 100%;
@@ -23,23 +24,42 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
-const Logo = styled.div`
+// margin: 5px auto 10px;
+const LogoContainer = styled.div`
   height: 45px;
   line-height: 45px;
   font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
+  font-weight: 900;
+
+
+  font-size: 20px;
+  color: #333d77;
+
+`;
+
+// const LogoImg = styled.img`
+//   width: 80px;
+// `;
+
+const SearchContainer = styled.div`
+  font-size: 14px;
+  margin-bottom: 5px;
+`;
+
+const Title = styled.h1``;
+
+const FabContainer = styled.div`
+  width: 100%;
   margin-bottom: 10px;
 `;
 
-const SearchTitle = styled.div`
-  font-size: 14px;
+const SearchInput = styled.div`
   margin-bottom: 10px;
 `;
 
 const TreeContainer = styled.div`
   width: 100%;
-  height: 50%;
-  border: 1px solid olive;
+  height: 80%;
   overflow: auto;
   overflow-x: hidden;
 `;
@@ -55,182 +75,192 @@ const ButtonContainer = styled.div`
 class MainNavigation extends Component {
   constructor(props) {
     super(props);
-    this._onContextmenu = this._onContextmenu.bind(this);
-    this._onCheckedKey = this._onCheckedKey.bind(this);
-    // this.onRequestFetch = this.onRequestFetch.bind(this);
-    // this._onLoadTreeData = this._onLoadTreeData.bind(this);
-    // this._onRenderTreeList = this._onRenderTreeList.bind(this);
+    this.state = {
+      filter: '',
+      expandedKeys: [],
+    };
+    this._onClickNode = this._onClickNode.bind(this);
+    this._onRightClickNode = this._onRightClickNode.bind(this);
+    this._onSearchFilter = this._onSearchFilter.bind(this);
   }
 
   render() {
+    const { _onClickNode, _onRightClickNode, _onSearchFilter } = this;
     const {
-      _onContextmenu,
-      _onCheckedKey,
-      // _onLoadTreeData,
-      // _onRenderTreeList,
-    } = this;
-    const { nodes, from, to, onSelectFrom, onSelectTo, onSelectNode } = this.props;
-    const treeM10 = _encodeTree(nodes.M10);
-    const treeM14 = _encodeTree(nodes.M14);
+      nodes,
+      fab,
+      from,
+      to,
+      selected,
+      onSelectFrom,
+      onSelectTo,
+      onClickFab,
+    } = this.props;
+    const { filter, expandedKeys } = this.state;
+    const treeData = _encodeTree(_filterNodes(nodes, filter));
     return (
-      <Container>
-        <Logo>
-          {/* logo image 추가예정 */}
-          FDC. Title & Logo area
-        </Logo>
-        <SearchTitle>
-          <Icon type="share-alt" />
-          Search Condition
-        </SearchTitle>
+      <Container className="navigation">
+        <LogoContainer>
+          {/* 로고 교체할겁니다아! */}
+          {/* <LogoImg src={logoImg} alt='FDC Logo'/> */}
+          FDC
+        </LogoContainer>
+        <SearchContainer>
+          <Title>
+            <Icon style={{ color: '#04bed6' }} type="share-alt" />
+            Search Condition
+          </Title>
+        </SearchContainer>
+
+        <FabContainer>
+          <Select
+            // allowClear={true}
+            dropdownStyle={{ borderRadius: '0', fontSize: '12px' }}
+            style={{ width: '100%' }}
+            placeholder="FAB Select"
+            value={fab}
+            onChange={onClickFab}
+          >
+            <Option value="M10">M10</Option>
+            <Option value="M14">M14</Option>
+          </Select>
+        </FabContainer>
+
+        <SearchInput>
+          <Search
+            placeholder="Not yet implemented"
+            onSearch={_onSearchFilter}
+            disabled
+          />
+        </SearchInput>
+
         <TreeContainer>
-          <DirectoryTree
+          <Tree
             multiple
             checkable
-            // checkedKeys={_onCheckedKey}
-            onSelect={(selectedNodes) => {
-              onSelectNode(selectedNodes);
-            }}
-            onRightClick={_onContextmenu}
-            defaultExpandedKeys={['0-0']}
+            showLine
+            // showIcon
+            checkedKeys={selected}
+            selectedKeys={selected}
+            expandedKeys={expandedKeys}
+            onCheck={_onClickNode}
+            onSelect={_onClickNode}
+            onRightClick={_onRightClickNode}
+            onExpand={_onClickNode}
           >
-            <TreeNode title="M10" key="M10">
-              {treeM10.map(node => _renderNode(node))}
-            </TreeNode>
-
-            <TreeNode title="M14" key="M14">
-              {treeM14.map(node => _renderNode(node))}
-            </TreeNode>
-          </DirectoryTree>
+            {treeData.map(node => _renderNode(node))}
+          </Tree>
         </TreeContainer>
 
-        {/* add: from / to */}
         <PickerContainer>
           <RangePicker
-            // 현재날짜로 셋팅
             value={[moment(from, DATE_FORMAT), moment(to, DATE_FORMAT)]}
             format={DATE_FORMAT}
-            onChange={(moments, [from, to]) => {
+            onChange={(_, [from, to]) => {
               onSelectFrom(from);
               onSelectTo(to);
             }}
+            style={{ borderRadius: '0' }}
           />
         </PickerContainer>
 
-        {/* add: bottom */}
         <ButtonContainer>
-          <Button block>go</Button>
+          <Button type="danger" block>
+            GO
+          </Button>
         </ButtonContainer>
       </Container>
     );
   }
 
   componentDidMount() {
-    this.props.onRequestFetch({ fab: 'M14' });
+    this.props.onClickFab('M14');
   }
 
-  _onContextmenu({ event }) {
-    const { onOpenContextMenu } = this.props;
+  componentDidUpdate({ fab: prevFab }) {
+    if (prevFab !== this.props.fab) {
+      this.setState({
+        filter: '',
+        expandedKeys: [],
+      });
+    }
+  }
+
+  _onClickNode(
+    _,
+    {
+      node: {
+        props: { eventKey: key, isLeaf },
+      },
+    },
+  ) {
+    const { onClickNode } = this.props;
+    isLeaf && onClickNode(key);
+    this.setState(prevState => {
+      if (isLeaf) return prevState;
+      const { expandedKeys: prevExpandedKeys } = prevState;
+      const isExpanded = prevExpandedKeys.includes(key);
+      const nextExpandedKeys = isExpanded
+        ? prevExpandedKeys.filter(expanded => expanded !== key)
+        : [...prevExpandedKeys, key];
+      return {
+        ...prevState,
+        expandedKeys: nextExpandedKeys,
+      };
+    });
+  }
+
+  _onRightClickNode({
+    event,
+    node: {
+      props: { eventKey: key, isLeaf },
+    },
+  }) {
+    const { selected, onOpenContextMenu, onClickNode } = this.props;
     const { clientX: x, clientY: y } = event;
-    onOpenContextMenu({ x, y });
+    if (isLeaf) {
+      onOpenContextMenu({ x, y });
+      !selected.includes(key) && onClickNode(key);
+    }
   }
 
-  // _onSelectNode(selectedNodes, node, evt) {
-  //   const nodes = this.props.nodes;
-  //   const selected = this.props.selected;
-
-  //   console.log('nodes', nodes);
-  //   console.log('key :', selectedNodes);
-
-  //   const selectedInfo = []; // m구분도 필요
-  //   selected.push(selected[selectedNodes]);
-    
-  //   // this.props.store.dispatch();
-
-  //   console.log('전달합시다', selectedInfo);
-
-  // }
-
-  _onCheckedKey() {
-    console.log('checked checkBox');
+  _onSearchFilter(value) {
+    const { onResetSelectedNodes } = this.props;
+    this.setState({ filter: value, expandedKeys: [] });
+    onResetSelectedNodes();
   }
-
-  // _onLoadTreeData = (treeData) => {
-  //   return new Promise ((resolve) => {
-  //     if (treeData.props.children) {
-  //       resolve();
-  //       return;
-  //     }
-  //     // setTimeout(() => {
-  //     treeData.props.dataRef.children = [
-  //       { title: 'Child Node', key: `${treeData.props.eventKey} - 0` },
-  //       { title: 'Child Node', key: `${treeData.props.eventKey} - 1` },
-  //     ];
-  //     this.setState({
-  //       treeData: [...this.state.treeData],
-  //     });
-  //     resolve();
-  //     // }, 1000);
-  //   });
-  // };
-
-  // _onLoadTreeData = (nodes) => {
-  //   return nodes.map((node) => {
-  //     return (
-  //       <TreeNode title={node.title} key="0-0-0"></TreeNode>
-  //     );
-  //   });
-  // };
-
-  // _onRenderTreeList = (nodes) => {
-  //   // return data.map((item) => {
-  //   //   if (item.children) {
-  //   //     return (
-  //   //       <TreeNode title={item.title} key={item.key} dataRef={item}>
-  //   //         {this._onRenderTreeList(item.children)}
-  //   //       </TreeNode>
-  //   //     );
-  //   //   }
-  //   //   return <TreeNode { ...item } dataRef={item} />;
-  //   // });
-
-  //   return nodes.map((node) => {
-  //     return (
-  //       <TreeNode title={node.title} key="0-0-0"></TreeNode>
-  //     );
-  //   });
-  // };
 }
 
 // tree
 const _renderNode = node => (
-  <TreeNode title={node.TEXT} key={!node.children ? node.MODULE_ID : node.VALUE} isLeaf={!node.children}>
+  <TreeNode
+    title={node.TEXT}
+    key={node.isLeaf ? node.MODULE_ID : node.VALUE}
+    isLeaf={node.isLeaf}
+  >
     {!node.children ? null : node.children.map(child => _renderNode(child))}
   </TreeNode>
 );
 
-// const encodeTree = (nodes, tree, depth) => {
-//   if (depth === 0) {
-//     const len = nodes.length;
-//     for (let i = 0; i < len; i += 1) {
-//       const node = nodes[i];
-//       if (node.VALUE === node.PARENT) {
-//         tree.push(node);
-//       }
-//     }
-//     return encodeTree(nodes, rootNodes, depth + 1);
-//   }
-//   const currentDepthNodes =
-// };
+const _filterNodes = (nodes, filterValue) =>
+  nodes.filter(
+    node =>
+      !node.hasOwnProperty('MODULE_ID') || node.TEXT.includes(filterValue),
+  );
 
 const _encodeTree = nodes => {
   if (!nodes) {
     return [];
   }
-  const copy = nodes.map(node => ({ ...node }));
+  const copy = nodes.map(node => ({
+    ...node,
+    isLeaf: node.hasOwnProperty('MODULE_ID'),
+  }));
   copy.forEach((node, idx, list) => {
     if (node.VALUE === node.PARENT) {
       return;
     }
+
     const parent = list.find(pNode => pNode.VALUE === node.PARENT);
     if (!parent) return;
     if (!parent.children) {
@@ -244,16 +274,15 @@ const _encodeTree = nodes => {
 };
 
 MainNavigation.defaultProps = {
-  nodes: {},
+  fab: '',
+  nodes: [],
   selected: [],
-  onRequestFetch: evt =>
-    console.log('[WARNNING] There is no onChangeFabs handler', evt),
 };
 
 MainNavigation.propTypes = {
-  nodes: PropTypes.objectOf(PropTypes.array),
+  fab: PropTypes.string,
+  nodes: PropTypes.arrayOf(PropTypes.object), //shape으로 변경
   selected: PropTypes.array,
-  onRequestFetch: PropTypes.func,
 };
 
 export default MainNavigation;
