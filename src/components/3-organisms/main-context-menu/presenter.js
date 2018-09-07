@@ -4,11 +4,11 @@ import ContextMenu from '../../2-molecules/context-menu';
 const calcWidth = theme => {
   switch (theme) {
   case 'HISTORY_TABLE':
-    return '300px';
+    return '220px';
   case 'MODULE_TREE':
-    return '200px';
+    return '150px';
   default:
-    return '300px';
+    return '150px';
   }
 };
 
@@ -36,12 +36,12 @@ const selectItems = theme => {
     return [
       {
         name: 'Real Time View',
-        icon: 'star-o',
+        icon: 'area-chart',
         key: 'MODULE_TREE/REAL_TIME',
       },
       {
         name: 'Lot/Wafer View',
-        icon: 'star-o',
+        icon: 'pie-chart',
         key: 'MODULE_TREE/LOT_WAFER',
       },
     ];

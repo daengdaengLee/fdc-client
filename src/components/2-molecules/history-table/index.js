@@ -4,6 +4,15 @@ import styled from 'styled-components';
 import { Table } from 'react-table-daeng';
 import TableFilter from '../table-filter';
 
+const ColText = styled.span`
+  display: block;
+  font-weight: 600;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 class ColCell extends Component {
   constructor(props) {
     super(props);
@@ -32,34 +41,33 @@ class ColCell extends Component {
         style={{
           width: col.width,
           minWidth: col.width,
-          backgroundColor: '#f1f1f1',
+          backgroundColor: '#e0e0e0',
           borderLeft: idx === 0 ? 'none' : '1px white solid',
           boxSizing: 'border-box',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 16px 0 20px',
-          fontWeight: '600',
+          padding: '0 0 0 10px',
           position: 'relative',
           fontSize: '12px',
         }}
         onContextMenu={event => onContextMenu({ event, type: 'col', col })}
       >
-        {col.title}
+        <ColText>{col.title}</ColText>
         <Icon
           type="filter"
           theme="outlined"
           style={{
             cursor: 'pointer',
-            color: colFilters.length === 0 ? 'black' : 'skyblue',
+            color: colFilters.length === 0 ? '#5b5b5b' : '#04bed6',
           }}
           onClick={_onClickFilterIcon}
         />
         {whichFilterOpen === col.key ? (
           <TableFilter
             width="240px"
-            x={160}
-            y={40}
+            x={161}
+            y={34}
             filters={colFilters}
             onClickAdd={_onClickAddFilter}
             onClickReset={_onClickResetFilters}
@@ -89,10 +97,9 @@ class ColCell extends Component {
 
 const RowContainer = styled.div`
   display: flex;
-  height: 40px;
-  min-height: 40px;
+  height: 30px;
+  min-height: 30px;
 `;
-
 class Row extends Component {
   constructor(props) {
     super(props);
@@ -170,13 +177,14 @@ const RowCell = ({
           : isSelected
             ? '#eefdff'
             : '#ffffff',
+        color: isSelected ? '#04bed6' : '#777777',
         borderTop: rowIdx === 0 ? 'none' : '1px #ebebeb solid',
         borderLeft: colIdx === 0 ? 'none' : '1px #ebebeb solid',
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        paddingLeft: '20px',
-        fontWeight: '400',
+        paddingLeft: '10px',
+        fontWeight: isSelected ? '500' : '400',
         fontSize: '12px',
       }}
       onContextMenu={onContextMenu}

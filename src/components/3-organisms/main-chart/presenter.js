@@ -20,7 +20,7 @@ const ParameterArea = styled.div`
 const ChartArea = styled.div`
   height: 0;
   flex-grow: 1;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
 `;
 
 const Option = Select.Option;
@@ -36,11 +36,13 @@ const MainChartPresenter = ({
   lot,
 }) => (
   <Container>
-    <ParameterArea>
-      <span style={{ marginRight: '10px' }}>Parameters: </span>
+    <ParameterArea className='parameters'>
+      <span style={{ marginRight: '10px', fontSize: '13px' }}>Parameters: </span>
       <Select
         value={selectedParams}
-        style={{ width: '10rem' }}
+        placeholder='Select parameter'
+        style={{ width: '180px', fontSize: '12px' }}
+        dropdownStyle={{ fontSize: '12px'}}
         onSelect={val => onClickParam(val)}
       >
         {parameters.map(param => (

@@ -78,7 +78,7 @@ table {
 
 /* Contextmenu의 icon */
 .anticon {
-  padding-right: 5px;
+  padding-right: 10px;
 }
 
 /* tree -> 해당 파일 묶는 라인 css */
@@ -110,49 +110,51 @@ table {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #eefdff;
+  background: #fff;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #04bdd65d;
-  cursor: pointer;
+  background: #f0f0f0;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #04bed6;
+  background: rgb(223, 223, 223);
 }
 
 /* arrow 추가 */
 ::-webkit-scrollbar-button {
   background: #c0c0c0;
-  cursor: pointer;
 }
 
-/* ::-webkit-scrollbar-button:horizontal:decrement {
-  background-image: url(../src/assets/img/ic-scroll-arrow-left.svg);
-  background-size: 100%;
-  background-position-y: -1px;
+::-webkit-scrollbar-button:horizontal:decrement {
+  /* background-image: url(../src/assets/img/ic-scroll-arrow-left.svg); */
+  /* background-size: 100%; */
+  /* background-position-y: -1px; */
+
+  
 }
 
 ::-webkit-scrollbar-button:horizontal:increment {
-  background-image: url(../src/assets/img/ic-scroll-arrow-right.svg);
+  /* background-image: url(../src/assets/img/ic-scroll-arrow-right.svg);
   background-size: 100%;
-  background-position-y: -1px;
+  background-position-y: -1px; */
 }
 
 ::-webkit-scrollbar-button:vertical:increment {
-  background-image: url(../src/assets/img/ic-scroll-arrow-bottom.svg);
+  /* background-image: url(../src/assets/img/ic-scroll-arrow-bottom.svg);
   background-size: 100%;
-  background-position-y: 1px;
+  background-position-y: 1px; */
 }
 
 ::-webkit-scrollbar-button:vertical:decrement {
-  background-image: url(../src/assets/img/ic-scroll-arrow-top.svg);
+  /* background-image: url(../src/assets/img/ic-scroll-arrow-top.svg);
   background-size: 100%;
-  background-position-y: 1px;
-} */
+  background-position-y: 1px; */
+  height: 13px;
+  /* border: 1px solid red; */
+}
 
 /* 
   Tree Style
@@ -174,7 +176,7 @@ table {
 } */
 
 /*
-* Navigation style
+* Navigation style ----------------------
 */
 /* fab menu */
 .navigation .ant-select-selection {
@@ -204,17 +206,13 @@ table {
   /* color: red !important; */
 }
 
-/*
-* filter - search input
-*/
+/* filter - search input */
 .navigation .ant-input-affix-wrapper .ant-input {
   border-radius: 0;
   border-color: #dedede;
 }
 
-/* 
-* Tree
-*/
+/* Tree */
 .navigation .ant-tree.ant-tree-show-line li {
   font-size: 12px;
 }
@@ -238,12 +236,12 @@ table {
 .navigation .ant-btn {
   border: 0;
   border-radius: 0;
-  background-color: #dedede;
+  background-color: #858585;
 }
 
 .navigation .ant-btn > span {
   font-size: 12px;
-  color: #da5e53;
+  color: #fff;
   line-height: 32px;
   font-weight: 500;
 }
@@ -255,3 +253,76 @@ table {
 .navigation .ant-btn:hover > span {
   color: #fff;
 }
+
+/*
+* table style ----------------------
+*/
+/* lot/wafer */
+.lot-wafer .ant-menu-horizontal {
+  line-height: 35px;
+  border-bottom: 1px solid #dedede !important;
+}
+
+.lot-wafer .ant-menu-horizontal > .ant-menu-item {
+  width: 100px !important;
+  color: #b7b7b7 !important;
+}
+
+.lot-wafer .ant-menu-horizontal > .ant-menu-item:hover {
+  color: #04bed6 !important;
+  border: 0;
+  border-bottom: 1px solid #04bed6 !important;
+}
+
+.lot-wafer .ant-menu-horizontal > .ant-menu-item-selected {
+  color: #04bed6 !important;
+  border-bottom: 2px solid #04bed6 !important;
+}
+
+/* filter box */
+.filter .ant-btn-primary {
+  background-color: #04bed6;
+  border: 0;
+}
+
+.filter .ant-btn-primary > span {
+  font-size: 12px; 
+  color: #fff;
+}
+
+.filter .ant-btn-primary:hover, .ant-btn-primary:focus {
+  background-color: #09a9be !important;
+}
+
+.filter .resetButton {
+  background-color: #858585;
+  border: 0;
+}
+
+.filter .resetButton:hover {
+  background-color: #da5e53;
+}
+
+.filter .resetButton > span {
+  margin-left: -5px;
+  border: 0;
+  color: #fff;
+}
+
+/*
+* chart style ----------------------
+*/
+/* parameter box */
+.parameters .ant-select-selection--single {
+  border-radius: 0;
+  border-color: #dedede;
+
+}
+
+.parameters .ant-select-open .ant-select-selection-selected-value {
+  font-size: 12px;
+}
+
+
+
+/* background-color: #da5e53; */

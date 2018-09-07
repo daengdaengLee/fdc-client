@@ -16,6 +16,8 @@ const Container = styled.div.attrs({
   position: absolute;
   z-index: 100;
   background-color: #ffffff;
+
+  border: 1px solid #d7d7d7;
 `;
 
 const SearchArea = styled.div`
@@ -23,7 +25,7 @@ const SearchArea = styled.div`
   display: flex;
   padding: 10px;
   align-items: center;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #ededed;
   box-sizing: border-box;
 `;
 
@@ -42,7 +44,7 @@ const ButtonArea = styled.div`
   padding: 10px;
   align-items: center;
   justify-content: flex-end;
-  border-top: 1px solid gray;
+  border-top: 1px solid #ededed;
   box-sizing: border-box;
 `;
 
@@ -69,6 +71,7 @@ class TableFilter extends Component {
     const { value } = this.state;
     return (
       <Container
+        className="filter"
         width={width}
         maxHeight={maxHeight}
         top={`${y}px`}
@@ -83,8 +86,19 @@ class TableFilter extends Component {
             placeholder="Input filter"
             value={value}
             onChange={_onChangeFilterValue}
+            style={{ 
+              borderRadius: '0', 
+              fontSize: '12px',
+              borderColor: '#dedede' }}
           />
-          <Button style={{ marginLeft: '8px' }} onClick={_onClickAddButton}>
+          <Button 
+            type='primary'
+            style={{ 
+              marginLeft: '5px',
+              borderRadius: '0',
+              // backgroundColor: '#da5e53'
+            }} 
+            onClick={_onClickAddButton}>
             Add
           </Button>
         </SearchArea>
@@ -96,21 +110,29 @@ class TableFilter extends Component {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 4px',
+                padding: '5px 4px',
+                color: '#858585',
               }}
             >
               {filter.value}
               <Icon
                 type="close-circle"
                 theme="outlined"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', padding: '0' }}
                 onClick={event => _onClickRemoveButton({ event, filter })}
               />
             </div>
           ))}
         </FilterListArea>
         <ButtonArea>
-          <Button style={{ marginLeft: '8px' }} onClick={_onClickResetButton}>
+          <Button 
+            className='resetButton'
+            style={{ 
+              width: '55px',
+              borderRadius: '0', 
+              fontSize: '12px',
+            }}   
+            onClick={_onClickResetButton}>
             Reset
           </Button>
         </ButtonArea>

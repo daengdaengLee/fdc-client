@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Dygraph from 'dygraphs';
-import { notification } from 'antd';
+import { notification, Button, Icon } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
 import {
@@ -23,20 +23,34 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 30px;
+  background-color: #fff;
 `;
 
 const ChartHeader = styled.div`
   height: 30px;
   display: flex;
+  font-size: 13px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const LegendContainer = styled.div`
+  display: flex;
 `;
 
 const Legend = styled.div`
-  border: 1px solid black;
-  box-sizing: border-box;
+  font-size: 12px;
+  margin-left: 10px;
+  color: #09a9be;
+`;
+
+const IconContainer = styled.div`
+  height: 25px;
+  width: 25px;
 `;
 
 const ChartContainer = styled.div`
-  width: 100%;
+  width: clac(100% - 40px);
   height: 0;
   flex-grow: 1;
 `;
@@ -60,8 +74,17 @@ class Chart extends Component {
     return valid ? (
       <Container>
         <ChartHeader>
-          <Legend innerRef={legend} />
-          <button onClick={_zoomReset(id)}>Zoom Out</button>
+          <LegendContainer>
+            <div>Legend: </div>
+            <Legend innerRef={legend} />
+          </LegendContainer>
+
+          <IconContainer>
+            <Button shape="circle" icon="zoom-out" onClick={_zoomReset(id)} />
+            {/* <Icon type="zoom-out" theme="outlined" /> */}
+            {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
+          </IconContainer>
+
         </ChartHeader>
         <ChartContainer innerRef={container} />
       </Container>

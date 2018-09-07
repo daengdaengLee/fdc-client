@@ -14,6 +14,7 @@ const Container = styled.div`
 const Title = styled.h1`
   font-family: 'Quicksand', sans-serif;
   line-height: 40px;
+  opacity: 0;
 `;
 
 class MainHeader extends Component {

@@ -27,11 +27,10 @@ const Container = styled.div`
 const LogoContainer = styled.div`
   height: 45px;
   margin: 5px auto 10px;
+  line-height: 45px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
 `;
-
-// line-height: 45px;
-// font-family: 'Quicksand', sans-serif;
-// font-weight: 500;
 
 // const LogoImg = styled.img`
 //   width: 80px;

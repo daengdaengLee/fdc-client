@@ -16,8 +16,7 @@ const ContextMenuBox = styled.ul.attrs({
   flex-direction: column;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #e3e3e3;
-  border-radius: 3px;
+  border: 1px solid #dedede;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   left: 0;
   top: 0;
@@ -37,8 +36,8 @@ const ContextMenuItem = styled.li`
   cursor: pointer;
   transition: all 0.3s;
   margin: 0;
-  line-height: 35px;
-  font-size: 13px;
+  line-height: 30px;
+  font-size: 12px;
   padding: 0 14px;
   &:hover {
     background-color: #f8f8f8;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Menu } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
+import '../../../index.css';
 
 const Container = styled.div`
   width: 100%;
@@ -18,6 +19,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  margin-bottom: -15px;
 `;
 
 const TableArea = styled.div`
@@ -51,12 +53,13 @@ class MainHistoriesTable extends Component {
       resetTableFilters,
     } = this.props;
     return (
-      <Container>
+      <Container className="lot-wafer">
         <HeaderContainer>
           <Menu
             onClick={({ key }) => onSelectBy(key)}
             selectedKeys={[by]}
             mode="horizontal"
+            style={{ backgroundColor: 'transparent', fontSize: '12px' }}
           >
             <Menu.Item
               key="lot"
