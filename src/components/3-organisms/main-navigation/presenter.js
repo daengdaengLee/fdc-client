@@ -24,12 +24,17 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
+// margin: 5px auto 10px;
 const LogoContainer = styled.div`
   height: 45px;
-  margin: 5px auto 10px;
   line-height: 45px;
   font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
+  font-weight: 900;
+
+
+  font-size: 20px;
+  color: #333d77;
+
 `;
 
 // const LogoImg = styled.img`

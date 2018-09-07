@@ -219,11 +219,21 @@ table {
 
 .navigation .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: #04bed6 !important;
-  
+  border-radius: 0;
 }
 
 .navigation .ant-tree-node-selected .ant-tree-title {
   color: #fff;
+}
+
+/* check box */
+.navigation .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+  background-color: #04bed6;
+  border: 1px solid #04bed6;
+}
+
+.navigation .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner:after {
+  background-color: #da5e53;
 }
 
 /* Picker */
@@ -247,6 +257,10 @@ table {
 }
 
 .navigation .ant-btn:hover {
+  background-color: #da5e53;
+}
+
+.navigation .ant-btn-danger:focus {
   background-color: #da5e53;
 }
 
@@ -307,6 +321,10 @@ table {
   margin-left: -5px;
   border: 0;
   color: #fff;
+}
+
+.filter .ant-btn:focus {
+  background-color: #da5e53;
 }
 
 /*

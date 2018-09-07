@@ -36,23 +36,30 @@ const ChartHeader = styled.div`
 
 const LegendContainer = styled.div`
   display: flex;
+  padding: 10px 20px;
 `;
 
 const Legend = styled.div`
   font-size: 12px;
   margin-left: 10px;
   color: #09a9be;
+  font-weight: 500;
 `;
 
 const IconContainer = styled.div`
-  height: 25px;
-  width: 25px;
+  margin-right: 30px;
+  margin-top: 15px;
 `;
 
+// height: 25px;
+//   width: 25px;
+
 const ChartContainer = styled.div`
-  width: clac(100% - 40px);
+  width: clac(100% - 80px);
   height: 0;
   flex-grow: 1;
+  margin-right: 20px;
+  margin-top: 10px;
 `;
 
 class Chart extends Component {
@@ -80,8 +87,7 @@ class Chart extends Component {
           </LegendContainer>
 
           <IconContainer>
-            <Button shape="circle" icon="zoom-out" onClick={_zoomReset(id)} />
-            {/* <Icon type="zoom-out" theme="outlined" /> */}
+            <Button shape="circle" icon="search" onClick={_zoomReset(id)} />
             {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
           </IconContainer>
 
@@ -199,6 +205,7 @@ class Chart extends Component {
           drawPoints: false,
           highlightCircleSize: 0,
           highlightSeriesBackgroundAlpha: 1,
+          axisLabelFontSize: 12,
           legendFormatter: () => '',
           axes,
           series: { ...series },
