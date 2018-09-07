@@ -9,7 +9,6 @@ const initState = {
   x: 0,
   y: 0,
   theme: '', // HISTORY_TABLE, MODULE_TREE
-  selected: [],
 };
 
 // Reducer
@@ -25,13 +24,12 @@ export default function contextMenusReducer(state = initState, action = {}) {
 }
 
 // Action Creators
-export function open({ x, y, theme, selected }) {
+export function open({ x, y, theme }) {
   return {
     type: OPEN,
     x,
     y,
     theme,
-    selected,
   };
 }
 
