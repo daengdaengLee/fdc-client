@@ -51,7 +51,6 @@ const selectItems = theme => {
 };
 
 const MainContextMenu = ({
-  history,
   onOff,
   x,
   y,
@@ -67,7 +66,7 @@ const MainContextMenu = ({
       x={x}
       y={y}
       selected={selected}
-      onClickMenu={({ event, item }) => onClickMenu({ event, item, history })}
+      onClickMenu={({ event, item }) => onClickMenu({ event, item })}
       onClickOutside={onClickOutside}
     />
   );

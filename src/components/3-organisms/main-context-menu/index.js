@@ -12,8 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClickMenu: ({ event, item, history }) =>
-    dispatch(clickMenu({ event, item, history })),
+  onClickMenu: ({ event, item }) => dispatch(clickMenu({ event, item })),
   onClickOutside: () => dispatch(close()),
 });
 

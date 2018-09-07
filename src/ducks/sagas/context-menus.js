@@ -1,10 +1,11 @@
 import { all, takeEvery, put, select } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import { CLICK_MENU, close } from '../modules/context-menus';
 import { requestFetch as requestFetchHistories } from '../modules/histories';
 import { requestFetch as requestFetchParameters } from '../modules/parameters';
 
 // Workers
-function* clickMenuSaga({ event, item, history }) {
+function* clickMenuSaga({ event, item }) {
   yield put(close());
   const {
     dates: { from, to },
@@ -22,7 +23,7 @@ function* clickMenuSaga({ event, item, history }) {
         to,
       }),
     );
-    history.push('/histories');
+    yield put(push('/histories'));
     break;
   case 'HISTORY_TABLE/TIME':
     const { selectedRowKeys, rows } = yield select(state => state.histories);
@@ -36,7 +37,7 @@ function* clickMenuSaga({ event, item, history }) {
         lot: selectedRow.LOT_ID,
       }),
     );
-    history.push('/charts');
+    yield put(push('/charts'));
     break;
   default:
   }

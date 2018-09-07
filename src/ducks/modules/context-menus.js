@@ -41,12 +41,11 @@ export function close() {
   };
 }
 
-export function clickMenu({ event, item, history }) {
+export function clickMenu({ event, item }) {
   return {
     type: CLICK_MENU,
     event,
     item,
-    history,
   };
 }
 
