@@ -5,7 +5,7 @@ import { requestFetch as requestFetchHistories } from '../modules/histories';
 import { requestFetch as requestFetchParameters } from '../modules/parameters';
 
 // Workers
-function* clickMenuSaga({ event, item }) {
+function* clickMenuSaga({ item }) {
   yield put(close());
   const {
     dates: { from, to },

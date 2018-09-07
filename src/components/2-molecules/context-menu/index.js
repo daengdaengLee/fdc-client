@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Icon } from 'antd';
 import '../../../index.css';
 
@@ -33,28 +33,41 @@ const ContextMenuItem = styled.li`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.3s;
   margin: 0;
   line-height: 30px;
   font-size: 12px;
   padding: 0 14px;
+  background-color: ${props => (props.disabled ? '#e0e0e0' : '#ffffff')};
   &:hover {
-    background-color: #f8f8f8;
-    color: #69cedf;
+    background-color: ${props => (props.disabled ? '#e0e0e0' : '#f8f8f8')};
+    ${props =>
+    !props.disabled &&
+      css`
+        color: #68cedf;
+      `};
   }
 `;
 
 class ContextMenu extends Component {
+  constructor(props) {
+    super(props);
+    this._onClickMenu = this._onClickMenu.bind(this);
+  }
+
   render() {
-    const { width, x, y, items, onClickMenu } = this.props;
+    const { _onClickMenu } = this;
+    const { width, x, y, items } = this.props;
     return (
       <ContextMenuBox left={`${x}px`} top={`${y}px`} width={width}>
         {items.map(item => {
           return (
             <ContextMenuItem
               key={item.key}
-              onClick={event => onClickMenu({ event, item: item.key })}
+              data-item={item.key}
+              onClick={_onClickMenu}
+              disabled={item.disabled}
             >
               <Icon type={item.icon} />
               {item.name}
@@ -71,6 +84,12 @@ class ContextMenu extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.props.onClickOutside);
+  }
+
+  _onClickMenu(event) {
+    event.stopPropagation();
+    const { item } = event.target.dataset;
+    this.props.onClickMenu({ item });
   }
 }
 

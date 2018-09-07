@@ -25,11 +25,13 @@ const selectItems = theme => {
         name: 'View Trace Data(Lot)',
         icon: 'pie-chart',
         key: 'HISTORY_TABLE/LOT',
+        disabled: true,
       },
       {
         name: 'View Trace Data(Overlay)',
         icon: 'dot-chart',
         key: 'HISTORY_TABLE/OVERLAY',
+        disabled: true,
       },
     ];
   case 'MODULE_TREE':
@@ -38,6 +40,7 @@ const selectItems = theme => {
         name: 'Real Time View',
         icon: 'area-chart',
         key: 'MODULE_TREE/REAL_TIME',
+        disabled: true,
       },
       {
         name: 'Lot/Wafer View',
@@ -66,7 +69,7 @@ const MainContextMenu = ({
       x={x}
       y={y}
       selected={selected}
-      onClickMenu={({ event, item }) => onClickMenu({ event, item })}
+      onClickMenu={onClickMenu}
       onClickOutside={onClickOutside}
     />
   );
