@@ -226,6 +226,16 @@ table {
   color: #fff;
 }
 
+/* tree - ... text code */
+.navigation .ant-tree-title {
+  /* border: 1px solid red;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; */
+}
+
 /* check box */
 .navigation .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
   background-color: #04bed6;
