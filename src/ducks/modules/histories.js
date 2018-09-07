@@ -10,6 +10,7 @@ export const SET_BY = 'histories/SET_BY';
 export const PUSH_TABLE_FILTER = 'histories/ADD_TABLE_FILTER';
 export const POP_TABLE_FILTER = 'histories/POP_TABLE_FILTER';
 export const RESET_TABLE_FILTERS = 'histories/RESET_TABLE_FILTERS';
+export const RESET_TABLE_FILTERS_ALL = 'histories/RESET_TABLE_FILTERS_ALL';
 
 // Init State
 const initState = {
@@ -65,6 +66,8 @@ export default function historiesReducer(state = initState, action = {}) {
     return applyPushTableFilter(state, action);
   case POP_TABLE_FILTER:
     return applyPopTableFilter(state, action);
+  case RESET_TABLE_FILTERS_ALL:
+    return applyResetTableFiltersAll(state, action);
   default:
     return state;
   }
@@ -156,6 +159,12 @@ export function popTableFilter({ col, value }) {
   };
 }
 
+export function resetTableFiltersAll() {
+  return {
+    type: RESET_TABLE_FILTERS_ALL,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return {
@@ -235,4 +244,11 @@ function applyPopTableFilter(state, { col, value }) {
         ...tableFilters.slice(idx + 1),
       ],
     };
+}
+
+function applyResetTableFiltersAll(state) {
+  return {
+    ...state,
+    tableFilters: [],
+  };
 }

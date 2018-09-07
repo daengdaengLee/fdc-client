@@ -6,7 +6,7 @@ import './../../../index.css';
 
 import { Tree, Icon, DatePicker, Button, Select, Input } from 'antd';
 import moment from 'moment';
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -21,7 +21,6 @@ const Container = styled.div`
   flex-direction: column;
   padding: 0 10px;
   overflow: auto;
-  overflow-x: hidden;
 `;
 
 // margin: 5px auto 10px;
@@ -153,15 +152,20 @@ class MainNavigation extends Component {
         </TreeContainer>
 
         <PickerContainer>
-          <RangePicker
-            value={[moment(from, DATE_FORMAT), moment(to, DATE_FORMAT)]}
+          <DatePicker 
+            value={!from ? null : moment(from, DATE_FORMAT)}
             format={DATE_FORMAT}
-            onChange={(_, [from, to]) => {
+            onChange={(from) => {
               onSelectFrom(from);
+            }}
+            style={{ width: 'calc(50% - 3px)', marginRight: '6px' }} />
+          <DatePicker 
+            value={!to ? null : moment(to, DATE_FORMAT)}
+            format={DATE_FORMAT}
+            onChange={(to) => {
               onSelectTo(to);
             }}
-            style={{ borderRadius: '0' }}
-          />
+            style={{ width: 'calc(50% - 3px)' }} />
         </PickerContainer>
 
         <ButtonContainer>
