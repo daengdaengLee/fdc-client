@@ -1,14 +1,14 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
 import {
   FETCH_START,
+  CLICK_FAB,
+  SET_FAB,
+  CLICK_NODE,
   fetchStart,
   fetchSuccess,
   fetchFail,
   setNodes,
-  CLICK_FAB,
   setFab,
-  SET_FAB,
-  CLICK_NODE,
   setSelectedNodes,
 } from '../modules/trees';
 import { getTree } from '../../assets/js/requests';
