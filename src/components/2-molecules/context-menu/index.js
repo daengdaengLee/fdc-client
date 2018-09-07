@@ -65,8 +65,7 @@ class ContextMenu extends Component {
           return (
             <ContextMenuItem
               key={item.key}
-              data-item={item.key}
-              onClick={_onClickMenu}
+              onClick={event => _onClickMenu(event, item)}
               disabled={item.disabled}
             >
               <Icon type={item.icon} />
@@ -79,17 +78,17 @@ class ContextMenu extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.props.onClickOutside);
+    document.addEventListener('click', () => this.props.onClickOutside());
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.props.onClickOutside);
   }
 
-  _onClickMenu(event) {
+  _onClickMenu(event, item) {
     event.stopPropagation();
-    const { item } = event.target.dataset;
-    this.props.onClickMenu({ item });
+    event.nativeEvent.stopImmediatePropagation();
+    item.disabled || this.props.onClickMenu({ item: item.key });
   }
 }
 
