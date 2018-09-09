@@ -4,6 +4,7 @@ import Dygraph from 'dygraphs';
 import { notification, Button, Icon } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
+import { getDateString } from '../../../assets/js/utils';
 import {
   _registerG,
   _releaseG,
@@ -94,10 +95,13 @@ class Chart extends Component {
           </LegendContainer>
 
           <IconContainer>
-            <ZoomOutImg src={iconZoomOut} alt='zoom out' onClick={_zoomReset(id)} />
+            <ZoomOutImg
+              src={iconZoomOut}
+              alt="zoom out"
+              onClick={_zoomReset(id)}
+            />
             {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
           </IconContainer>
-
         </ChartHeader>
         <ChartContainer innerRef={container} />
       </Container>
@@ -203,6 +207,7 @@ class Chart extends Component {
         const axes = {
           x: {
             axisLabelWidth: 160,
+            axisLabelFormatter: getDateString,
             // ticker: (min, max, pixels, opt, g) =>
             //   _generateTicks(min, max, g, step, slot),
           },
