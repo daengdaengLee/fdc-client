@@ -1,4 +1,5 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import {
   FETCH_START,
   CLICK_FAB,
@@ -20,7 +21,6 @@ import {
   requestFetch as requestFetchHistories,
   setBy,
 } from '../modules/histories';
-import { push } from 'connected-react-router';
 
 // Helpers
 const VALID_FABS = ['M10', 'M14'];
@@ -78,6 +78,7 @@ function* setNodesSaga() {
 }
 
 function* setSelectedNodesSaga() {
+  yield put(push('/'));
   yield put(setBy({ by: 'lot' }));
 }
 
