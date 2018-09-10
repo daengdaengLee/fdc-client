@@ -81,11 +81,12 @@ class MainNavigation extends Component {
     this.state = {
       filter: '',
       expandedKeys: [],
+      autoExpandParent: false,
     };
     this._onClickNode = this._onClickNode.bind(this);
+    this._onExpandNode = this._onExpandNode.bind(this);
     this._onRightClickNode = this._onRightClickNode.bind(this);
     this._onSearchFilter = this._onSearchFilter.bind(this);
-    this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
     this._generateGoMenu = this._generateGoMenu.bind(this);
     this._onClickGoMenu = this._onClickGoMenu.bind(this);
   }
@@ -93,9 +94,9 @@ class MainNavigation extends Component {
   render() {
     const {
       _onClickNode,
+      _onExpandNode,
       _onRightClickNode,
       _onSearchFilter,
-      _onChangeFilterValue,
       _generateGoMenu,
     } = this;
     const {
@@ -108,7 +109,7 @@ class MainNavigation extends Component {
       onSelectTo,
       onClickFab,
     } = this.props;
-    const { filter, expandedKeys } = this.state;
+    const { filter, expandedKeys, autoExpandParent } = this.state;
     const treeData = _encodeTree(_filterNodes(nodes, filter));
     return (
       <Container className="navigation">
@@ -142,8 +143,7 @@ class MainNavigation extends Component {
           <Search
             placeholder="Not yet implemented"
             onSearch={_onSearchFilter}
-            disabled
-            onChange={_onChangeFilterValue}
+            // disabled
           />
         </SearchInput>
 
@@ -152,6 +152,7 @@ class MainNavigation extends Component {
             multiple
             checkable
             showLine
+            autoExpandParent={autoExpandParent}
             // showIcon
             checkedKeys={selected}
             selectedKeys={selected}
@@ -159,7 +160,7 @@ class MainNavigation extends Component {
             onCheck={_onClickNode}
             onSelect={_onClickNode}
             onRightClick={_onRightClickNode}
-            onExpand={_onClickNode}
+            onExpand={_onExpandNode}
           >
             {treeData.map(node => _renderNode(node))}
           </Tree>
@@ -223,21 +224,24 @@ class MainNavigation extends Component {
   ) {
     const { onClickNode } = this.props;
     isLeaf && onClickNode(key);
-    this.setState(prevState => {
-      if (isLeaf) return prevState;
-      const { expandedKeys: prevExpandedKeys } = prevState;
-      const isExpanded = prevExpandedKeys.includes(key);
-      const nextExpandedKeys = isExpanded
-        ? prevExpandedKeys.filter(expanded => expanded !== key)
-        : [...prevExpandedKeys, key];
-      return {
-        ...prevState,
-        expandedKeys: nextExpandedKeys,
-      };
-    });
+    // this.setState(prevState => {
+    //   if (isLeaf) return { ...prevState, autoExpandParent: false };
+    //   const { expandedKeys: prevExpandedKeys } = prevState;
+    //   const isExpanded = prevExpandedKeys.includes(key);
+    //   const nextExpandedKeys = isExpanded
+    //     ? prevExpandedKeys.filter(expanded => expanded !== key)
+    //     : [...prevExpandedKeys, key];
+    //   return {
+    //     ...prevState,
+    //     expandedKeys: nextExpandedKeys,
+    //     autoExpandParent: false,
+    //   };
+    // });
   }
 
-  // _onGoButtonClick
+  _onExpandNode(expandedKeys) {
+    this.setState({ expandedKeys, autoExpandParent: false });
+  }
 
   _onRightClickNode({
     event,
@@ -254,15 +258,10 @@ class MainNavigation extends Component {
   }
 
   // filter.
-  _onChangeFilterValue(e) {
-    const value = e.target.value;
-    console.log(value);
-    // expandedKeys ->
-  }
-
   _onSearchFilter(value) {
-    const { onResetSelectedNodes } = this.props;
-    this.setState({ filter: value, expandedKeys: [] });
+    const { onResetSelectedNodes, nodes } = this.props;
+    const expandedKeys = !value ? [] : _searchExpanedKeys(nodes, value);
+    this.setState({ filter: value, expandedKeys, autoExpandParent: true });
     onResetSelectedNodes();
   }
 
@@ -298,7 +297,13 @@ class MainNavigation extends Component {
 // tree
 const _renderNode = node => (
   <TreeNode
-    title={node.TEXT}
+    title={
+      node.isFilter ? (
+        <span style={{ color: 'red' }}>{node.TEXT}</span>
+      ) : (
+        node.TEXT
+      )
+    }
     key={node.isLeaf ? node.MODULE_ID : node.VALUE}
     isLeaf={node.isLeaf}
     // disableCheckbox={!node.isLeaf ? true : false}
@@ -308,10 +313,13 @@ const _renderNode = node => (
 );
 
 const _filterNodes = (nodes, filterValue) =>
-  nodes.filter(
-    node =>
-      !node.hasOwnProperty('MODULE_ID') || node.TEXT.includes(filterValue),
-  );
+  nodes.map(node => {
+    const isFilter = !filterValue
+      ? false
+      : node.hasOwnProperty('MODULE_ID') &&
+        node.TEXT.toLowerCase().includes(filterValue.toLowerCase());
+    return { ...node, isFilter };
+  });
 
 const _encodeTree = nodes => {
   if (!nodes) {
@@ -336,6 +344,15 @@ const _encodeTree = nodes => {
   });
   const tree = copy.filter(node => node.VALUE === node.PARENT);
   return tree;
+};
+
+const _searchExpanedKeys = (nodes, filter) => {
+  const filteredNodes = nodes.filter(
+    node =>
+      node.hasOwnProperty('MODULE_ID') &&
+      node.TEXT.toLowerCase().includes(filter.toLowerCase()),
+  );
+  return filteredNodes.map(node => node.PARENT);
 };
 
 MainNavigation.defaultProps = {
