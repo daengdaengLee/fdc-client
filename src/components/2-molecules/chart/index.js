@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Dygraph from 'dygraphs';
-import { notification, Button, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
-import { getDateString } from '../../../assets/js/utils';
+import { getDateString, notiError } from '../../../assets/js/utils';
 import {
   _registerG,
   _releaseG,
@@ -256,15 +256,7 @@ class Chart extends Component {
         console.timeEnd('render');
       })
       .catch(error => {
-        notification.error({
-          message: 'Failed to draw chart!',
-          description: error.message,
-          placement: 'bottomRight',
-          style: {
-            width: 660,
-            marginLeft: -260,
-          },
-        });
+        notiError('Failed to draw chart!', error.message);
         onFetchFail();
       });
   }
