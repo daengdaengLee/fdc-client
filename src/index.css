@@ -158,6 +158,16 @@ table {
   /* border: 1px solid red; */
 }
 
+/* spinner */
+.ant-spin-lg .ant-spin-dot i {
+  background-color: #04bed6;
+}
+
+.ant-spin.ant-spin-show-text .ant-spin-text {
+  color: #fff;
+  font-size: 12px;
+}
+
 /* 
   Tree Style
 */
@@ -272,13 +282,15 @@ table {
   background-color: #da5e53;
 }
 
-.navigation .ant-btn-danger:focus {
+.navigation .ant-btn:focus {
   background-color: #da5e53;
 }
 
 .navigation .ant-btn:hover > span {
   color: #fff;
 }
+
+
 
 /*
 * table style ----------------------

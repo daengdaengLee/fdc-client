@@ -4,7 +4,7 @@ import ContextMenu from '../../2-molecules/context-menu';
 const calcWidth = theme => {
   switch (theme) {
   case 'HISTORY_TABLE':
-    return '220px';
+    return '210px';
   case 'MODULE_TREE':
     return '150px';
   default:
