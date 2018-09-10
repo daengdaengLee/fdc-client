@@ -4,7 +4,16 @@ import styled from 'styled-components';
 import './../../../index.css';
 // import logoImg from '../../../assets/img/logo.jpg';
 
-import { Tree, Icon, DatePicker, Button, Select, Input, Dropdown , Menu} from 'antd';
+import {
+  Tree,
+  Icon,
+  DatePicker,
+  Button,
+  Select,
+  Input,
+  Dropdown,
+  Menu,
+} from 'antd';
 import moment from 'moment';
 // const { RangePicker } = DatePicker;
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -66,12 +75,6 @@ const ButtonContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const menu = (
-  <Menu onClick={this._onGoButtonClick}>
-    <Menu.Item disabled style={{ fontSize: '12px' }} key='1'><Icon type='area-chart'/>Real Time View</Menu.Item>
-    <Menu.Item style={{ fontSize: '12px' }} key='2'><Icon type='pie-chart'/>Lot/Wafer View</Menu.Item>
-  </Menu>
-);
 class MainNavigation extends Component {
   constructor(props) {
     super(props);
@@ -83,10 +86,18 @@ class MainNavigation extends Component {
     this._onRightClickNode = this._onRightClickNode.bind(this);
     this._onSearchFilter = this._onSearchFilter.bind(this);
     this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
+    this._generateGoMenu = this._generateGoMenu.bind(this);
+    this._onClickGoMenu = this._onClickGoMenu.bind(this);
   }
 
   render() {
-    const { _onClickNode, _onRightClickNode, _onSearchFilter, _onChangeFilterValue } = this;
+    const {
+      _onClickNode,
+      _onRightClickNode,
+      _onSearchFilter,
+      _onChangeFilterValue,
+      _generateGoMenu,
+    } = this;
     const {
       nodes,
       fab,
@@ -170,12 +181,18 @@ class MainNavigation extends Component {
         </PickerContainer>
 
         <ButtonContainer>
-          <Dropdown overlay={menu}>
-            <Button 
-              style={{ 
-                width: '100%', display: 'flex', fontSize: '12px',
-                justifyContent: 'center', alignItems: 'center' }}>
-              GO<Icon style={{ color: '#fff' }} type='up'/>
+          <Dropdown overlay={_generateGoMenu()}>
+            <Button
+              style={{
+                width: '100%',
+                display: 'flex',
+                fontSize: '12px',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              GO
+              <Icon style={{ color: '#fff' }} type="up" />
             </Button>
           </Dropdown>
         </ButtonContainer>
@@ -240,13 +257,41 @@ class MainNavigation extends Component {
   _onChangeFilterValue(e) {
     const value = e.target.value;
     console.log(value);
-    // expandedKeys -> 
+    // expandedKeys ->
   }
 
   _onSearchFilter(value) {
     const { onResetSelectedNodes } = this.props;
     this.setState({ filter: value, expandedKeys: [] });
     onResetSelectedNodes();
+  }
+
+  _generateGoMenu() {
+    const { _onClickGoMenu } = this;
+    return (
+      <Menu onClick={_onClickGoMenu}>
+        <Menu.Item disabled style={{ fontSize: '12px' }} key="realtime">
+          <Icon type="area-chart" />
+          Real Time View
+        </Menu.Item>
+        <Menu.Item style={{ fontSize: '12px' }} key="lotwafer">
+          <Icon type="pie-chart" />
+          Lot/Wafer View
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
+  _onClickGoMenu({ key }) {
+    const { onClickLotWaferView, onClickRealTimeView } = this.props;
+    switch (key) {
+    case 'realtime':
+      return onClickRealTimeView();
+    case 'lotwafer':
+      return onClickLotWaferView();
+    default:
+      return;
+    }
   }
 }
 
