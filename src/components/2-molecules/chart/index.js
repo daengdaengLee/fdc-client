@@ -31,13 +31,22 @@ const ChartHeader = styled.div`
   height: 30px;
   display: flex;
   font-size: 13px;
-  justify-content: space-between;
   margin-bottom: 20px;
+  margin-top: 10px;
+  justify-content: space-between;
 `;
 
-const LegendContainer = styled.div`
+const LeftSide = styled.div`
+  padding-left: 20px;
   display: flex;
-  padding: 10px 20px;
+`;
+
+const Title = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  color: #666666;
+  display: flex;
+  align-items: center;
 `;
 
 const Legend = styled.div`
@@ -45,12 +54,17 @@ const Legend = styled.div`
   margin-left: 10px;
   color: #09a9be;
   font-weight: 500;
+  display: flex;
+  align-items: center;
 `;
 
 const IconContainer = styled.div`
-  margin-right: 30px;
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 `;
+// margin-right: 30px;
+// margin-top: 15px;
 // height: 25px;
 //   width: 25px;
 
@@ -83,21 +97,22 @@ class Chart extends Component {
 
   render() {
     const { container, legend, _validate } = this;
+    const { param } = this.props;
     const { id } = this.state;
     const valid = _validate();
     return valid ? (
       <Container>
         <ChartHeader>
-          <LegendContainer>
-            <div>Legend: </div>
+          <LeftSide>
+            <Title>{param}</Title>
             <Legend innerRef={legend} />
-          </LegendContainer>
-
+          </LeftSide>
           <IconContainer>
             <ZoomOutImg
               src={iconZoomOut}
               alt="zoom out"
               onClick={_zoomReset(id)}
+              title="Zoom Out"
             />
           </IconContainer>
         </ChartHeader>
@@ -169,6 +184,7 @@ class Chart extends Component {
     } = this.props;
     const { id } = this.state;
     container.current.childNodes.forEach(node => node.remove());
+    legend.current.childNodes.forEach(node => node.remove());
     onFetchStart();
     console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
@@ -251,6 +267,7 @@ class Chart extends Component {
       })
       .catch(error => {
         container.current.childNodes.forEach(node => node.remove());
+        legend.current.childNodes.forEach(node => node.remove());
         notiError('Failed to draw chart!', error.message);
         onFetchFail();
       });
