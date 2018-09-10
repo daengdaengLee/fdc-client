@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { close, clickMenu } from '../../../ducks/modules/context-menus';
 import Presenter from './presenter';
@@ -16,9 +15,7 @@ const mapDispatchToProps = dispatch => ({
   onClickOutside: () => dispatch(close()),
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Presenter),
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Presenter);

@@ -1,5 +1,5 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { push } from '../modules/routes';
 import {
   FETCH_START,
   CLICK_FAB,
@@ -44,7 +44,7 @@ function* clickFabSaga({ fab }) {
 
 function* setFabSaga({ fab }) {
   yield put(setNodes({ nodes: [] }));
-  yield put(push('/'));
+  yield put(push({ location: 'main' }));
   yield put(fetchStart({ fab }));
 }
 
@@ -71,6 +71,7 @@ function* clickLotWaferViewSaga() {
       to,
     }),
   );
+  yield put(push({ location: 'histories' }));
 }
 
 function* setNodesSaga() {
@@ -78,7 +79,7 @@ function* setNodesSaga() {
 }
 
 function* setSelectedNodesSaga() {
-  yield put(push('/'));
+  yield put(push({ location: 'main' }));
   yield put(setBy({ by: 'lot' }));
 }
 

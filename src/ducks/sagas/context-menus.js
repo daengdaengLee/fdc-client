@@ -1,5 +1,5 @@
 import { all, takeEvery, put, select } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { push } from '../modules/routes';
 import { CLICK_MENU, close } from '../modules/context-menus';
 import { requestFetch as requestFetchHistories } from '../modules/histories';
 import { requestFetch as requestFetchParameters } from '../modules/parameters';
@@ -23,7 +23,7 @@ function* clickMenuSaga({ item }) {
         to,
       }),
     );
-    yield put(push('/histories'));
+    yield put(push({ location: 'histories' }));
     break;
   case 'HISTORY_TABLE/TIME':
     const { selectedRowKeys, rows } = yield select(state => state.histories);
@@ -37,7 +37,7 @@ function* clickMenuSaga({ item }) {
         lot: selectedRow.LOT_ID,
       }),
     );
-    yield put(push('/charts'));
+    yield put(push({ location: 'charts' }));
     break;
   default:
   }
