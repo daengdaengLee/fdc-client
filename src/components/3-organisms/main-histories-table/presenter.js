@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Menu } from 'antd';
+import { Menu, Dropdown, Button } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
 import '../../../index.css';
 
@@ -37,10 +37,18 @@ class MainHistoriesTable extends Component {
     super(props);
     this._onClickTable = this._onClickTable.bind(this);
     this._onContextMenuTable = this._onContextMenuTable.bind(this);
+    this._generateViewTraceDataMenu = this._generateViewTraceDataMenu.bind(
+      this,
+    );
+    this._onClickViewTraceDataMenu = this._onClickViewTraceDataMenu.bind(this);
   }
 
   render() {
-    const { _onContextMenuTable, _onClickTable } = this;
+    const {
+      _onContextMenuTable,
+      _onClickTable,
+      _generateViewTraceDataMenu,
+    } = this;
     const {
       rows,
       columns,
@@ -82,6 +90,9 @@ class MainHistoriesTable extends Component {
               Wafer
             </Menu.Item>
           </Menu>
+          <Dropdown overlay={_generateViewTraceDataMenu()}>
+            <Button>View Trace Data</Button>
+          </Dropdown>
         </HeaderContainer>
         <TableArea>
           <HistoryTable
@@ -113,6 +124,31 @@ class MainHistoriesTable extends Component {
     const { clientX: x, clientY: y } = event;
     onOpenContextMenu({ x, y });
     onSetSelectedRows({ keys: [row.key] });
+  }
+
+  _generateViewTraceDataMenu() {
+    const { _onClickViewTraceDataMenu } = this;
+    return (
+      <Menu onClick={_onClickViewTraceDataMenu}>
+        <Menu.Item key="time">Time</Menu.Item>
+        <Menu.Item disabled key="lot">
+          Lot
+        </Menu.Item>
+        <Menu.Item disabled key="overlay">
+          Overlay
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
+  _onClickViewTraceDataMenu({ key }) {
+    const { onClickViewTraceDataTime } = this.props;
+    switch (key) {
+    case 'time':
+      return onClickViewTraceDataTime();
+    default:
+      return;
+    }
   }
 }
 

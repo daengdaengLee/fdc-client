@@ -11,6 +11,8 @@ export const PUSH_TABLE_FILTER = 'histories/ADD_TABLE_FILTER';
 export const POP_TABLE_FILTER = 'histories/POP_TABLE_FILTER';
 export const RESET_TABLE_FILTERS = 'histories/RESET_TABLE_FILTERS';
 export const RESET_TABLE_FILTERS_ALL = 'histories/RESET_TABLE_FILTERS_ALL';
+export const CLICK_VIEW_TRACE_DATA_TIME =
+  'histories/CLICK_VIEW_TRACE_DATA_TIME';
 
 // Init State
 const initState = {
@@ -162,6 +164,12 @@ export function popTableFilter({ col, value }) {
 export function resetTableFiltersAll() {
   return {
     type: RESET_TABLE_FILTERS_ALL,
+  };
+}
+
+export function clickViewTraceDataTime() {
+  return {
+    type: CLICK_VIEW_TRACE_DATA_TIME,
   };
 }
 
