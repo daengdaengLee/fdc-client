@@ -1,4 +1,5 @@
 import { takeEvery, all, put, select } from 'redux-saga/effects';
+import { push } from '../modules/routes';
 import { SELECT_FROM, SELECT_TO, setFrom, setTo } from '../modules/dates';
 import { setBy } from '../modules/histories';
 
@@ -6,12 +7,14 @@ import { setBy } from '../modules/histories';
 function* selectFromSaga({ date }) {
   const { by } = yield select(state => state.histories);
   yield put(setFrom({ date }));
+  yield put(push({ location: 'main' }));
   yield put(setBy({ by }));
 }
 
 function* selectToSaga({ date }) {
   const { by } = yield select(state => state.histories);
   yield put(setTo({ date }));
+  yield put(push({ location: 'main' }));
   yield put(setBy({ by }));
 }
 

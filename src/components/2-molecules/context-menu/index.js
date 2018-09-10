@@ -39,9 +39,9 @@ const ContextMenuItem = styled.li`
   line-height: 30px;
   font-size: 12px;
   padding: 0 14px;
-  background-color: ${props => (props.disabled ? '#e0e0e0' : '#ffffff')};
+  color: ${props => (props.disabled ? '#bababa' : '#454545')}
   &:hover {
-    background-color: ${props => (props.disabled ? '#e0e0e0' : '#f8f8f8')};
+    background-color: ${props => (props.disabled ? '#fff' : '#f8f8f8')};
     ${props =>
     !props.disabled &&
       css`
@@ -49,6 +49,7 @@ const ContextMenuItem = styled.li`
       `};
   }
 `;
+// background-color: ${props => (props.disabled ? '#e0e0e0' : '#ffffff')};
 
 class ContextMenu extends Component {
   constructor(props) {

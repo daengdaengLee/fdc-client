@@ -29,6 +29,9 @@ const MainChartPresenter = ({
   parameters,
   selectedParams,
   onClickParam,
+  onFetchStart,
+  onFetchSuccess,
+  onFetchFail,
   fab,
   mod,
   from,
@@ -36,13 +39,15 @@ const MainChartPresenter = ({
   lot,
 }) => (
   <Container>
-    <ParameterArea className='parameters'>
-      <span style={{ marginRight: '10px', fontSize: '13px' }}>Parameters: </span>
+    <ParameterArea className="parameters">
+      <span style={{ marginRight: '10px', fontSize: '13px' }}>
+        Parameters:{' '}
+      </span>
       <Select
         value={selectedParams}
-        placeholder='Select parameter'
+        placeholder="Select parameter"
         style={{ width: '180px', fontSize: '12px' }}
-        dropdownStyle={{ fontSize: '12px'}}
+        dropdownStyle={{ fontSize: '12px' }}
         onSelect={val => onClickParam(val)}
       >
         {parameters.map(param => (
@@ -60,6 +65,9 @@ const MainChartPresenter = ({
         to={to}
         lot={lot}
         param={selectedParams[0]}
+        onFetchStart={onFetchStart}
+        onFetchSuccess={onFetchSuccess}
+        onFetchFail={onFetchFail}
       />
     </ChartArea>
   </Container>

@@ -3,6 +3,8 @@ import {
   clickNode,
   clickFab,
   setSelectedNodes,
+  clickLotWaferView,
+  clickRealTimeView,
 } from '../../../ducks/modules/trees';
 import { open } from '../../../ducks/modules/context-menus';
 import { selectFrom, selectTo } from '../../../ducks/modules/dates';
@@ -24,6 +26,8 @@ const mapDispatchToProps = dispatch => ({
   onClickNode: node => dispatch(clickNode({ node })),
   onClickFab: fab => dispatch(clickFab({ fab })),
   onResetSelectedNodes: () => dispatch(setSelectedNodes({ nodes: [] })),
+  onClickLotWaferView: () => dispatch(clickLotWaferView()),
+  onClickRealTimeView: () => dispatch(clickRealTimeView()),
 });
 
 export default connect(

@@ -4,6 +4,7 @@ import Dygraph from 'dygraphs';
 import { notification, Button, Icon } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
+import { getDateString } from '../../../assets/js/utils';
 import {
   _registerG,
   _releaseG,
@@ -94,10 +95,13 @@ class Chart extends Component {
           </LegendContainer>
 
           <IconContainer>
-            <ZoomOutImg src={iconZoomOut} alt='zoom out' onClick={_zoomReset(id)} />
+            <ZoomOutImg
+              src={iconZoomOut}
+              alt="zoom out"
+              onClick={_zoomReset(id)}
+            />
             {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
           </IconContainer>
-
         </ChartHeader>
         <ChartContainer innerRef={container} />
       </Container>
@@ -154,8 +158,19 @@ class Chart extends Component {
 
   _drawChart() {
     const { container, legend } = this;
-    const { fab, mod, from, to, lot, param } = this.props;
+    const {
+      fab,
+      mod,
+      from,
+      to,
+      lot,
+      param,
+      onFetchStart,
+      onFetchSuccess,
+      onFetchFail,
+    } = this.props;
     const { id } = this.state;
+    onFetchStart();
     console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
       .then(({ success, data }) => {
@@ -203,6 +218,7 @@ class Chart extends Component {
         const axes = {
           x: {
             axisLabelWidth: 160,
+            axisLabelFormatter: getDateString,
             // ticker: (min, max, pixels, opt, g) =>
             //   _generateTicks(min, max, g, step, slot),
           },
@@ -236,9 +252,10 @@ class Chart extends Component {
         g.__seriesOrigin__ = series;
         _registerG(id, g);
         window.g = g;
+        onFetchSuccess();
         console.timeEnd('render');
       })
-      .catch(error =>
+      .catch(error => {
         notification.error({
           message: 'Failed to draw chart!',
           description: error.message,
@@ -247,8 +264,9 @@ class Chart extends Component {
             width: 660,
             marginLeft: -260,
           },
-        }),
-      );
+        });
+        onFetchFail();
+      });
   }
 }
 

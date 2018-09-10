@@ -4,7 +4,16 @@ import styled from 'styled-components';
 import './../../../index.css';
 // import logoImg from '../../../assets/img/logo.jpg';
 
-import { Tree, Icon, DatePicker, Button, Select, Input } from 'antd';
+import {
+  Tree,
+  Icon,
+  DatePicker,
+  Button,
+  Select,
+  Input,
+  Dropdown,
+  Menu,
+} from 'antd';
 import moment from 'moment';
 // const { RangePicker } = DatePicker;
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -20,7 +29,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 10px;
-  overflow: auto;
 `;
 
 // margin: 5px auto 10px;
@@ -29,7 +37,6 @@ const LogoContainer = styled.div`
   line-height: 45px;
   font-family: 'Quicksand', sans-serif;
   font-weight: 900;
-
   font-size: 20px;
   color: #333d77;
 `;
@@ -58,7 +65,6 @@ const TreeContainer = styled.div`
   width: 100%;
   height: 80%;
   overflow: auto;
-  overflow-x: hidden;
 `;
 
 const PickerContainer = styled.div`
@@ -79,10 +85,19 @@ class MainNavigation extends Component {
     this._onClickNode = this._onClickNode.bind(this);
     this._onRightClickNode = this._onRightClickNode.bind(this);
     this._onSearchFilter = this._onSearchFilter.bind(this);
+    this._onChangeFilterValue = this._onChangeFilterValue.bind(this);
+    this._generateGoMenu = this._generateGoMenu.bind(this);
+    this._onClickGoMenu = this._onClickGoMenu.bind(this);
   }
 
   render() {
-    const { _onClickNode, _onRightClickNode, _onSearchFilter } = this;
+    const {
+      _onClickNode,
+      _onRightClickNode,
+      _onSearchFilter,
+      _onChangeFilterValue,
+      _generateGoMenu,
+    } = this;
     const {
       nodes,
       fab,
@@ -128,6 +143,7 @@ class MainNavigation extends Component {
             placeholder="Not yet implemented"
             onSearch={_onSearchFilter}
             disabled
+            onChange={_onChangeFilterValue}
           />
         </SearchInput>
 
@@ -165,9 +181,20 @@ class MainNavigation extends Component {
         </PickerContainer>
 
         <ButtonContainer>
-          <Button type="danger" block>
-            GO
-          </Button>
+          <Dropdown overlay={_generateGoMenu()}>
+            <Button
+              style={{
+                width: '100%',
+                display: 'flex',
+                fontSize: '12px',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              GO
+              <Icon style={{ color: '#fff' }} type="up" />
+            </Button>
+          </Dropdown>
         </ButtonContainer>
       </Container>
     );
@@ -210,6 +237,8 @@ class MainNavigation extends Component {
     });
   }
 
+  // _onGoButtonClick
+
   _onRightClickNode({
     event,
     node: {
@@ -224,10 +253,45 @@ class MainNavigation extends Component {
     }
   }
 
+  // filter.
+  _onChangeFilterValue(e) {
+    const value = e.target.value;
+    console.log(value);
+    // expandedKeys ->
+  }
+
   _onSearchFilter(value) {
     const { onResetSelectedNodes } = this.props;
     this.setState({ filter: value, expandedKeys: [] });
     onResetSelectedNodes();
+  }
+
+  _generateGoMenu() {
+    const { _onClickGoMenu } = this;
+    return (
+      <Menu onClick={_onClickGoMenu}>
+        <Menu.Item disabled style={{ fontSize: '12px' }} key="realtime">
+          <Icon type="area-chart" />
+          Real Time View
+        </Menu.Item>
+        <Menu.Item style={{ fontSize: '12px' }} key="lotwafer">
+          <Icon type="pie-chart" />
+          Lot/Wafer View
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
+  _onClickGoMenu({ key }) {
+    const { onClickLotWaferView, onClickRealTimeView } = this.props;
+    switch (key) {
+    case 'realtime':
+      return onClickRealTimeView();
+    case 'lotwafer':
+      return onClickLotWaferView();
+    default:
+      return;
+    }
   }
 }
 
@@ -237,6 +301,7 @@ const _renderNode = node => (
     title={node.TEXT}
     key={node.isLeaf ? node.MODULE_ID : node.VALUE}
     isLeaf={node.isLeaf}
+    // disableCheckbox={!node.isLeaf ? true : false}
   >
     {!node.children ? null : node.children.map(child => _renderNode(child))}
   </TreeNode>
