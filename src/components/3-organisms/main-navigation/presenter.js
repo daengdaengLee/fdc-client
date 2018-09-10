@@ -43,9 +43,7 @@ const LogoContainer = styled.div`
 //   font-size: 20px;
 //   color: #333d77;
 
-const LogoImg = styled.img`
-  
-`;
+const LogoImg = styled.img``;
 
 const SearchContainer = styled.div`
   font-size: 14px;
@@ -138,11 +136,11 @@ class MainNavigation extends Component {
         <FabContainer>
           <Select
             // allowClear={true}
-            dropdownStyle={{ 
-              borderRadius: '0', 
-              fontSize: '12px', 
+            dropdownStyle={{
+              borderRadius: '0',
+              fontSize: '12px',
               // backgroundColor: '#575e77',
-              color: '#fff !important', 
+              color: '#fff !important',
             }}
             style={{ width: '100%' }}
             placeholder="FAB Select"
@@ -319,7 +317,7 @@ const _renderNode = node => (
   <TreeNode
     title={
       node.isFilter ? (
-        <span style={{ color: '#04bed6', fontWeight: '500' }}>{node.TEXT}</span>
+        <span className="ant-tree-filtered">{node.TEXT}</span>
       ) : (
         node.TEXT
       )
