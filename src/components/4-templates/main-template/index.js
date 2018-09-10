@@ -13,6 +13,7 @@ const Left = styled.div`
   width: 270px;
   min-width: 270px;
   overflow: hidden;
+  background-color: #2d2e30;
 `;
 
 const Right = styled.div`
@@ -21,7 +22,7 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: #f8f8f8;
+  background-color: #e2e5e8;
 `;
 
 const Top = styled.div`

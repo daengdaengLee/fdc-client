@@ -43,7 +43,7 @@ class ColCell extends Component {
         style={{
           width: col.width,
           minWidth: col.width,
-          backgroundColor: '#e0e0e0',
+          backgroundColor: '#ccc',
           borderLeft: idx === 0 ? 'none' : '1px white solid',
           boxSizing: 'border-box',
           display: 'flex',
