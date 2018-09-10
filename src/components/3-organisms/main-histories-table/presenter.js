@@ -10,7 +10,7 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: #f8f8f8;
+  background-color: transparent;
 `;
 
 const HeaderContainer = styled.div`

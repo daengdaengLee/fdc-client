@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import './../../../index.css';
-// import logoImg from '../../../assets/img/logo.jpg';
+import logoImg from '../../../assets/img/ic-logo.png';
 
 import {
   Tree,
@@ -34,23 +34,29 @@ const Container = styled.div`
 const LogoContainer = styled.div`
   height: 45px;
   line-height: 45px;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 900;
-  font-size: 20px;
-  color: #333d77;
   cursor: pointer;
+  margin: auto;
+  padding-top: 10px;
 `;
+// font-family: 'Quicksand', sans-serif;
+//   font-weight: 900;
+//   font-size: 20px;
+//   color: #333d77;
 
-// const LogoImg = styled.img`
-//   width: 80px;
-// `;
+const LogoImg = styled.img``;
 
 const SearchContainer = styled.div`
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+
+  border-bottom: 1px solid #191a1c;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  color: #f8f8f8;
+  font-weight: 400;
+`;
 
 const FabContainer = styled.div`
   width: 100%;
@@ -121,7 +127,8 @@ class MainNavigation extends Component {
         </LogoContainer>
         <SearchContainer>
           <Title>
-            <Icon style={{ color: '#04bed6' }} type="share-alt" />
+            {/* share-alt */}
+            <Icon style={{ color: '#f8f8f8' }} type="check" />
             Search Condition
           </Title>
         </SearchContainer>
@@ -129,7 +136,12 @@ class MainNavigation extends Component {
         <FabContainer>
           <Select
             // allowClear={true}
-            dropdownStyle={{ borderRadius: '0', fontSize: '12px' }}
+            dropdownStyle={{
+              borderRadius: '0',
+              fontSize: '12px',
+              // backgroundColor: '#575e77',
+              color: '#fff !important',
+            }}
             style={{ width: '100%' }}
             placeholder="FAB Select"
             value={fab}
@@ -305,7 +317,7 @@ const _renderNode = node => (
   <TreeNode
     title={
       node.isFilter ? (
-        <span style={{ color: '#da5e53', fontWeight: '500' }}>{node.TEXT}</span>
+        <span className="ant-tree-filtered">{node.TEXT}</span>
       ) : (
         node.TEXT
       )

@@ -45,7 +45,7 @@ const ContextMenuItem = styled.li`
     ${props =>
     !props.disabled &&
       css`
-        color: #68cedf;
+        color: #df5651;
       `};
   }
 `;

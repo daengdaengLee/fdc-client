@@ -66,6 +66,7 @@ const ChartContainer = styled.div`
   flex-grow: 1;
   margin-right: 20px;
   margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
 class Chart extends Component {
