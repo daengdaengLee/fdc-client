@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import MainTemplate from '../../4-templates/main-template';
 import MainNavigation from '../../3-organisms/main-navigation';
@@ -6,6 +6,7 @@ import MainHeader from '../../3-organisms/main-header';
 import MainHistoriesTable from '../../3-organisms/main-histories-table';
 import MainChart from '../../3-organisms/main-chart';
 import MainContextMenu from '../../3-organisms/main-context-menu';
+import MainSpinner from '../../3-organisms/main-spinner';
 
 const MainPage = () => (
   <MainTemplate
@@ -17,7 +18,12 @@ const MainPage = () => (
         <Route exect path="/charts" component={MainChart} />
       </Switch>
     )}
-    aerial={() => <MainContextMenu />}
+    aerial={() => (
+      <Fragment>
+        <MainContextMenu />
+        <MainSpinner />
+      </Fragment>
+    )}
   />
 );
 

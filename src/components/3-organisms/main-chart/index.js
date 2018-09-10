@@ -1,5 +1,10 @@
 import { connect } from 'react-redux';
 import { setSelected } from '../../../ducks/modules/parameters';
+import {
+  fetchStart,
+  fetchSuccess,
+  fetchFail,
+} from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
 const mapStateToProps = state => {
@@ -19,6 +24,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onClickParam: param => dispatch(setSelected({ selected: [param] })),
+  onFetchStart: () => dispatch(fetchStart()),
+  onFetchSuccess: () => dispatch(fetchSuccess()),
+  onFetchFail: () => dispatch(fetchFail()),
 });
 
 export default connect(

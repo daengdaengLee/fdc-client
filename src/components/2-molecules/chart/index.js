@@ -158,8 +158,19 @@ class Chart extends Component {
 
   _drawChart() {
     const { container, legend } = this;
-    const { fab, mod, from, to, lot, param } = this.props;
+    const {
+      fab,
+      mod,
+      from,
+      to,
+      lot,
+      param,
+      onFetchStart,
+      onFetchSuccess,
+      onFetchFail,
+    } = this.props;
     const { id } = this.state;
+    onFetchStart();
     console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
       .then(({ success, data }) => {
@@ -241,9 +252,10 @@ class Chart extends Component {
         g.__seriesOrigin__ = series;
         _registerG(id, g);
         window.g = g;
+        onFetchSuccess();
         console.timeEnd('render');
       })
-      .catch(error =>
+      .catch(error => {
         notification.error({
           message: 'Failed to draw chart!',
           description: error.message,
@@ -252,8 +264,9 @@ class Chart extends Component {
             width: 660,
             marginLeft: -260,
           },
-        }),
-      );
+        });
+        onFetchFail();
+      });
   }
 }
 

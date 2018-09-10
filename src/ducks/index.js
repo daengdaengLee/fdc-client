@@ -12,6 +12,7 @@ import trees from './modules/trees';
 import parameters from './modules/parameters';
 import contextMenus from './modules/context-menus';
 import dates from './modules/dates';
+import charts from './modules/charts';
 import rootSaga from './sagas';
 
 export const history = createBrowserHistory();
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   parameters,
   contextMenus,
   dates,
+  charts,
 });
 
 const sagaMiddleware = createSagaMiddleware();
