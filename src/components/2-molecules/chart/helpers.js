@@ -62,15 +62,19 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   }
 };
 
-export const _generateTicks = (min, max, g) => {
+export const _generateTicks = (min, max, g, step, slot) => {
   const withins = g.rawData_.filter(row => row[0] > min && row[0] < max);
   const len = withins.length;
   const delta = Math.floor(len / 5);
   const ticks = withins.filter((v, i) => i % delta === 0).map(v => {
     const timestring = getTimeString(v[0]);
+    const currentStep = step.find(obj => obj.value === timestring);
+    const currentSlot = slot.find(obj => obj.value === timestring);
     return {
       v: v[0],
-      label: timestring,
+      label: `<span>${timestring}</span>${
+        !currentStep ? '' : `<br><span>${currentStep.label}</span>`
+      }${!currentSlot ? '' : `<br><span>${currentSlot.label}</span>`}`,
     };
   });
   return ticks;
@@ -216,36 +220,6 @@ export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
   const delta = Math.abs(closestSeries.yval - yDataCor);
   delta <= 10 &&
     _drawHighlightPoint(g, closestSeries.canvasx, closestSeries.canvasy);
-};
-
-export const _onDrawCallback = (g, steps, slots) => {
-  const labels = document.querySelectorAll(
-    '.dygraph-axis-label.dygraph-axis-label-x',
-  );
-  labels.forEach(label => {
-    const time = label.textContent;
-    // const stepIdx =
-    //   steps.findIndex(
-    //     obj => new Date(obj.value).getTime() > new Date(time).getTime(),
-    //   ) - 1;
-    // const step = steps[stepIdx];
-    // const slotIdx =
-    //   slots.findIndex(
-    //     obj => new Date(obj.value).getTime() > new Date(time).getTime(),
-    //   ) - 1;
-    // const slot = slots[slotIdx];
-    const step = steps[time] || '';
-    const slot = slots[time] || '';
-    const container = label.parentElement;
-    const stepEl = document.createElement('div');
-    // stepEl.innerText = !step ? '' : step.label;
-    stepEl.innerText = step;
-    const slotEl = document.createElement('div');
-    // slotEl.innerText = !slot ? '' : slot.label;
-    slotEl.innerText = slot;
-    container.appendChild(stepEl);
-    container.appendChild(slotEl);
-  });
 };
 
 export const _onDoubleClickInteraction = (evt, g, context) => {
