@@ -46,6 +46,7 @@ const MainChartPresenter = ({
       <Select
         value={selectedParams}
         placeholder="Select parameter"
+        showSearch={true}
         style={{ width: '180px', fontSize: '12px' }}
         dropdownStyle={{ fontSize: '12px' }}
         onSelect={val => onClickParam(val)}

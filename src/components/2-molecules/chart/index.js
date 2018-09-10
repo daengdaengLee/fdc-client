@@ -167,6 +167,7 @@ class Chart extends Component {
       onFetchFail,
     } = this.props;
     const { id } = this.state;
+    container.current.childNodes.forEach(node => node.remove());
     onFetchStart();
     console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
@@ -248,6 +249,7 @@ class Chart extends Component {
         console.timeEnd('render');
       })
       .catch(error => {
+        container.current.childNodes.forEach(node => node.remove());
         notiError('Failed to draw chart!', error.message);
         onFetchFail();
       });
