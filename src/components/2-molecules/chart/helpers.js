@@ -1,4 +1,4 @@
-import { getTimeString } from '../../../assets/js/utils';
+import { getTimeString, getDateString } from '../../../assets/js/utils';
 
 const _dygraph = {};
 
@@ -170,7 +170,8 @@ export const _drawHighlightPoint = (g, x, y) => {
 
 export const _updateLegend = (legend, x, y, label) => {
   if (label === undefined) return (legend.innerText = '');
-  legend.innerText = `${label} (${x}, ${y})`;
+  const timestring = getTimeString(x);
+  legend.innerText = `${label} (${timestring}, ${y})`;
 };
 
 export const _zoomReset = id => () => {
