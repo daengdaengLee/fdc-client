@@ -15,7 +15,6 @@ import {
   Menu,
 } from 'antd';
 import moment from 'moment';
-// const { RangePicker } = DatePicker;
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -39,6 +38,7 @@ const LogoContainer = styled.div`
   font-weight: 900;
   font-size: 20px;
   color: #333d77;
+  cursor: pointer;
 `;
 
 // const LogoImg = styled.img`
@@ -93,6 +93,7 @@ class MainNavigation extends Component {
 
   render() {
     const {
+      _onClickPageRefresh,
       _onClickNode,
       _onExpandNode,
       _onRightClickNode,
@@ -113,7 +114,7 @@ class MainNavigation extends Component {
     const treeData = _encodeTree(_filterNodes(nodes, filter));
     return (
       <Container className="navigation">
-        <LogoContainer>
+        <LogoContainer onClick={_onClickPageRefresh}>
           {/* 로고 교체할겁니다아! */}
           {/* <LogoImg src={logoImg} alt='FDC Logo'/> */}
           FDC
@@ -141,7 +142,7 @@ class MainNavigation extends Component {
 
         <SearchInput>
           <Search
-            placeholder="Not yet implemented"
+            placeholder="Search ..."
             onSearch={_onSearchFilter}
             // disabled
           />
@@ -214,6 +215,10 @@ class MainNavigation extends Component {
     }
   }
 
+  _onClickPageRefresh() {
+    window.location.reload(true);
+  }
+
   _onClickNode(
     _,
     {
@@ -265,6 +270,7 @@ class MainNavigation extends Component {
     onResetSelectedNodes();
   }
 
+  // go button
   _generateGoMenu() {
     const { _onClickGoMenu } = this;
     return (
@@ -299,14 +305,13 @@ const _renderNode = node => (
   <TreeNode
     title={
       node.isFilter ? (
-        <span style={{ color: 'red' }}>{node.TEXT}</span>
+        <span style={{ color: '#da5e53', fontWeight: '500' }}>{node.TEXT}</span>
       ) : (
         node.TEXT
       )
     }
     key={node.isLeaf ? node.MODULE_ID : node.VALUE}
     isLeaf={node.isLeaf}
-    // disableCheckbox={!node.isLeaf ? true : false}
   >
     {!node.children ? null : node.children.map(child => _renderNode(child))}
   </TreeNode>
