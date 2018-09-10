@@ -1,4 +1,5 @@
 import { all, takeEvery, select, call, put } from 'redux-saga/effects';
+import { notiError } from '../../assets/js/utils';
 import { push } from '../modules/routes';
 import {
   FETCH_START,
@@ -28,6 +29,22 @@ const VALID_FABS = ['M10', 'M14'];
 function* checkFetchPossible(fab) {
   const { isLoading } = yield select(state => state.trees);
   return VALID_FABS.includes(fab) && !isLoading;
+}
+
+function* validateDate({ from, to }) {
+  if (!from || !to) {
+    yield call(notiError, 'Date is mandatory field', '');
+    return false;
+  }
+  return true;
+}
+
+function* validateModule({ mod }) {
+  if (!mod) {
+    yield call(notiError, 'Module is mandatory field', '');
+    return false;
+  }
+  return true;
 }
 
 // Workers
@@ -62,11 +79,16 @@ function* clickLotWaferViewSaga() {
     histories: { by },
     trees: { selected: selectedMod, fab },
   } = yield select(state => state);
+  const mod = selectedMod[0];
+  const validDate = yield call(validateDate, { from, to });
+  if (!validDate) return;
+  const validMod = yield call(validateModule, { mod });
+  if (!validMod) return;
   yield put(
     requestFetchHistories({
       by,
       fab,
-      mod: selectedMod[0],
+      mod,
       from,
       to,
     }),

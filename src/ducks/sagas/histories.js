@@ -13,11 +13,41 @@ import {
   SET_BY,
   setSelectedRowKeys,
   SET_ROWS,
+  CLICK_VIEW_TRACE_DATA_TIME,
 } from '../modules/histories';
 import { getHistory } from '../../assets/js/requests';
-import { setSelected, setParams } from '../modules/parameters';
+import { notiError } from '../../assets/js/utils';
+import {
+  setSelected,
+  setParams,
+  requestFetch as requestFetchParameters,
+} from '../modules/parameters';
+import { push } from '../modules/routes';
 
 // Helpers
+function* validateDate({ from, to }) {
+  if (!from || !to) {
+    yield call(notiError, 'Date is mandatory field', '');
+    return false;
+  }
+  return true;
+}
+
+function* validateModule({ mod }) {
+  if (!mod) {
+    yield call(notiError, 'Module is mandatory field', '');
+    return false;
+  }
+  return true;
+}
+
+function* validateLot({ lot }) {
+  if (!lot) {
+    yield call(notiError, 'Lot is mandatory field', '');
+    return false;
+  }
+  return true;
+}
 
 // Workers
 function* requestFetchSaga({ by, fab, mod, from, to }) {
@@ -66,6 +96,33 @@ function* setSelectedRowKeysSaga() {
   yield put(setParams({ params: [] }));
 }
 
+function* clickViewTraceDataTimeSaga() {
+  const {
+    dates: { from, to },
+    trees: { selected: selectedMod, fab },
+    histories: { selectedRowKeys, rows },
+  } = yield select(state => state);
+  const mod = selectedMod[0];
+  const selectedRow = rows.find(row => row.key === selectedRowKeys[0]);
+  const lot = selectedRow ? selectedRow.LOT_ID : '';
+  const validDate = yield call(validateDate, { from, to });
+  if (!validDate) return;
+  const validMod = yield call(validateModule, { mod });
+  if (!validMod) return;
+  const validLot = yield call(validateLot, { lot });
+  if (!validLot) return;
+  yield put(
+    requestFetchParameters({
+      fab,
+      mod,
+      from,
+      to,
+      lot,
+    }),
+  );
+  yield put(push({ location: 'charts' }));
+}
+
 // Watchers
 function* watchRequestFetch() {
   yield takeEvery(REQUEST_FETCH, requestFetchSaga);
@@ -91,6 +148,10 @@ function* watchSetSelectedRowKeys() {
   yield takeEvery(SET_SELECTED_ROW_KEYS, setSelectedRowKeysSaga);
 }
 
+function* watchClickViewTraceDataTime() {
+  yield takeEvery(CLICK_VIEW_TRACE_DATA_TIME, clickViewTraceDataTimeSaga);
+}
+
 export default function* historiesSaga() {
   yield all([
     watchRequestFetch(),
@@ -99,5 +160,6 @@ export default function* historiesSaga() {
     watchSetBy(),
     watchSetRows(),
     watchSetSelectedRowKeys(),
+    watchClickViewTraceDataTime(),
   ]);
 }

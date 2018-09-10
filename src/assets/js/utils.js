@@ -1,3 +1,5 @@
+import { notification } from 'antd';
+
 export function formatDigit(digit, num) {
   const q = Math.floor(num / 10) + 1;
   const zeroCount = digit - q;
@@ -44,4 +46,16 @@ export function getYesterdayString() {
   const stamp = todayStamp - 1 * 24 * 60 * 60 * 1000;
   const dateString = getDateString(stamp);
   return dateString;
+}
+
+export function notiError(message, desc) {
+  notification.error({
+    message: message,
+    description: desc,
+    placement: 'bottomRight',
+    style: {
+      width: 660,
+      marginLeft: -260,
+    },
+  });
 }

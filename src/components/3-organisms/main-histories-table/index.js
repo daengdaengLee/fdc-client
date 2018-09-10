@@ -7,6 +7,7 @@ import {
   pushTableFilter,
   popTableFilter,
   resetTableFilters,
+  clickViewTraceDataTime,
 } from '../../../ducks/modules/histories';
 import Presenter from './presenter';
 
@@ -26,6 +27,10 @@ const mapDispatchToProps = dispatch => ({
   pushTableFilter: bindActionCreators(pushTableFilter, dispatch),
   popTableFilter: bindActionCreators(popTableFilter, dispatch),
   resetTableFilters: bindActionCreators(resetTableFilters, dispatch),
+  onClickViewTraceDataTime: bindActionCreators(
+    clickViewTraceDataTime,
+    dispatch,
+  ),
 });
 
 export default connect(

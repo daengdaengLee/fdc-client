@@ -43,7 +43,7 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
     ctx.fill();
 
     // ucl - lcl
-    ctx.fillStyle = 'rgba(135, 206, 235, 0.3)';
+    ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
     ctx.beginPath();
     ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
     ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
