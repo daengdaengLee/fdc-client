@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Dygraph from 'dygraphs';
-import { Button, Icon } from 'antd';
 import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
 import { getDateString, notiError } from '../../../assets/js/utils';
@@ -10,11 +9,10 @@ import {
   _releaseG,
   _plotter,
   _zoomReset,
-  // _generateTicks,
+  _generateTicks,
   _onZoomCallback,
   _onClickCallback,
   _onHighlightCallback,
-  // _onDrawCallback,
   _onDoubleClickInteraction,
 } from './helpers';
 
@@ -100,7 +98,6 @@ class Chart extends Component {
               alt="zoom out"
               onClick={_zoomReset(id)}
             />
-            {/* <button onClick={_zoomReset(id)}>Zoom Out</button> */}
           </IconContainer>
         </ChartHeader>
         <ChartContainer innerRef={container} />
@@ -178,11 +175,7 @@ class Chart extends Component {
         console.time('render');
         if (!success) return Promise.reject({ message: 'Fetch failed' });
         if (!data.data) return Promise.reject({ message: 'No data' });
-        const {
-          data: csv,
-          // slot,
-          // step,
-        } = data;
+        const { data: csv, slot, step } = data;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
           .slice(0, firstLfIdx)
@@ -219,8 +212,8 @@ class Chart extends Component {
           x: {
             axisLabelWidth: 160,
             axisLabelFormatter: getDateString,
-            // ticker: (min, max, pixels, opt, g) =>
-            //   _generateTicks(min, max, g, step, slot),
+            ticker: (min, max, pixels, opt, g) =>
+              _generateTicks(min, max, g, step, slot),
           },
         };
         const g = new Dygraph(container.current, csv, {
@@ -245,7 +238,6 @@ class Chart extends Component {
             _onClickCallback(evt, x, points, id, legend.current),
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),
-          // drawCallback: g => _onDrawCallback(g, step, slot),
         });
         g.__zoomStack__ = [{ x: null, y: null }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
