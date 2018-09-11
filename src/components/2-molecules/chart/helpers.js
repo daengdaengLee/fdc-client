@@ -62,24 +62,50 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   }
 };
 
-export const _generateTicks = (min, max, g, step, slot) => {
-  const withins = g.rawData_.filter(row => row[0] > min && row[0] < max);
-  const len = withins.length;
-  const delta = Math.floor(len / 10);
-  const ticks = withins
-    .filter((_, i) => i % delta === 0)
-    .filter((_, i) => i % 2 !== 0)
-    .map(v => {
-      const timestring = getTimeString(v[0]);
-      const currentStep = step.find(obj => obj.value === timestring);
-      const currentSlot = slot.find(obj => obj.value === timestring);
-      return {
-        v: v[0],
-        label: `<span>${timestring}</span>${
-          !currentStep ? '' : `<br><span>${currentStep.label}</span>`
-        }${!currentSlot ? '' : `<br><span>${currentSlot.label}</span>`}`,
+export const _generateTicks = (min, max, g, step, stepName, slot) => {
+  const stepTicks = step.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [new Date(cur.value).getTime()]: `<span>${cur.value}</span><br /><span>${
+        cur.label
+      }</span>`,
+    }),
+    {},
+  );
+  const stepNameTicks = stepName.reduce((acc, cur) => {
+    const unixdate = new Date(cur.value).getTime();
+    const currentTag = `<span>${cur.label}</span>`;
+    return !acc[unixdate]
+      ? {
+        ...acc,
+        [unixdate]: `<span>${cur.value}</span><br /><br />${currentTag}`,
+      }
+      : {
+        ...acc,
+        [unixdate]: `${acc[unixdate]}<br />${currentTag}`,
       };
-    });
+  }, stepTicks);
+  const slotTicks = slot.reduce((acc, cur) => {
+    const unixdate = new Date(cur.value).getTime();
+    const currentTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8;">${
+      cur.label
+    }</span>`;
+    return !acc[unixdate]
+      ? {
+        ...acc,
+        [unixdate]: `<span>${
+          cur.value
+        }</span><br /><br /><br />${currentTag}`,
+      }
+      : {
+        ...acc,
+        [unixdate]: `${acc[unixdate]}<br />${currentTag}`,
+      };
+  }, stepNameTicks);
+  const ticks = Object.keys(slotTicks).map(v => ({
+    v: parseInt(v, 10),
+    label: slotTicks[v],
+  }));
   return ticks;
 };
 

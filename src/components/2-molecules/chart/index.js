@@ -193,7 +193,7 @@ class Chart extends Component {
         console.time('render');
         if (!success) return Promise.reject({ message: 'Fetch failed' });
         if (!data.data) return Promise.reject({ message: 'No data' });
-        const { data: csv, slot, step } = data;
+        const { data: csv, slot, step, step_name: stepName } = data;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
           .slice(0, firstLfIdx)
@@ -231,7 +231,7 @@ class Chart extends Component {
             axisLabelWidth: 160,
             axisLabelFormatter: getDateString,
             ticker: (min, max, pixels, opt, g) =>
-              _generateTicks(min, max, g, step, slot),
+              _generateTicks(min, max, g, step, stepName, slot),
           },
         };
         const g = new Dygraph(container.current, csv, {
