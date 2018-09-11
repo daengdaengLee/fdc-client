@@ -32,7 +32,8 @@ export function getTimeString(stamp) {
   const hours = formatDigit(2, date.getHours());
   const minutes = formatDigit(2, date.getMinutes());
   const seconds = formatDigit(2, date.getSeconds());
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  const milliseconds = formatDigit(3, date.getMilliseconds());
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
 export function getTodayString() {
