@@ -224,10 +224,16 @@ export const _onClickCallback = (evt, x, points, id, legend) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
+    if (isNaN(accDelta) && !isNaN(curDelta)) return curDelta;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return accDelta;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
-  if (delta > 10) return _updateLegend(legend, undefined, undefined, undefined);
+  if (delta > 10 || isNaN(delta)) {
+    _highlightSeries(g, undefined);
+    _updateLegend(legend, undefined, undefined, undefined);
+    return;
+  }
   _highlightSeries(g, closestSeries.name);
   _updateLegend(
     legend,
@@ -246,6 +252,8 @@ export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
+    if (isNaN(accDelta) && !isNaN(curDelta)) return curDelta;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return accDelta;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
@@ -259,20 +267,20 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
   g.updateOptions({ dateWindow: x, valueRange: y });
 };
 
-export const _onClickInteraction = (evt, g, context, legend) => {
-  const { x, y, label } = _getCoord(g, evt);
-  legend.innerText =
-    x !== undefined && y !== undefined && label !== undefined
-      ? `${label}(${x}, ${y})`
-      : '';
-};
+// export const _onClickInteraction = (evt, g, context, legend) => {
+//   const { x, y, label } = _getCoord(g, evt);
+//   legend.innerText =
+//     x !== undefined && y !== undefined && label !== undefined
+//       ? `${label}(${x}, ${y})`
+//       : '';
+// };
 
-export const _onMouseMoveInteraction = (evt, g, context) => {
-  const { x, y, label } = _getCoord(g, evt);
-  const [canvasx, canvasy] = g.toDomCoords(x, y);
-  const ignores = g.getLabels().slice(3);
-  !ignores.includes(label) &&
-    !isNaN(canvasx) &&
-    !isNaN(canvasy) &&
-    _drawHighlightPoint(g, canvasx, canvasy);
-};
+// export const _onMouseMoveInteraction = (evt, g, context) => {
+//   const { x, y, label } = _getCoord(g, evt);
+//   const [canvasx, canvasy] = g.toDomCoords(x, y);
+//   const ignores = g.getLabels().slice(3);
+//   !ignores.includes(label) &&
+//     !isNaN(canvasx) &&
+//     !isNaN(canvasy) &&
+//     _drawHighlightPoint(g, canvasx, canvasy);
+// };
