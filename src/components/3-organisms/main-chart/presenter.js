@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { Select } from 'antd';
 import Chart from '../../2-molecules/chart';
 
-const Container = styled.div`
+const Container = styled.div.attrs({
+  style: props => ({ display: props.active ? null : 'none' }),
+})`
   width: 100%;
   height: 100%;
   display: flex;
@@ -37,8 +39,9 @@ const MainChartPresenter = ({
   from,
   to,
   lot,
+  location,
 }) => (
-  <Container>
+  <Container active={location === 'charts'}>
     <ParameterArea className="parameters">
       <span style={{ marginRight: '10px', fontSize: '13px' }}>
         Parameters:{' '}

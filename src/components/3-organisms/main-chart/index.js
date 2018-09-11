@@ -19,6 +19,7 @@ const mapStateToProps = state => {
     from: state.dates.from,
     to: state.dates.to,
     lot: selectedHistory ? selectedHistory.LOT_ID : '',
+    location: state.routes.location,
   };
 };
 
