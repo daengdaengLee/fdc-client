@@ -22,43 +22,44 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   );
   const len = uclPoints.length - 1;
   for (let i = 0; i < len; i += 1) {
+    // usl - lsl
     if (
-      isNaN(uclPoints[i].canvasy) ||
-      isNaN(uclPoints[i + 1].canvasy) ||
-      isNaN(lclPoints[i].canvasy) ||
-      isNaN(lclPoints[i + 1].canvasy) ||
-      isNaN(uslPoints[i].canvasy) ||
-      isNaN(uslPoints[i + 1].canvasy) ||
-      isNaN(lslPoints[i].canvasy) ||
-      isNaN(lslPoints[i + 1].canvasy)
-    )
-      continue;
-    // usl - ucl
-    ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
-    ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
-    ctx.lineTo(uslPoints[i + 1].canvasx, uslPoints[i + 1].canvasy);
-    ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
-    ctx.fill();
-
+      uslPoints[i] &&
+      uslPoints[i + 1] &&
+      lslPoints[i] &&
+      lslPoints[i + 1] &&
+      !isNaN(uslPoints[i].canvasy) &&
+      !isNaN(uslPoints[i + 1].canvasy) &&
+      !isNaN(lslPoints[i].canvasy) &&
+      !isNaN(lslPoints[i + 1].canvasy)
+    ) {
+      ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
+      ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
+      ctx.lineTo(uslPoints[i + 1].canvasx, uslPoints[i + 1].canvasy);
+      ctx.lineTo(lslPoints[i + 1].canvasx, lslPoints[i + 1].canvasy);
+      ctx.fill();
+    }
     // ucl - lcl
-    ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
-    ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
-    ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
-    ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
-    ctx.fill();
-
-    // lcl - lsl
-    ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
-    ctx.lineTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
-    ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
-    ctx.lineTo(lslPoints[i + 1].canvasx, lslPoints[i + 1].canvasy);
-    ctx.fill();
+    if (
+      uclPoints[i] &&
+      uclPoints[i + 1] &&
+      lclPoints[i] &&
+      lclPoints[i + 1] &&
+      !isNaN(uclPoints[i].canvasy) &&
+      !isNaN(uclPoints[i + 1].canvasy) &&
+      !isNaN(lclPoints[i].canvasy) &&
+      !isNaN(lclPoints[i + 1].canvasy)
+    ) {
+      ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
+      ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
+      ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
+      ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
+      ctx.fill();
+    }
   }
 };
 
