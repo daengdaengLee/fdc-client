@@ -25,11 +25,11 @@ const Right = styled.div`
   background-color: #e2e5e8;
 `;
 
-const Top = styled.div`
-  height: 45px;
-  min-height: 45px;
-  overflow: hidden;
-`;
+// const Top = styled.div`
+//   height: 45px;
+//   min-height: 45px;
+//   overflow: hidden;
+// `;
 
 const Center = styled.div`
   height: 0;
@@ -42,7 +42,7 @@ const MainTemplate = ({ top, left, center, aerial }) => (
     <Container>
       <Left>{left()}</Left>
       <Right>
-        <Top>{top()}</Top>
+        {/* <Top>{top()}</Top> */}
         <Center>{center()}</Center>
       </Right>
     </Container>
