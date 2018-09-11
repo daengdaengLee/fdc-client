@@ -235,7 +235,7 @@ class Chart extends Component {
           },
         };
         const g = new Dygraph(container.current, csv, {
-          xRangePad: 2.4,
+          xRangePad: 20,
           drawPoints: false,
           highlightCircleSize: 0,
           highlightSeriesBackgroundAlpha: 1,
