@@ -1,4 +1,4 @@
-import { getTimeString, getDateString } from '../../../assets/js/utils';
+import { getTimeString } from '../../../assets/js/utils';
 
 const _dygraph = {};
 
@@ -65,18 +65,21 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
 export const _generateTicks = (min, max, g, step, slot) => {
   const withins = g.rawData_.filter(row => row[0] > min && row[0] < max);
   const len = withins.length;
-  const delta = Math.floor(len / 5);
-  const ticks = withins.filter((v, i) => i % delta === 0).map(v => {
-    const timestring = getTimeString(v[0]);
-    const currentStep = step.find(obj => obj.value === timestring);
-    const currentSlot = slot.find(obj => obj.value === timestring);
-    return {
-      v: v[0],
-      label: `<span>${timestring}</span>${
-        !currentStep ? '' : `<br><span>${currentStep.label}</span>`
-      }${!currentSlot ? '' : `<br><span>${currentSlot.label}</span>`}`,
-    };
-  });
+  const delta = Math.floor(len / 10);
+  const ticks = withins
+    .filter((_, i) => i % delta === 0)
+    .filter((_, i) => i % 2 !== 0)
+    .map(v => {
+      const timestring = getTimeString(v[0]);
+      const currentStep = step.find(obj => obj.value === timestring);
+      const currentSlot = slot.find(obj => obj.value === timestring);
+      return {
+        v: v[0],
+        label: `<span>${timestring}</span>${
+          !currentStep ? '' : `<br><span>${currentStep.label}</span>`
+        }${!currentSlot ? '' : `<br><span>${currentSlot.label}</span>`}`,
+      };
+    });
   return ticks;
 };
 
