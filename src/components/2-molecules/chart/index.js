@@ -205,7 +205,7 @@ class Chart extends Component {
         console.time('render');
         if (!success) return Promise.reject({ message: 'Fetch failed' });
         if (!data.data) return Promise.reject({ message: 'No data' });
-        const { data: csv, slot, step, step_name: stepName } = data;
+        const { data: csv, slot, step, step_name: stepName, recipe } = data;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
           .slice(0, firstLfIdx)
@@ -274,6 +274,7 @@ class Chart extends Component {
               step,
               stepName,
               slot,
+              recipe,
             ),
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),

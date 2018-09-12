@@ -239,6 +239,7 @@ export const _onClickCallback = (
   step,
   stepName,
   slot,
+  recipe,
 ) => {
   legendNoti.destroy();
   const g = _dygraph[id];
