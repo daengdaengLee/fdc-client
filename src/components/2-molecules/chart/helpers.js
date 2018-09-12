@@ -232,8 +232,8 @@ export const _onClickCallback = (evt, x, points, id, legend) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
-    if (isNaN(accDelta) && !isNaN(curDelta)) return curDelta;
-    if (!isNaN(accDelta) && isNaN(curDelta)) return accDelta;
+    if (isNaN(accDelta) && !isNaN(curDelta)) return cur;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
@@ -260,8 +260,8 @@ export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
-    if (isNaN(accDelta) && !isNaN(curDelta)) return curDelta;
-    if (!isNaN(accDelta) && isNaN(curDelta)) return accDelta;
+    if (isNaN(accDelta) && !isNaN(curDelta)) return cur;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
