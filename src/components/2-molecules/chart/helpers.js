@@ -76,7 +76,7 @@ export const _generateTicks = (min, max, g, step, stepName, slot) => {
       ...acc,
       [new Date(cur.value).getTime()]: `<span>${cur.value}</span><br /><span>${
         cur.label
-      }</span>`,
+      }</span><br />`,
     }),
     {},
   );
@@ -86,11 +86,13 @@ export const _generateTicks = (min, max, g, step, stepName, slot) => {
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: `<span>${cur.value}</span><br /><br />${currentTag}`,
+        [unixdate]: `<span>${
+          cur.value
+        }</span><br /><br />${currentTag}<br />`,
       }
       : {
         ...acc,
-        [unixdate]: `${acc[unixdate]}<br />${currentTag}`,
+        [unixdate]: `${acc[unixdate]}${currentTag}<br />`,
       };
   }, stepTicks);
   const slotTicks = slot.reduce((acc, cur) => {
@@ -103,11 +105,11 @@ export const _generateTicks = (min, max, g, step, stepName, slot) => {
         ...acc,
         [unixdate]: `<span>${
           cur.value
-        }</span><br /><br /><br />${currentTag}`,
+        }</span><br /><br /><br />${currentTag}<br />`,
       }
       : {
         ...acc,
-        [unixdate]: `${acc[unixdate]}<br />${currentTag}`,
+        [unixdate]: `${acc[unixdate]}${currentTag}<br />`,
       };
   }, stepNameTicks);
   const ticks = Object.keys(slotTicks).map(v => ({
