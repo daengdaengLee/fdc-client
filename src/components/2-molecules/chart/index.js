@@ -104,7 +104,7 @@ class Chart extends Component {
       <Container>
         <ChartHeader>
           <LeftSide>
-            <Title>{param}</Title>
+            <Title>{param.PARAM_INFO}</Title>
             <Legend innerRef={legend} />
           </LeftSide>
           <IconContainer>
@@ -132,7 +132,7 @@ class Chart extends Component {
       from: nextFrom,
       to: nextTo,
       lot: nextLot,
-      param: nextParam,
+      param: nextParamObj,
     } = nextProps;
     const {
       fab: prevFab,
@@ -140,8 +140,10 @@ class Chart extends Component {
       from: prevFrom,
       to: prevTo,
       lot: prevLot,
-      param: prevParam,
+      param: prevParamObj,
     } = this.props;
+    const nextParam = nextParamObj && nextParamObj.PARAM_NAME;
+    const prevParam = prevParamObj && prevParamObj.PARAM_NAME;
     if (
       nextFab !== prevFab ||
       nextMod !== prevMod ||
@@ -166,7 +168,15 @@ class Chart extends Component {
 
   _validate() {
     const { fab, mod, from, to, lot, param } = this.props;
-    return !!fab && !!mod && !!from && !!to && !!lot && !!param;
+    return (
+      !!fab &&
+      !!mod &&
+      !!from &&
+      !!to &&
+      !!lot &&
+      !!param &&
+      param.hasOwnProperty('PARAM_NAME')
+    );
   }
 
   _drawChart() {
@@ -177,12 +187,13 @@ class Chart extends Component {
       from,
       to,
       lot,
-      param,
+      param: paramObj,
       onFetchStart,
       onFetchSuccess,
       onFetchFail,
     } = this.props;
     const { id } = this.state;
+    const param = paramObj.PARAM_NAME;
     container.current.childNodes.forEach(node => node.remove());
     legend.current.childNodes.forEach(node => node.remove());
     onFetchStart();

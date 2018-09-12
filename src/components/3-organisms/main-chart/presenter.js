@@ -40,41 +40,47 @@ const MainChartPresenter = ({
   to,
   lot,
   location,
-}) => (
-  <Container active={location === 'charts'}>
-    <ParameterArea className="parameters">
-      <span style={{ marginRight: '10px', fontSize: '13px' }}>
-        Parameters:{' '}
-      </span>
-      <Select
-        value={selectedParams}
-        placeholder="Select parameter"
-        showSearch={true}
-        style={{ width: '180px', fontSize: '12px' }}
-        dropdownStyle={{ fontSize: '12px' }}
-        onSelect={val => onClickParam(val)}
-      >
-        {parameters.map(param => (
-          <Option key={param.PARAM_NAME} title={param.PARAM_INFO}>
-            {param.PARAM_INFO}
-          </Option>
-        ))}
-      </Select>
-    </ParameterArea>
-    <ChartArea>
-      <Chart
-        fab={fab}
-        mod={mod}
-        from={from}
-        to={to}
-        lot={lot}
-        param={selectedParams[0]}
-        onFetchStart={onFetchStart}
-        onFetchSuccess={onFetchSuccess}
-        onFetchFail={onFetchFail}
-      />
-    </ChartArea>
-  </Container>
-);
+}) => {
+  const selectedParamObj = parameters.find(obj =>
+    selectedParams.includes(obj.PARAM_NAME),
+  );
+  return (
+    <Container active={location === 'charts'}>
+      <ParameterArea className="parameters">
+        <span style={{ marginRight: '10px', fontSize: '13px' }}>
+          Parameters:{' '}
+        </span>
+        <Select
+          value={selectedParams}
+          placeholder="Select parameter"
+          showSearch={true}
+          optionFilterProp="title"
+          style={{ width: '180px', fontSize: '12px' }}
+          dropdownStyle={{ fontSize: '12px' }}
+          onSelect={val => onClickParam(val)}
+        >
+          {parameters.map(param => (
+            <Option key={param.PARAM_NAME} title={param.PARAM_INFO}>
+              {param.PARAM_INFO}
+            </Option>
+          ))}
+        </Select>
+      </ParameterArea>
+      <ChartArea>
+        <Chart
+          fab={fab}
+          mod={mod}
+          from={from}
+          to={to}
+          lot={lot}
+          param={selectedParamObj}
+          onFetchStart={onFetchStart}
+          onFetchSuccess={onFetchSuccess}
+          onFetchFail={onFetchFail}
+        />
+      </ChartArea>
+    </Container>
+  );
+};
 
 export default MainChartPresenter;
