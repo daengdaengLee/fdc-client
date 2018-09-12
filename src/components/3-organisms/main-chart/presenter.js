@@ -178,24 +178,23 @@ class MainChartPresenter extends Component {
 
   _onClickLabelsDropdownMenu({ key }) {
     const { onToggleTickLabel } = this.props;
-    this.setState(prevState => {
-      const labelIdx = prevState.chartLabels.findIndex(
-        label => label.key === key,
-      );
-      const label = prevState.chartLabels[labelIdx];
-      const isSelect = label.selected;
-      isSelect
-        ? onToggleTickLabel({ label: key, onOff: false })
-        : onToggleTickLabel({ label: key, onOff: true });
-      return {
-        ...prevState,
-        chartLabels: [
-          ...prevState.chartLabels.slice(0, labelIdx),
-          { ...label, selected: !label.selected },
-          ...prevState.chartLabels.slice(labelIdx + 1),
-        ],
-      };
-    });
+    const { chartId } = this.state;
+    !!chartId &&
+      this.setState(prevState => {
+        const labelIdx = prevState.chartLabels.findIndex(
+          label => label.key === key,
+        );
+        const label = prevState.chartLabels[labelIdx];
+        onToggleTickLabel(prevState.chartId, label.key, !label.selected);
+        return {
+          ...prevState,
+          chartLabels: [
+            ...prevState.chartLabels.slice(0, labelIdx),
+            { ...label, selected: !label.selected },
+            ...prevState.chartLabels.slice(labelIdx + 1),
+          ],
+        };
+      });
   }
 }
 

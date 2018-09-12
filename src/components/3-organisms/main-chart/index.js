@@ -29,7 +29,8 @@ const mapDispatchToProps = dispatch => ({
   onFetchStart: () => dispatch(fetchStart()),
   onFetchSuccess: () => dispatch(fetchSuccess()),
   onFetchFail: () => dispatch(fetchFail()),
-  onToggleTickLabel: (id, label) => dispatch(toggleTickLabel({ id, label })),
+  onToggleTickLabel: (id, label, onOff) =>
+    dispatch(toggleTickLabel({ id, label, onOff })),
 });
 
 export default connect(

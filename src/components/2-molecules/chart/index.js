@@ -163,8 +163,10 @@ class Chart extends Component {
   }
 
   componentWillUnmount() {
+    const { onRegisterId } = this.props;
     const { id } = this.state;
     _releaseG(id);
+    onRegisterId(null);
   }
 
   _validate() {
@@ -193,6 +195,7 @@ class Chart extends Component {
       onFetchStart,
       onFetchSuccess,
       onFetchFail,
+      onRegisterId,
     } = this.props;
     const { id } = this.state;
     const param = paramObj.PARAM_NAME;
@@ -294,6 +297,7 @@ class Chart extends Component {
         g.__colorOrigin__ = { ...g.colorsMap_ };
         g.__seriesOrigin__ = series;
         _registerG(id, g);
+        onRegisterId(id);
         window.g = g;
         onFetchSuccess();
         console.timeEnd('render');
@@ -302,6 +306,7 @@ class Chart extends Component {
         container.current.childNodes.forEach(node => node.remove());
         legend.current.childNodes.forEach(node => node.remove());
         notiError('Failed to draw chart!', error.message);
+        onRegisterId(null);
         onFetchFail();
       });
   }
