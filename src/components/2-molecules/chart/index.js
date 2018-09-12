@@ -189,6 +189,7 @@ class Chart extends Component {
       to,
       lot,
       param: paramObj,
+      selectedLabels,
       onFetchStart,
       onFetchSuccess,
       onFetchFail,
@@ -243,7 +244,7 @@ class Chart extends Component {
             axisLabelWidth: 160,
             axisLabelFormatter: getDateString,
             ticker: (min, max, pixels, opt, g) =>
-              _generateTicks(min, max, g, step, stepName, slot),
+              _generateTicks(min, max, g, step, stepName, slot, selectedLabels),
           },
         };
         const g = new Dygraph(container.current, csv, {
