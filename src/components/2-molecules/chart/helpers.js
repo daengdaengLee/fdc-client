@@ -1,10 +1,19 @@
-import { getTimeString, getDateString } from '../../../assets/js/utils';
+import { getTimeString } from '../../../assets/js/utils';
+import '../../../index.css';
+import legendNoti from '../legend';
 
 const _dygraph = {};
 
 export const _registerG = (id, g) => (_dygraph[id] = g);
 
 export const _releaseG = id => delete _dygraph[id];
+
+export const _addYPadding = g => {
+  const yRange = g.yAxisExtremes()[0];
+  const paddingRange = [yRange[0] - 5, yRange[1]];
+  g.updateOptions({ valueRange: paddingRange });
+  return paddingRange;
+};
 
 export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   const ctx = e.drawingContext;
@@ -22,59 +31,94 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   );
   const len = uclPoints.length - 1;
   for (let i = 0; i < len; i += 1) {
+    // usl - lsl
     if (
-      isNaN(uclPoints[i].canvasy) ||
-      isNaN(uclPoints[i + 1].canvasy) ||
-      isNaN(lclPoints[i].canvasy) ||
-      isNaN(lclPoints[i + 1].canvasy) ||
-      isNaN(uslPoints[i].canvasy) ||
-      isNaN(uslPoints[i + 1].canvasy) ||
-      isNaN(lslPoints[i].canvasy) ||
-      isNaN(lslPoints[i + 1].canvasy)
-    )
-      continue;
-    // usl - ucl
-    ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
-    ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
-    ctx.lineTo(uslPoints[i + 1].canvasx, uslPoints[i + 1].canvasy);
-    ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
-    ctx.fill();
-
+      uslPoints[i] &&
+      uslPoints[i + 1] &&
+      lslPoints[i] &&
+      lslPoints[i + 1] &&
+      !isNaN(uslPoints[i].canvasy) &&
+      !isNaN(uslPoints[i + 1].canvasy) &&
+      !isNaN(lslPoints[i].canvasy) &&
+      !isNaN(lslPoints[i + 1].canvasy)
+    ) {
+      ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
+      ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
+      ctx.lineTo(uslPoints[i + 1].canvasx, uslPoints[i + 1].canvasy);
+      ctx.lineTo(lslPoints[i + 1].canvasx, lslPoints[i + 1].canvasy);
+      ctx.fill();
+    }
     // ucl - lcl
-    ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
-    ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
-    ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
-    ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
-    ctx.fill();
-
-    // lcl - lsl
-    ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
-    ctx.lineTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
-    ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
-    ctx.lineTo(lslPoints[i + 1].canvasx, lslPoints[i + 1].canvasy);
-    ctx.fill();
+    if (
+      uclPoints[i] &&
+      uclPoints[i + 1] &&
+      lclPoints[i] &&
+      lclPoints[i + 1] &&
+      !isNaN(uclPoints[i].canvasy) &&
+      !isNaN(uclPoints[i + 1].canvasy) &&
+      !isNaN(lclPoints[i].canvasy) &&
+      !isNaN(lclPoints[i + 1].canvasy)
+    ) {
+      ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
+      ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
+      ctx.lineTo(uclPoints[i + 1].canvasx, uclPoints[i + 1].canvasy);
+      ctx.lineTo(lclPoints[i + 1].canvasx, lclPoints[i + 1].canvasy);
+      ctx.fill();
+    }
   }
 };
 
-export const _generateTicks = (min, max, g, step, slot) => {
-  const withins = g.rawData_.filter(row => row[0] > min && row[0] < max);
-  const len = withins.length;
-  const delta = Math.floor(len / 5);
-  const ticks = withins.filter((v, i) => i % delta === 0).map(v => {
-    const timestring = getTimeString(v[0]);
-    const currentStep = step.find(obj => obj.value === timestring);
-    const currentSlot = slot.find(obj => obj.value === timestring);
+export const _generateTicks = (min, max, g, step, stepName, slot) => {
+  const stepTicks = step.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [new Date(cur.value).getTime()]: {
+        timeTag: `<span>${cur.value}</span>`,
+        stepTag: `<span>${cur.label}</span>`,
+      },
+    }),
+    {},
+  );
+  const stepNameTicks = stepName.reduce((acc, cur) => {
+    const unixdate = new Date(cur.value).getTime();
+    const stepNameTag = `<span>${cur.label}</span>`;
+    return !acc[unixdate]
+      ? {
+        ...acc,
+        [unixdate]: { timeTag: `<span>${cur.value}</span>`, stepNameTag },
+      }
+      : {
+        ...acc,
+        [unixdate]: { ...acc[unixdate], stepNameTag },
+      };
+  }, stepTicks);
+  const slotTicks = slot.reduce((acc, cur) => {
+    const unixdate = new Date(cur.value).getTime();
+    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8;">${
+      cur.label
+    }</span>`;
+    return !acc[unixdate]
+      ? {
+        ...acc,
+        [unixdate]: { timeTag: `<span>${cur.value}</span>`, slotTag },
+      }
+      : {
+        ...acc,
+        [unixdate]: { ...acc[unixdate], slotTag },
+      };
+  }, stepNameTicks);
+  const ticks = Object.keys(slotTicks).map(v => {
+    const tickObj = slotTicks[v];
+    const { timeTag, stepTag, stepNameTag, slotTag } = tickObj;
     return {
-      v: v[0],
-      label: `<span>${timestring}</span>${
-        !currentStep ? '' : `<br><span>${currentStep.label}</span>`
-      }${!currentSlot ? '' : `<br><span>${currentSlot.label}</span>`}`,
+      v: parseInt(v, 10),
+      label: `${timeTag}<br />${!stepTag ? '' : stepTag}<br />${
+        !stepNameTag ? '' : stepNameTag
+      }<br />${!slotTag ? '' : slotTag}`,
     };
   });
   return ticks;
@@ -176,8 +220,9 @@ export const _updateLegend = (legend, x, y, label) => {
 
 export const _zoomReset = id => () => {
   const g = _dygraph[id];
-  g.resetZoom();
-  g.__zoomStack__ = [{ x: null, y: null }];
+  const initZoom = g.__zoomStack__[0];
+  g.updateOptions({ dateWindow: initZoom.x, valueRange: initZoom.y });
+  g.__zoomStack__ = [initZoom];
 };
 
 export const _onZoomCallback = (minX, maxX, yRanges, id) => {
@@ -185,7 +230,18 @@ export const _onZoomCallback = (minX, maxX, yRanges, id) => {
   g.__zoomStack__.push({ x: [minX, maxX], y: yRanges[0] });
 };
 
-export const _onClickCallback = (evt, x, points, id, legend) => {
+export const _onClickCallback = (
+  evt,
+  x,
+  points,
+  id,
+  legend,
+  step,
+  stepName,
+  slot,
+  recipe,
+) => {
+  legendNoti.destroy();
   const g = _dygraph[id];
   const [xDomCor, yDomCor] = g.eventToDomCoords(evt);
   const [, yDataCor] = g.toDataCoords(xDomCor, yDomCor);
@@ -194,16 +250,62 @@ export const _onClickCallback = (evt, x, points, id, legend) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
+    if (isNaN(accDelta) && !isNaN(curDelta)) return cur;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
-  if (delta > 10) return _updateLegend(legend, undefined, undefined, undefined);
+  if (delta > 10 || isNaN(delta)) {
+    _highlightSeries(g, undefined);
+    _updateLegend(legend, undefined, undefined, undefined);
+    return;
+  }
   _highlightSeries(g, closestSeries.name);
   _updateLegend(
     legend,
     closestSeries.xval,
     closestSeries.yval,
     closestSeries.name,
+  );
+
+  const time = getTimeString(x);
+
+  // step filter
+  const getStepValue = step
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
+  const getStepName = stepName
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
+  const getSlot = slot
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
+  legendNoti(
+    time,
+    points[0].yval,
+    points[1].yval,
+    points[2].yval,
+    points[3].yval,
+    points[4].yval,
+    points[5].yval,
+    getStepValue.label,
+    getStepName.label,
+    getSlot.label,
   );
 };
 
@@ -216,6 +318,8 @@ export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
     const { yval: curY } = cur;
     const accDelta = Math.abs(accY - yDataCor);
     const curDelta = Math.abs(curY - yDataCor);
+    if (isNaN(accDelta) && !isNaN(curDelta)) return cur;
+    if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
   const delta = Math.abs(closestSeries.yval - yDataCor);
@@ -229,20 +333,20 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
   g.updateOptions({ dateWindow: x, valueRange: y });
 };
 
-export const _onClickInteraction = (evt, g, context, legend) => {
-  const { x, y, label } = _getCoord(g, evt);
-  legend.innerText =
-    x !== undefined && y !== undefined && label !== undefined
-      ? `${label}(${x}, ${y})`
-      : '';
-};
+// export const _onClickInteraction = (evt, g, context, legend) => {
+//   const { x, y, label } = _getCoord(g, evt);
+//   legend.innerText =
+//     x !== undefined && y !== undefined && label !== undefined
+//       ? `${label}(${x}, ${y})`
+//       : '';
+// };
 
-export const _onMouseMoveInteraction = (evt, g, context) => {
-  const { x, y, label } = _getCoord(g, evt);
-  const [canvasx, canvasy] = g.toDomCoords(x, y);
-  const ignores = g.getLabels().slice(3);
-  !ignores.includes(label) &&
-    !isNaN(canvasx) &&
-    !isNaN(canvasy) &&
-    _drawHighlightPoint(g, canvasx, canvasy);
-};
+// export const _onMouseMoveInteraction = (evt, g, context) => {
+//   const { x, y, label } = _getCoord(g, evt);
+//   const [canvasx, canvasy] = g.toDomCoords(x, y);
+//   const ignores = g.getLabels().slice(3);
+//   !ignores.includes(label) &&
+//     !isNaN(canvasx) &&
+//     !isNaN(canvasy) &&
+//     _drawHighlightPoint(g, canvasx, canvasy);
+// };

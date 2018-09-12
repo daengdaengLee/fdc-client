@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
   by: state.histories.by,
   selectedRows: state.histories.selectedRowKeys,
   tableFilters: state.histories.tableFilters,
+  location: state.routes.location,
 });
 
 const mapDispatchToProps = dispatch => ({

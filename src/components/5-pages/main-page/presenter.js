@@ -11,13 +11,12 @@ const MainPage = ({ location }) => (
   <MainTemplate
     top={() => <MainHeader />}
     left={() => <MainNavigation />}
-    center={() =>
-      location === 'main' ? null : location === 'histories' ? (
+    center={() => (
+      <Fragment>
         <MainHistoriesTable />
-      ) : location === 'charts' ? (
         <MainChart />
-      ) : null
-    }
+      </Fragment>
+    )}
     aerial={() => (
       <Fragment>
         <MainContextMenu />

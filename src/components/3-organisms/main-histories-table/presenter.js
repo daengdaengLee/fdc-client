@@ -4,7 +4,9 @@ import { Menu, Dropdown, Button } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
 import '../../../index.css';
 
-const Container = styled.div`
+const Container = styled.div.attrs({
+  style: props => ({ display: props.active ? null : 'none' }),
+})`
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -59,9 +61,10 @@ class MainHistoriesTable extends Component {
       pushTableFilter,
       popTableFilter,
       resetTableFilters,
+      location,
     } = this.props;
     return (
-      <Container className="lot-wafer">
+      <Container className="lot-wafer" active={location === 'histories'}>
         <HeaderContainer>
           <Menu
             onClick={({ key }) => onSelectBy(key)}

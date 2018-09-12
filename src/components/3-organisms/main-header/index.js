@@ -1,30 +1,17 @@
-import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
-import styled from 'styled-components';
-// import '../../../index.css';
+import { connect } from 'react-redux';
+import { push } from '../../../ducks/modules/routes';
+import Presenter from './presenter';
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  background-color: #fff;
-  border-bottom: 1px solid #e3e3e3;
-`;
+const mapStateToProps = state => ({
+  location: state.routes.location,
+});
 
-const Title = styled.h1`
-  font-family: 'Quicksand', sans-serif;
-  line-height: 40px;
-  opacity: 0;
-`;
+const mapDispatchToProps = dispatch => ({
+  onClickHistory: () => dispatch(push({ location: 'histories' })),
+  onClickTrace: () => dispatch(push({ location: 'charts' })),
+});
 
-class MainHeader extends Component {
-  render() {
-    return (
-      <Container>
-        <Title>top area</Title>
-      </Container>
-    );
-  }
-}
-
-export default MainHeader;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Presenter);

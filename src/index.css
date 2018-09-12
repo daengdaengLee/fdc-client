@@ -495,4 +495,24 @@ table {
   font-size: 12px;
 }
 
-/* background-color: #da5e53; */
+/* point tooltip */
+.ant-notification {
+  width: auto !important;
+}
+
+.ant-notification-notice {
+  padding: 10px 20px 15px 20px !important;
+  border-radius: 0 !important;
+  background: #2d2e30e1 !important;
+  margin-bottom: -5px !important;
+  margin-right: -5px;
+}
+
+.ant-notification-notice-close {
+  top: 12px;
+}
+
+.ant-notification-notice-close-x {
+  color: #f8f8f8;
+}
+

@@ -5,6 +5,7 @@ import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
 import { getDateString, notiError } from '../../../assets/js/utils';
 import {
+  _addYPadding,
   _registerG,
   _releaseG,
   _plotter,
@@ -31,13 +32,22 @@ const ChartHeader = styled.div`
   height: 30px;
   display: flex;
   font-size: 13px;
-  justify-content: space-between;
   margin-bottom: 20px;
+  margin-top: 10px;
+  justify-content: space-between;
 `;
 
-const LegendContainer = styled.div`
+const LeftSide = styled.div`
+  padding-left: 20px;
   display: flex;
-  padding: 10px 20px;
+`;
+
+const Title = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  color: #666666;
+  display: flex;
+  align-items: center;
 `;
 
 const Legend = styled.div`
@@ -45,12 +55,17 @@ const Legend = styled.div`
   margin-left: 10px;
   color: #09a9be;
   font-weight: 500;
+  display: flex;
+  align-items: center;
 `;
 
 const IconContainer = styled.div`
-  margin-right: 30px;
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 `;
+// margin-right: 30px;
+// margin-top: 15px;
 // height: 25px;
 //   width: 25px;
 
@@ -83,21 +98,22 @@ class Chart extends Component {
 
   render() {
     const { container, legend, _validate } = this;
+    const { param } = this.props;
     const { id } = this.state;
     const valid = _validate();
     return valid ? (
       <Container>
         <ChartHeader>
-          <LegendContainer>
-            <div>Legend: </div>
+          <LeftSide>
+            <Title>{param.PARAM_INFO}</Title>
             <Legend innerRef={legend} />
-          </LegendContainer>
-
+          </LeftSide>
           <IconContainer>
             <ZoomOutImg
               src={iconZoomOut}
               alt="zoom out"
               onClick={_zoomReset(id)}
+              title="Zoom Out"
             />
           </IconContainer>
         </ChartHeader>
@@ -117,7 +133,7 @@ class Chart extends Component {
       from: nextFrom,
       to: nextTo,
       lot: nextLot,
-      param: nextParam,
+      param: nextParamObj,
     } = nextProps;
     const {
       fab: prevFab,
@@ -125,8 +141,10 @@ class Chart extends Component {
       from: prevFrom,
       to: prevTo,
       lot: prevLot,
-      param: prevParam,
+      param: prevParamObj,
     } = this.props;
+    const nextParam = nextParamObj && nextParamObj.PARAM_NAME;
+    const prevParam = prevParamObj && prevParamObj.PARAM_NAME;
     if (
       nextFab !== prevFab ||
       nextMod !== prevMod ||
@@ -151,7 +169,15 @@ class Chart extends Component {
 
   _validate() {
     const { fab, mod, from, to, lot, param } = this.props;
-    return !!fab && !!mod && !!from && !!to && !!lot && !!param;
+    return (
+      !!fab &&
+      !!mod &&
+      !!from &&
+      !!to &&
+      !!lot &&
+      !!param &&
+      param.hasOwnProperty('PARAM_NAME')
+    );
   }
 
   _drawChart() {
@@ -162,13 +188,15 @@ class Chart extends Component {
       from,
       to,
       lot,
-      param,
+      param: paramObj,
       onFetchStart,
       onFetchSuccess,
       onFetchFail,
     } = this.props;
     const { id } = this.state;
+    const param = paramObj.PARAM_NAME;
     container.current.childNodes.forEach(node => node.remove());
+    legend.current.childNodes.forEach(node => node.remove());
     onFetchStart();
     console.time('fetch');
     getTraceData(fab, mod, from, to, lot, param)
@@ -177,7 +205,7 @@ class Chart extends Component {
         console.time('render');
         if (!success) return Promise.reject({ message: 'Fetch failed' });
         if (!data.data) return Promise.reject({ message: 'No data' });
-        const { data: csv, slot, step } = data;
+        const { data: csv, slot, step, step_name: stepName, recipe } = data;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
           .slice(0, firstLfIdx)
@@ -215,11 +243,11 @@ class Chart extends Component {
             axisLabelWidth: 160,
             axisLabelFormatter: getDateString,
             ticker: (min, max, pixels, opt, g) =>
-              _generateTicks(min, max, g, step, slot),
+              _generateTicks(min, max, g, step, stepName, slot),
           },
         };
         const g = new Dygraph(container.current, csv, {
-          xRangePad: 2.4,
+          xRangePad: 20,
           drawPoints: false,
           highlightCircleSize: 0,
           highlightSeriesBackgroundAlpha: 1,
@@ -237,11 +265,22 @@ class Chart extends Component {
           zoomCallback: (minX, maxX, yRanges) =>
             _onZoomCallback(minX, maxX, yRanges, id),
           clickCallback: (evt, x, points) =>
-            _onClickCallback(evt, x, points, id, legend.current),
+            _onClickCallback(
+              evt,
+              x,
+              points,
+              id,
+              legend.current,
+              step,
+              stepName,
+              slot,
+              recipe,
+            ),
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),
         });
-        g.__zoomStack__ = [{ x: null, y: null }];
+        const initYRange = _addYPadding(g);
+        g.__zoomStack__ = [{ x: null, y: initYRange }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
         g.__seriesOrigin__ = series;
         _registerG(id, g);
@@ -251,6 +290,7 @@ class Chart extends Component {
       })
       .catch(error => {
         container.current.childNodes.forEach(node => node.remove());
+        legend.current.childNodes.forEach(node => node.remove());
         notiError('Failed to draw chart!', error.message);
         onFetchFail();
       });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import './../../../index.css';
-import logoImg from '../../../assets/img/ic-logo.png';
+import logoImg from '../../../assets/img/img-logo.png';
 
 import {
   Tree,
@@ -32,23 +32,25 @@ const Container = styled.div`
 
 // margin: 5px auto 10px;
 const LogoContainer = styled.div`
-  height: 45px;
-  line-height: 45px;
+  height: 34px;
+  line-height: 34px;
   cursor: pointer;
   margin: auto;
-  padding-top: 10px;
+  padding-top: 20px;
 `;
 // font-family: 'Quicksand', sans-serif;
 //   font-weight: 900;
 //   font-size: 20px;
 //   color: #333d77;
 
-const LogoImg = styled.img``;
+const LogoImg = styled.img`
+  width: 128px;
+`;
 
 const SearchContainer = styled.div`
   font-size: 14px;
   margin-bottom: 15px;
-  margin-top: 15px;
+  margin-top: 40px;
 
   border-bottom: 1px solid #191a1c;
 `;
@@ -122,8 +124,8 @@ class MainNavigation extends Component {
       <Container className="navigation">
         <LogoContainer onClick={_onClickPageRefresh}>
           {/* 로고 교체할겁니다아! */}
-          {/* <LogoImg src={logoImg} alt='FDC Logo'/> */}
-          FDC
+          <LogoImg src={logoImg} alt='FDC Logo'/>
+          {/* FDC */}
         </LogoContainer>
         <SearchContainer>
           <Title>
