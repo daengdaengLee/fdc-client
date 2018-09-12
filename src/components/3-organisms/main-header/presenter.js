@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -19,30 +19,27 @@ const Link = styled.div`
   justify-content: center;
   box-sizing: border-box;
   font-size: 12px;
-  background-color: ${props =>
-    props.active ? '#2d2e30' : 'e2e5e8'};
-  color: ${props =>
-    props.active ? '#f8f8f8' : '#535353'};
+  background-color: ${props => (props.active ? '#2d2e30' : 'e2e5e8')};
+  color: ${props => (props.active ? '#f8f8f8' : '#535353')};
 `;
 
 // border-top: ${props =>
 //   props.active ? '3px solid #04bed6' : '3px solid #ffffff'};
 
-class MainHeader extends Component {
-  render() {
-    const { location, onClickHistory, onClickTrace } = this.props;
-    return (
-      <Container>
+const MainHeader = ({ location, onClickHistory, onClickTrace }) => (
+  <Container>
+    {location === 'main' ? null : (
+      <Fragment>
         <Link onClick={onClickHistory} active={location === 'histories'}>
           Lot / Wafer History View
         </Link>
         <Link onClick={onClickTrace} active={location === 'charts'}>
           Trace Data View
         </Link>
-      </Container>
-    );
-  }
-}
+      </Fragment>
+    )}
+  </Container>
+);
 
 MainHeader.propTypes = {
   location: PropTypes.string.isRequired,
