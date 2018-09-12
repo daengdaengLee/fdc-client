@@ -270,10 +270,6 @@ export const _onClickCallback = (
 
   const time = getTimeString(x);
 
-  // console.log('step', step);
-  // console.log('stepName', stepName);
-  console.log('slot', slot);
-
   // step filter
   const getStepValue = step
     .filter(obj => new Date(obj.value).getTime() <= x)

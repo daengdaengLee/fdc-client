@@ -4,6 +4,7 @@ import treesSaga from './trees';
 import parametersSaga from './parameters';
 import contextMenusSaga from './context-menus';
 import datesSaga from './dates';
+import routesSaga from './routes';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
     parametersSaga(),
     contextMenusSaga(),
     datesSaga(),
+    routesSaga(),
   ]);
 }
