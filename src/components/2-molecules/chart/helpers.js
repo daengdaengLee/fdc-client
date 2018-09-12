@@ -72,20 +72,33 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   }
 };
 
-export const _generateTicks = (min, max, g, step, stepName, slot) => {
+export const _generateTicks = (
+  min,
+  max,
+  g,
+  step,
+  stepName,
+  slot,
+  selectedLabels,
+  id,
+) => {
   const stepTicks = step.reduce(
     (acc, cur) => ({
       ...acc,
       [new Date(cur.value).getTime()]: {
         timeTag: `<span>${cur.value}</span>`,
-        stepTag: `<span>${cur.label}</span>`,
+        stepTag: `<span style="${
+          selectedLabels.includes('STEP') ? '' : 'display: none;'
+        }" class="${id}-STEP">${cur.label}</span>`,
       },
     }),
     {},
   );
   const stepNameTicks = stepName.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const stepNameTag = `<span>${cur.label}</span>`;
+    const stepNameTag = `<span style="${
+      selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
+    }" class="${id}-STEP_NAME">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
@@ -98,9 +111,9 @@ export const _generateTicks = (min, max, g, step, stepName, slot) => {
   }, stepTicks);
   const slotTicks = slot.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8;">${
-      cur.label
-    }</span>`;
+    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8; ${
+      selectedLabels.includes('SLOT') ? '' : 'display: none;'
+    }" class="${id}-SLOT">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,

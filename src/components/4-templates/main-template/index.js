@@ -26,8 +26,8 @@ const Right = styled.div`
 `;
 
 const Top = styled.div`
-  height: 45px;
-  min-height: 45px;
+  height: 35px;
+  min-height: 35px;
   overflow: hidden;
 `;
 

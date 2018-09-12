@@ -2,6 +2,7 @@
 export const FETCH_START = 'charts/FETCH_START';
 export const FETCH_SUCCESS = 'charts/FETCH_SUCCESS';
 export const FETCH_FAIL = 'charts/FETCH_FAIL';
+export const TOGGLE_TICK_LABEL = 'charts/TOGGLE_TICK_LABEL';
 
 // Init State
 const initState = {
@@ -39,6 +40,15 @@ export function fetchSuccess() {
 export function fetchFail() {
   return {
     type: FETCH_FAIL,
+  };
+}
+
+export function toggleTickLabel({ id, label, onOff }) {
+  return {
+    type: TOGGLE_TICK_LABEL,
+    id,
+    label,
+    onOff,
   };
 }
 
