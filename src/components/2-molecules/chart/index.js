@@ -5,6 +5,7 @@ import uuid from 'uuid/v1';
 import { getTraceData } from '../../../assets/js/requests';
 import { getDateString, notiError } from '../../../assets/js/utils';
 import {
+  _addYPadding,
   _registerG,
   _releaseG,
   _plotter,
@@ -268,7 +269,8 @@ class Chart extends Component {
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),
         });
-        g.__zoomStack__ = [{ x: null, y: null }];
+        const initYRange = _addYPadding(g);
+        g.__zoomStack__ = [{ x: null, y: initYRange }];
         g.__colorOrigin__ = { ...g.colorsMap_ };
         g.__seriesOrigin__ = series;
         _registerG(id, g);

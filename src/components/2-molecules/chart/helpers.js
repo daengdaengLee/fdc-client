@@ -6,6 +6,13 @@ export const _registerG = (id, g) => (_dygraph[id] = g);
 
 export const _releaseG = id => delete _dygraph[id];
 
+export const _addYPadding = g => {
+  const yRange = g.yAxisExtremes()[0];
+  const paddingRange = [yRange[0] - 5, yRange[1]];
+  g.updateOptions({ valueRange: paddingRange });
+  return paddingRange;
+};
+
 export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   const ctx = e.drawingContext;
   const uclPoints = e.allSeriesPoints.find(
@@ -206,8 +213,9 @@ export const _updateLegend = (legend, x, y, label) => {
 
 export const _zoomReset = id => () => {
   const g = _dygraph[id];
-  g.resetZoom();
-  g.__zoomStack__ = [{ x: null, y: null }];
+  const initZoom = g.__zoomStack__[0];
+  g.updateOptions({ dateWindow: initZoom.x, valueRange: initZoom.y });
+  g.__zoomStack__ = [initZoom];
 };
 
 export const _onZoomCallback = (minX, maxX, yRanges, id) => {
