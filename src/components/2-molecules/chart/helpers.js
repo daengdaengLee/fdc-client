@@ -74,48 +74,51 @@ export const _generateTicks = (min, max, g, step, stepName, slot) => {
   const stepTicks = step.reduce(
     (acc, cur) => ({
       ...acc,
-      [new Date(cur.value).getTime()]: `<span>${cur.value}</span><br /><span>${
-        cur.label
-      }</span><br />`,
+      [new Date(cur.value).getTime()]: {
+        timeTag: `<span>${cur.value}</span>`,
+        stepTag: `<span>${cur.label}</span>`,
+      },
     }),
     {},
   );
   const stepNameTicks = stepName.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const currentTag = `<span>${cur.label}</span>`;
+    const stepNameTag = `<span>${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: `<span>${
-          cur.value
-        }</span><br /><br />${currentTag}<br />`,
+        [unixdate]: { timeTag: `<span>${cur.value}</span>`, stepNameTag },
       }
       : {
         ...acc,
-        [unixdate]: `${acc[unixdate]}${currentTag}<br />`,
+        [unixdate]: { ...acc[unixdate], stepNameTag },
       };
   }, stepTicks);
   const slotTicks = slot.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const currentTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8;">${
+    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8;">${
       cur.label
     }</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: `<span>${
-          cur.value
-        }</span><br /><br /><br />${currentTag}<br />`,
+        [unixdate]: { timeTag: `<span>${cur.value}</span>`, slotTag },
       }
       : {
         ...acc,
-        [unixdate]: `${acc[unixdate]}${currentTag}<br />`,
+        [unixdate]: { ...acc[unixdate], slotTag },
       };
   }, stepNameTicks);
-  const ticks = Object.keys(slotTicks).map(v => ({
-    v: parseInt(v, 10),
-    label: slotTicks[v],
-  }));
+  const ticks = Object.keys(slotTicks).map(v => {
+    const tickObj = slotTicks[v];
+    const { timeTag, stepTag, stepNameTag, slotTag } = tickObj;
+    return {
+      v: parseInt(v, 10),
+      label: `${timeTag}<br />${!stepTag ? '' : stepTag}<br />${
+        !stepNameTag ? '' : stepNameTag
+      }<br />${!slotTag ? '' : slotTag}`,
+    };
+  });
   return ticks;
 };
 
