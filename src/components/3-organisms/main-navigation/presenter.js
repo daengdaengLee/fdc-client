@@ -208,7 +208,7 @@ class MainNavigation extends Component {
               }}
             >
               GO
-              <Icon style={{ color: '#fff' }} type="up" />
+              <Icon type="up" />
             </Button>
           </Dropdown>
         </ButtonContainer>

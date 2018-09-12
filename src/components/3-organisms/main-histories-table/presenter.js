@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Menu, Dropdown, Button } from 'antd';
+import { Menu, Dropdown, Button, Icon } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
 import '../../../index.css';
 
@@ -16,12 +16,13 @@ const Container = styled.div.attrs({
 `;
 
 const HeaderContainer = styled.div`
-  height: 60px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   margin-bottom: -15px;
+  margin-top: 10px;
 `;
 
 const TableArea = styled.div`
@@ -94,7 +95,16 @@ class MainHistoriesTable extends Component {
             </Menu.Item>
           </Menu>
           <Dropdown overlay={_generateViewTraceDataMenu()}>
-            <Button>View Trace Data</Button>
+            <Button 
+              style={{ 
+                width: '160px', 
+                backgroundColor: 'transparent', 
+                borderRadius: '0', 
+                fontSize: '12px',
+                border: '0',
+                borderBottom: '1px solid #b4b4b4' }}>
+              View Trace Data<Icon type="down" />
+            </Button>
           </Dropdown>
         </HeaderContainer>
         <TableArea>

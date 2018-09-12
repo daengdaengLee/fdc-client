@@ -276,7 +276,7 @@ table {
 .navigation .ant-select-selection {
   border: 0 !important;
   /* border-bottom: 1px solid #dfdfdf !important; */
-  border-bottom: 1px solid #04bed6 !important;
+  border-bottom: 1px solid #f8f8f8 !important;
   border-radius: 0 !important;
   font-size: 12px;
   background-color: transparent;
@@ -327,9 +327,13 @@ table {
   color: #fff;
 }
 
-.ant-tree.ant-tree-show-line li span.ant-tree-switcher {
+.navigation .ant-tree.ant-tree-show-line li span.ant-tree-switcher {
   background-color: #2d2e30 !important;
   color: #c5d2da !important;
+}
+
+.navigation .ant-tree.ant-tree-show-line li:not(:last-child):before {
+  border-left: 1px solid #c5d2da57;
 }
 
 /* tree - ... text code */
@@ -344,17 +348,17 @@ table {
 }
 
 .navigation .ant-tree-node-selected .ant-tree-title {
-  color: #df5651;
-  font-weight: 500;
-}
-
-.navigation .ant-tree-filtered {
   color: #04bed6;
   font-weight: 500;
 }
 
+.navigation .ant-tree-filtered {
+  color: #24ffc8;
+  font-weight: 500;
+}
+
 .navigation .ant-tree-node-selected .ant-tree-title .ant-tree-filtered {
-  color: #df5651;
+  color: #04bed6;
 }
 
 /* check box */
@@ -371,11 +375,11 @@ table {
 }
 
 .navigation .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner:after {
-  background-color: #df5651;
+  background-color: #24ffc8;
 }
 
 .ant-tree-checkbox-checked .ant-tree-checkbox-inner:after {
-  border-color: #df5651 !important;
+  border-color: #04bed6 !important;
 }
 
 /* datePicker */
@@ -398,27 +402,31 @@ table {
 /* Button */
 .navigation .ant-btn {
   border: 0;
-  border-radius: 15px;
-  background-color: #04bed6;
+  border-radius: 0;
+  background-color: #f8f8f8;
   /* background-image: linear-gradient(to right, #04bed6, #54b3e5, #8da6e1); */
 }
 
 .navigation .ant-btn > span {
   font-size: 12px;
-  color: #fff;
+  color: #535353;
   line-height: 32px;
   font-weight: 500;
 }
 
-.navigation .ant-btn:hover {
-  background-color: #1099ac;
+.navigation .ant-btn:hover,
+.navigation .ant-btn:focus,
+.navigation .ant-btn:active {
+  background-color: #04bed6;
 }
 
-.navigation .ant-btn:focus {
-  background-color: #1099ac;
+.navigation .ant-btn:hover .anticon,
+.navigation .ant-btn:focus .anticon {
+  color: #f8f8f8;
 }
 
-.navigation .ant-btn:hover > span {
+.navigation .ant-btn:hover > span,
+.navigation .ant-btn:focus > span {
   color: #fff;
 }
 
@@ -437,14 +445,23 @@ table {
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item:hover {
-  color: #04bed6 !important;
+  color: #da5e53 !important;
   border: 0;
-  border-bottom: 1px solid #04bed6 !important;
+  border-bottom: 1px solid #da5e53 !important;
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item-selected {
-  color: #04bed6 !important;
-  border-bottom: 2px solid #04bed6 !important;
+  color: #da5e53 !important;
+  border-bottom: 2px solid #da5e53 !important;
+  font-weight: 500;
+}
+
+.lot-wafer .ant-btn > i, .ant-btn > span {
+  color: #f8f8f8;
+}
+
+.lot-wafer .anticon-down {
+  padding: 0;
 }
 
 /* filter box */
@@ -460,7 +477,7 @@ table {
 
 .filter .ant-btn-primary:hover,
 .ant-btn-primary:focus {
-  background-color: #09a9be !important;
+  background-color: #04bed6 !important;
 }
 
 .filter .resetButton {
@@ -488,7 +505,14 @@ table {
 /* parameter box */
 .parameters .ant-select-selection--single {
   border-radius: 0;
-  border-color: #dedede;
+  /* border-color: #dedede; */
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid #04bed6;
+}
+
+.parameters .ant-select-selection-selected-value {
+  color: #04bed6;
 }
 
 .parameters .ant-select-open .ant-select-selection-selected-value {

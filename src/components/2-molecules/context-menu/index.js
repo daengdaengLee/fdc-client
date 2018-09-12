@@ -45,7 +45,7 @@ const ContextMenuItem = styled.li`
     ${props =>
     !props.disabled &&
       css`
-        color: #df5651;
+        color: #04bed6;
       `};
   }
 `;
@@ -61,7 +61,7 @@ class ContextMenu extends Component {
     const { _onClickMenu } = this;
     const { width, x, y, items } = this.props;
     return (
-      <ContextMenuBox left={`${x}px`} top={`${y}px`} width={width}>
+      <ContextMenuBox className='context-menu' left={`${x}px`} top={`${y}px`} width={width}>
         {items.map(item => {
           return (
             <ContextMenuItem

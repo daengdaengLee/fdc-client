@@ -5,21 +5,28 @@ import styled from 'styled-components';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e3e3e3;
+  background-color: #e2e5e8;
+  border-bottom: 1px solid #f8f8f8;
   display: flex;
 `;
 
 const Link = styled.div`
   cursor: pointer;
-  width: 200px;
+  width: 180px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border-top: ${props =>
-    props.active ? '3px solid #04bed6' : '3px solid #ffffff'};
+  font-size: 12px;
+  background-color: ${props =>
+    props.active ? '#2d2e30' : 'e2e5e8'};
+  color: ${props =>
+    props.active ? '#f8f8f8' : '#535353'};
 `;
+
+// border-top: ${props =>
+//   props.active ? '3px solid #04bed6' : '3px solid #ffffff'};
 
 class MainHeader extends Component {
   render() {
