@@ -3,19 +3,19 @@ import styled from 'styled-components';
 import { Select, Dropdown, Button, Menu, Checkbox } from 'antd';
 import Chart from '../../2-molecules/chart';
 
-const _hideChartTickLabel = key => {
-  const selector = `.dygraph-tick-label-${key}`;
-  document.querySelectorAll(selector).forEach(tick => {
-    tick.style.display = 'none';
-  });
-};
+// const _hideChartTickLabel = key => {
+//   const selector = `.dygraph-tick-label-${key}`;
+//   document.querySelectorAll(selector).forEach(tick => {
+//     tick.style.display = 'none';
+//   });
+// };
 
-const _showChartTickLabel = key => {
-  const selector = `.dygraph-tick-label-${key}`;
-  document.querySelectorAll(selector).forEach(tick => {
-    tick.style.display = 'inline';
-  });
-};
+// const _showChartTickLabel = key => {
+//   const selector = `.dygraph-tick-label-${key}`;
+//   document.querySelectorAll(selector).forEach(tick => {
+//     tick.style.display = 'inline';
+//   });
+// };
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -73,7 +73,9 @@ class MainChartPresenter extends Component {
           selected: true,
         },
       ],
+      chartId: null,
     };
+    this._onRegisterChartId = this._onRegisterChartId.bind(this);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
     this._onClickLabelsDropdownMenu = this._onClickLabelsDropdownMenu.bind(
       this,
@@ -81,7 +83,7 @@ class MainChartPresenter extends Component {
   }
 
   render() {
-    const { _makeLabelsDropdownMenus } = this;
+    const { _makeLabelsDropdownMenus, _onRegisterChartId } = this;
     const {
       parameters,
       selectedParams,
@@ -145,10 +147,15 @@ class MainChartPresenter extends Component {
             onFetchStart={onFetchStart}
             onFetchSuccess={onFetchSuccess}
             onFetchFail={onFetchFail}
+            onRegisterId={_onRegisterChartId}
           />
         </ChartArea>
       </Container>
     );
+  }
+
+  _onRegisterChartId(id) {
+    this.setState({ chartId: id });
   }
 
   _makeLabelsDropdownMenus() {
@@ -170,13 +177,16 @@ class MainChartPresenter extends Component {
   }
 
   _onClickLabelsDropdownMenu({ key }) {
-    const isSelect = this.state.chartLabels.find(obj => obj.key === key)
-      .selected;
+    const { onToggleTickLabel } = this.props;
     this.setState(prevState => {
       const labelIdx = prevState.chartLabels.findIndex(
         label => label.key === key,
       );
       const label = prevState.chartLabels[labelIdx];
+      const isSelect = label.selected;
+      isSelect
+        ? onToggleTickLabel({ label: key, onOff: false })
+        : onToggleTickLabel({ label: key, onOff: true });
       return {
         ...prevState,
         chartLabels: [
@@ -186,7 +196,6 @@ class MainChartPresenter extends Component {
         ],
       };
     });
-    isSelect ? _hideChartTickLabel(key) : _showChartTickLabel(key);
   }
 }
 

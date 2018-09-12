@@ -80,6 +80,7 @@ export const _generateTicks = (
   stepName,
   slot,
   selectedLabels,
+  id,
 ) => {
   const stepTicks = step.reduce(
     (acc, cur) => ({
@@ -88,7 +89,7 @@ export const _generateTicks = (
         timeTag: `<span>${cur.value}</span>`,
         stepTag: `<span style="${
           selectedLabels.includes('STEP') ? '' : 'display: none;'
-        }" class="dygraph-tick-label-STEP">${cur.label}</span>`,
+        }" class="${id}-STEP">${cur.label}</span>`,
       },
     }),
     {},
@@ -97,7 +98,7 @@ export const _generateTicks = (
     const unixdate = new Date(cur.value).getTime();
     const stepNameTag = `<span style="${
       selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
-    }" class="dygraph-tick-label-STEP_NAME">${cur.label}</span>`;
+    }" class="${id}-STEP_NAME">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
@@ -112,7 +113,7 @@ export const _generateTicks = (
     const unixdate = new Date(cur.value).getTime();
     const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8; ${
       selectedLabels.includes('SLOT') ? '' : 'display: none;'
-    }" class="dygraph-tick-label-SLOT">${cur.label}</span>`;
+    }" class="${id}-SLOT">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,

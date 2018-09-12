@@ -244,7 +244,16 @@ class Chart extends Component {
             axisLabelWidth: 160,
             axisLabelFormatter: getDateString,
             ticker: (min, max, pixels, opt, g) =>
-              _generateTicks(min, max, g, step, stepName, slot, selectedLabels),
+              _generateTicks(
+                min,
+                max,
+                g,
+                step,
+                stepName,
+                slot,
+                selectedLabels,
+                id,
+              ),
           },
         };
         const g = new Dygraph(container.current, csv, {

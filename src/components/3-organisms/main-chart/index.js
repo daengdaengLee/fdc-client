@@ -4,6 +4,7 @@ import {
   fetchStart,
   fetchSuccess,
   fetchFail,
+  toggleTickLabel,
 } from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
   onFetchStart: () => dispatch(fetchStart()),
   onFetchSuccess: () => dispatch(fetchSuccess()),
   onFetchFail: () => dispatch(fetchFail()),
+  onToggleTickLabel: (id, label) => dispatch(toggleTickLabel({ id, label })),
 });
 
 export default connect(
