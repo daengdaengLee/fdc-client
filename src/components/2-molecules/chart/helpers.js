@@ -1,8 +1,6 @@
 import { getTimeString } from '../../../assets/js/utils';
-import React from 'react';
-import { notification, Icon } from 'antd';
-import styled from 'styled-components';
 import '../../../index.css';
+import legendNoti from '../legend';
 
 const _dygraph = {};
 
@@ -242,7 +240,7 @@ export const _onClickCallback = (
   stepName,
   slot,
 ) => {
-  notification.destroy();
+  legendNoti.destroy();
   const g = _dygraph[id];
   const [xDomCor, yDomCor] = g.eventToDomCoords(evt);
   const [, yDataCor] = g.toDataCoords(xDomCor, yDomCor);
@@ -269,7 +267,7 @@ export const _onClickCallback = (
     closestSeries.name,
   );
   const time = getTimeString(x);
-  _onOpenPointTooltip(
+  legendNoti(
     time,
     points[0].yval,
     points[1].yval,
@@ -278,107 +276,6 @@ export const _onClickCallback = (
     points[4].yval,
     points[5].yval,
   );
-};
-
-const _onOpenPointTooltip = (time, value, target, lsl, lcl, ucl, usl) => {
-  const Title = styled.h1`
-    color: #f8f8f8;
-    font-size: 13px;
-  `;
-
-  const ContentsLine = styled.div`
-    display: flex;
-    font-size: 12px;
-    color: #f8f8f8;
-  `;
-  const InnerTitle = styled.span`
-    display: inline-block;
-    width: 86px;
-    min-width: 86px;
-    color: #f8f8f8;
-  `;
-
-  const Content = styled.span`
-    display: inline-block;
-    line-height: 20px;
-    color: #f8f8f8;
-    width: 80%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  `;
-
-  const ContentTitle = (
-    <Title>
-      <Icon type="info-circle" theme="filled" style={{ color: '#04bed6' }} />
-      Information
-    </Title>
-  );
-
-  const Contents = (
-    <div>
-      <ContentsLine>
-        <InnerTitle>Lot</InnerTitle>
-        <Content>texttexttexttexttexttexttexttex</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Slot</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Substrate</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Recipe</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Step</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Time</InnerTitle>
-        <Content>{time}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Parameter</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Value</InnerTitle>
-        <Content>{isNaN(value) ? '' : value}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>USL</InnerTitle>
-        <Content>{isNaN(usl) ? '' : usl}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>UCL</InnerTitle>
-        <Content>{isNaN(ucl) ? '' : ucl}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>LCL</InnerTitle>
-        <Content>{isNaN(lcl) ? '' : lcl}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>LSL</InnerTitle>
-        <Content>{isNaN(lsl) ? '' : lsl}</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>Target</InnerTitle>
-        <Content>{isNaN(target) ? '' : target}</Content>
-      </ContentsLine>
-    </div>
-  );
-
-  notification.open({
-    message: ContentTitle,
-    description: Contents,
-    placement: 'bottomRight',
-    bottom: 10,
-    duration: null,
-  });
 };
 
 export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {
