@@ -11,12 +11,14 @@ const ContentsLine = styled.div`
   display: flex;
   font-size: 12px;
   color: #f8f8f8;
+  border-bottom: 1px solid #555;
+  line-height: 20px;
 `;
 const InnerTitle = styled.span`
   display: inline-block;
   width: 86px;
   min-width: 86px;
-  color: #f8f8f8;
+  color: #cecece;
 `;
 
 const Content = styled.span`
@@ -36,15 +38,15 @@ export const ContentTitle = () => (
   </Title>
 );
 
-export const Contents = ({ time, value, target, usl, ucl, lcl, lsl }) => (
+export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepName, slot }) => (
   <div>
     <ContentsLine>
       <InnerTitle>Lot</InnerTitle>
-      <Content>texttexttexttexttexttexttexttex</Content>
+      <Content>text</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Slot</InnerTitle>
-      <Content>text</Content>
+      <Content>{slot}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Substrate</InnerTitle>
@@ -56,7 +58,11 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl }) => (
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Step</InnerTitle>
-      <Content>text</Content>
+      <Content>{step}</Content>
+    </ContentsLine>
+    <ContentsLine>
+      <InnerTitle>StepName</InnerTitle>
+      <Content>{stepName}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Time</InnerTitle>
@@ -86,14 +92,14 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl }) => (
       <InnerTitle>LSL</InnerTitle>
       <Content>{lsl}</Content>
     </ContentsLine>
-    <ContentsLine>
+    <ContentsLine style={{ borderBottom: '0' }}>
       <InnerTitle>Target</InnerTitle>
       <Content>{target}</Content>
     </ContentsLine>
   </div>
 );
 
-const legendNoti = (time, value, target, lsl, lcl, ucl, usl) =>
+const legendNoti = (time, value, target, lsl, lcl, ucl, usl, step, stepName, slot) =>
   notification.open({
     message: <ContentTitle />,
     description: (
@@ -105,6 +111,9 @@ const legendNoti = (time, value, target, lsl, lcl, ucl, usl) =>
         lcl={isNaN(lcl) ? '' : lcl}
         ucl={isNaN(ucl) ? '' : ucl}
         usl={isNaN(usl) ? '' : usl}
+        step={step}
+        stepName={stepName}
+        slot={slot}
       />
     ),
     placement: 'bottomRight',

@@ -267,7 +267,38 @@ export const _onClickCallback = (
     closestSeries.yval,
     closestSeries.name,
   );
+
   const time = getTimeString(x);
+
+  // console.log('step', step);
+  // console.log('stepName', stepName);
+  console.log('slot', slot);
+
+  // step filter
+  const getStepValue = step
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
+  const getStepName = stepName
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
+  const getSlot = slot
+    .filter(obj => new Date(obj.value).getTime() <= x)
+    .reduce((acc, cur) => {
+      const accX = new Date(acc.value).getTime();
+      const curX = new Date(cur.value).getTime();
+      return accX < curX ? cur : acc;
+    });
+
   legendNoti(
     time,
     points[0].yval,
@@ -276,6 +307,9 @@ export const _onClickCallback = (
     points[3].yval,
     points[4].yval,
     points[5].yval,
+    getStepValue.label,
+    getStepName.label,
+    getSlot.label,
   );
 };
 

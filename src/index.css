@@ -499,7 +499,7 @@ table {
 
 /* point tooltip */
 .ant-notification {
-  width: 200px !important;
+  width: auto !important;
 }
 
 .ant-notification-notice {
