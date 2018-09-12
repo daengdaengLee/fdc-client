@@ -1,4 +1,8 @@
 import { getTimeString } from '../../../assets/js/utils';
+import React from 'react';
+import { notification, Icon } from 'antd';
+import styled from 'styled-components';
+import '../../../index.css';
 
 const _dygraph = {};
 
@@ -254,6 +258,121 @@ export const _onClickCallback = (evt, x, points, id, legend) => {
     closestSeries.yval,
     closestSeries.name,
   );
+  _onOpenPointTooltip();
+};
+
+const _onOpenPointTooltip = () => {
+
+  const Title = styled.h1`
+    color: #f8f8f8;
+    font-size: 13px;
+  `;
+
+  const ContentsLine = styled.div`
+    display: flex;
+    font-size: 12px;
+    color: #f8f8f8;
+  `;
+  const InnerTitle = styled.span`
+    display: inline-block;
+    width: 86px;
+    min-width: 86px;
+    color: #f8f8f8;
+    
+  `;
+
+  const Content = styled.span`
+    display: inline-block;
+    line-height: 20px;
+    color: #f8f8f8;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `;
+
+  const ContentTitle = (
+    <Title>
+      <Icon type="info-circle" theme="filled" style={{ color: '#04bed6' }} />
+      Information
+    </Title>
+  );
+
+  const Contents = (
+    <div>
+      <ContentsLine>
+        <InnerTitle>Lot</InnerTitle>
+        <Content>texttexttexttexttexttexttexttex</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Slot</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Substrate</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Recipe</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Step</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Time</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Parameter</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Value</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>UHL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>USL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>UCL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>LCL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>LSL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>LHL</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+      <ContentsLine>
+        <InnerTitle>Target</InnerTitle>
+        <Content>text</Content>
+      </ContentsLine>
+    </div>
+  );
+
+  notification.config({
+    placement: 'bottomRight',
+    bottom: 10,
+    duration: 0,
+  });
+
+  notification.open({
+    message: ContentTitle,
+    description: Contents,
+  });
 };
 
 export const _onHighlightCallback = (evt, x, points, row, seriesName, id) => {

@@ -496,3 +496,23 @@ table {
 }
 
 /* background-color: #da5e53; */
+
+/* point tooltip */
+.ant-notification {
+  width: 200px !important;
+}
+
+.ant-notification-notice {
+  padding: 10px 20px 15px 20px !important;
+  border-radius: 0 !important;
+  background: #2d2e30e1 !important;
+}
+
+.ant-notification-notice-close {
+  top: 12px;
+}
+
+.ant-notification-notice-close-x {
+  color: #f8f8f8;
+}
+
