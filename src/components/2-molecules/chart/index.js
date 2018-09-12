@@ -265,7 +265,16 @@ class Chart extends Component {
           zoomCallback: (minX, maxX, yRanges) =>
             _onZoomCallback(minX, maxX, yRanges, id),
           clickCallback: (evt, x, points) =>
-            _onClickCallback(evt, x, points, id, legend.current),
+            _onClickCallback(
+              evt,
+              x,
+              points,
+              id,
+              legend.current,
+              step,
+              stepName,
+              slot,
+            ),
           highlightCallback: (evt, x, points, row, seriesName) =>
             _onHighlightCallback(evt, x, points, row, seriesName, id),
         });

@@ -232,7 +232,17 @@ export const _onZoomCallback = (minX, maxX, yRanges, id) => {
   g.__zoomStack__.push({ x: [minX, maxX], y: yRanges[0] });
 };
 
-export const _onClickCallback = (evt, x, points, id, legend) => {
+export const _onClickCallback = (
+  evt,
+  x,
+  points,
+  id,
+  legend,
+  step,
+  stepName,
+  slot,
+) => {
+  notification.destroy();
   const g = _dygraph[id];
   const [xDomCor, yDomCor] = g.eventToDomCoords(evt);
   const [, yDataCor] = g.toDataCoords(xDomCor, yDomCor);
@@ -258,11 +268,19 @@ export const _onClickCallback = (evt, x, points, id, legend) => {
     closestSeries.yval,
     closestSeries.name,
   );
-  _onOpenPointTooltip();
+  const time = getTimeString(x);
+  _onOpenPointTooltip(
+    time,
+    points[0].yval,
+    points[1].yval,
+    points[2].yval,
+    points[3].yval,
+    points[4].yval,
+    points[5].yval,
+  );
 };
 
-const _onOpenPointTooltip = () => {
-
+const _onOpenPointTooltip = (time, value, target, lsl, lcl, ucl, usl) => {
   const Title = styled.h1`
     color: #f8f8f8;
     font-size: 13px;
@@ -278,7 +296,6 @@ const _onOpenPointTooltip = () => {
     width: 86px;
     min-width: 86px;
     color: #f8f8f8;
-    
   `;
 
   const Content = styled.span`
@@ -322,7 +339,7 @@ const _onOpenPointTooltip = () => {
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>Time</InnerTitle>
-        <Content>text</Content>
+        <Content>{time}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>Parameter</InnerTitle>
@@ -330,48 +347,37 @@ const _onOpenPointTooltip = () => {
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>Value</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>UHL</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(value) ? '' : value}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>USL</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(usl) ? '' : usl}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>UCL</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(ucl) ? '' : ucl}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>LCL</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(lcl) ? '' : lcl}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>LSL</InnerTitle>
-        <Content>text</Content>
-      </ContentsLine>
-      <ContentsLine>
-        <InnerTitle>LHL</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(lsl) ? '' : lsl}</Content>
       </ContentsLine>
       <ContentsLine>
         <InnerTitle>Target</InnerTitle>
-        <Content>text</Content>
+        <Content>{isNaN(target) ? '' : target}</Content>
       </ContentsLine>
     </div>
   );
 
-  notification.config({
-    placement: 'bottomRight',
-    bottom: 10,
-    duration: 0,
-  });
-
   notification.open({
     message: ContentTitle,
     description: Contents,
+    placement: 'bottomRight',
+    bottom: 10,
+    duration: null,
   });
 };
 
