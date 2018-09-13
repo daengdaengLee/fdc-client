@@ -9,9 +9,11 @@ import {
   setParams,
   clickParam,
   setSelected,
+  SET_SELECTED,
 } from '../modules/parameters';
 import { fetchStart as fetchStartCharts } from '../modules/charts';
 import { getParameters } from '../../assets/js/requests';
+import { _releaseG } from '../../components/2-molecules/chart/helpers';
 
 // Helpers
 
@@ -43,6 +45,10 @@ function* fetchStartSaga({ fab, mod, from, to, lot }) {
   );
 }
 
+function* setSelectedSaga() {
+  yield _releaseG(0);
+}
+
 function* clickParamSaga({ param }) {
   const {
     trees: { fab, selected: selectedMod },
@@ -67,10 +73,19 @@ function* watchFetchStart() {
   yield takeEvery(FETCH_START, fetchStartSaga);
 }
 
+function* watchSetSelected() {
+  yield takeEvery(SET_SELECTED, setSelectedSaga);
+}
+
 function* watchClickParam() {
   yield takeEvery(CLICK_PARAM, clickParamSaga);
 }
 
 export default function* parametersSaga() {
-  yield all([watchRequestFetch(), watchFetchStart(), watchClickParam()]);
+  yield all([
+    watchRequestFetch(),
+    watchFetchStart(),
+    watchSetSelected(),
+    watchClickParam(),
+  ]);
 }

@@ -8,7 +8,15 @@ const _dygraph = {};
 
 export const _registerG = (id, g) => (_dygraph[id] = g);
 
-export const _releaseG = id => delete _dygraph[id];
+export const _releaseG = id => {
+  const {
+    charts: { chartEl },
+  } = store.getState();
+  const container = chartEl[id];
+  delete _dygraph[id];
+  if (!container) return;
+  container.current.childNodes.forEach(node => node.remove());
+};
 
 export const _getG = id => _dygraph[id];
 
@@ -86,8 +94,12 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
 };
 
 export const _generateTicks = (min, max, g, step, stepName, slot, id) => {
-  const { charts: { tickLabels } } = store.getState();
-  const selectedLabels = tickLabels.filter(obj => obj.selected).map(obj => obj.key);
+  const {
+    charts: { tickLabels },
+  } = store.getState();
+  const selectedLabels = tickLabels
+    .filter(obj => obj.selected)
+    .map(obj => obj.key);
   const stepTicks = step.reduce(
     (acc, cur) => ({
       ...acc,
@@ -386,7 +398,17 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
 
 export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   console.time('render');
-  const { data: csv, slot, step, step_name: stepName, recipe } = data;
+  const {
+    data: csv,
+    slot: _slot,
+    step: _step,
+    step_name: _stepName,
+    recipe: _recipe,
+  } = data;
+  const slot = !_slot ? [] : _slot;
+  const step = !_step ? [] : _step;
+  const stepName = !_stepName ? [] : _stepName;
+  const recipe = !_recipe ? [] : _recipe;
   const firstLfIdx = csv.indexOf('\n');
   const labels = csv
     .slice(0, firstLfIdx)

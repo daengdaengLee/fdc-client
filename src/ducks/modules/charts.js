@@ -5,6 +5,7 @@ export const FETCH_FAIL = 'charts/FETCH_FAIL';
 export const SET_CHART_EL = 'charts/SET_CHART_EL';
 export const TOGGLE_TICK_LABEL = 'charts/TOGGLE_TICK_LABEL';
 export const CLICK_ZOOM_RESET = 'charts/CLICK_ZOOM_RESET';
+export const SET_CHART_SERIES = 'charts/SET_CHART_SERIES';
 
 // Init State
 const initState = {
@@ -28,6 +29,7 @@ const initState = {
       selected: true,
     },
   ],
+  chartSeries: {},
 };
 
 // Reducer
@@ -43,6 +45,8 @@ export default function chartsReducer(state = initState, action = {}) {
     return applySetChartEl(state, action);
   case TOGGLE_TICK_LABEL:
     return applyToggleTickLabel(state, action);
+  case SET_CHART_SERIES:
+    return applySetChartSeries(state, action);
   default:
     return state;
   }
@@ -99,6 +103,14 @@ export function clickZoomReset({ id }) {
   };
 }
 
+export function setChartSeries({ id, series }) {
+  return {
+    type: SET_CHART_SERIES,
+    id,
+    series,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return { ...state, isLoading: true, isError: false };
@@ -127,5 +139,15 @@ function applyToggleTickLabel(state, { label, onOff }) {
       { ...target, selected: onOff },
       ...state.tickLabels.slice(idx + 1),
     ],
+  };
+}
+
+function applySetChartSeries(state, { id, series }) {
+  return {
+    ...state,
+    chartSeries: {
+      ...state.chartSeries,
+      [id]: series,
+    },
   };
 }
