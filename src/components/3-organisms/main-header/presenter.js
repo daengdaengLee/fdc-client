@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Icon } from 'antd';
-import IconTable from '../../../assets/img/ic-table.png';
-import IconChart from '../../../assets/img/ic-chart.png';
+// import IconTable from '../../../assets/img/ic-table.png';
+// import IconChart from '../../../assets/img/ic-chart.png';
 
 const Container = styled.div`
   width: 100%;

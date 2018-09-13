@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { Icon } from 'antd';
 import '../../../index.css';
 
 const ContextMenuBox = styled.ul.attrs({

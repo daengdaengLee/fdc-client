@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Dropdown, Button, Menu, Checkbox, Icon } from 'antd';
+import { Select, Menu, Checkbox } from 'antd';
 import Chart from '../../2-molecules/chart';
 import ChartControllerDropdown from '../../2-molecules/chart-controller-dropdown';
 

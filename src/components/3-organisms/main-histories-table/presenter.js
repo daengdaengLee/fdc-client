@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Menu, Dropdown, Button, Icon, Switch } from 'antd';
+import { Menu, Dropdown, Button, Icon } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
 import '../../../index.css';
 import separatorLine from '../../../assets/img/ic-separatorLine.png';
