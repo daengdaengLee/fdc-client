@@ -288,7 +288,9 @@ class MainNavigation extends Component {
   _generateGoMenu() {
     const { _onClickGoMenu } = this;
     return (
-      <Menu onClick={_onClickGoMenu}>
+      <Menu 
+        style={{ borderRadius: '0' }}
+        onClick={_onClickGoMenu}>
         <Menu.Item disabled style={{ fontSize: '12px' }} key="realtime">
           <Icon type="area-chart" />
           Real Time View

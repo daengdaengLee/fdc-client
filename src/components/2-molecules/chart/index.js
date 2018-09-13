@@ -33,7 +33,7 @@ const ChartHeader = styled.div`
   display: flex;
   font-size: 13px;
   margin-bottom: 20px;
-  margin-top: 10px;
+  margin-top: 15px;
   justify-content: space-between;
 `;
 
@@ -44,7 +44,8 @@ const LeftSide = styled.div`
 
 const Title = styled.div`
   font-weight: 400;
-  font-size: 18px;
+  font-size: 14px;
+  margin-left: 17px;
   color: #666666;
   display: flex;
   align-items: center;
@@ -81,7 +82,7 @@ const ChartContainer = styled.div`
   flex-grow: 1;
   margin-right: 20px;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 class Chart extends Component {

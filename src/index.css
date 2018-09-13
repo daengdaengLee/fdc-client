@@ -445,19 +445,19 @@ table {
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item:hover {
-  color: #da5e53 !important;
+  color: #10d4a3 !important;
   border: 0;
-  border-bottom: 1px solid #da5e53 !important;
+  border-bottom: 1px solid #10d4a3 !important;
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item-selected {
-  color: #da5e53 !important;
-  border-bottom: 2px solid #da5e53 !important;
+  color: #10d4a3 !important;
+  border-bottom: 2px solid #10d4a3 !important;
   font-weight: 500;
 }
 
 .lot-wafer .ant-btn > i, .ant-btn > span {
-  color: #f8f8f8;
+  color: #535353;
 }
 
 .lot-wafer .anticon-down {

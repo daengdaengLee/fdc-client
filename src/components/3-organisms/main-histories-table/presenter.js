@@ -22,7 +22,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   padding: 0 20px;
   margin-bottom: -15px;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const TableArea = styled.div`
@@ -67,6 +67,8 @@ class MainHistoriesTable extends Component {
     return (
       <Container className="lot-wafer" active={location === 'histories'}>
         <HeaderContainer>
+          
+          
           <Menu
             onClick={({ key }) => onSelectBy(key)}
             selectedKeys={[by]}
@@ -98,11 +100,12 @@ class MainHistoriesTable extends Component {
             <Button 
               style={{ 
                 width: '160px', 
-                backgroundColor: 'transparent', 
+                backgroundColor: '#f8f8f8', 
                 borderRadius: '0', 
                 fontSize: '12px',
                 border: '0',
-                borderBottom: '1px solid #b4b4b4' }}>
+                // borderBottom: '1px solid #b4b4b4' 
+              }}>
               View Trace Data<Icon type="down" />
             </Button>
           </Dropdown>
@@ -142,12 +145,16 @@ class MainHistoriesTable extends Component {
   _generateViewTraceDataMenu() {
     const { _onClickViewTraceDataMenu } = this;
     return (
-      <Menu onClick={_onClickViewTraceDataMenu}>
-        <Menu.Item key="time">Time</Menu.Item>
-        <Menu.Item disabled key="lot">
+      <Menu
+        style={{ borderRadius: '0' }}
+        onClick={_onClickViewTraceDataMenu}>
+        <Menu.Item key="time" style={{ fontSize: '12px' }}>
+          Time
+        </Menu.Item>
+        <Menu.Item disabled key="lot" style={{ fontSize: '12px' }}>
           Lot
         </Menu.Item>
-        <Menu.Item disabled key="overlay">
+        <Menu.Item disabled key="overlay" style={{ fontSize: '12px' }}>
           Overlay
         </Menu.Item>
       </Menu>

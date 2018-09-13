@@ -51,7 +51,7 @@ class ColCell extends Component {
           justifyContent: 'space-between',
           padding: '0 0 0 10px',
           position: 'relative',
-          fontSize: '12px',
+          fontSize: '11px',
         }}
         onContextMenu={event => onContextMenu({ event, type: 'col', col })}
       >

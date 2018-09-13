@@ -111,7 +111,7 @@ export const _generateTicks = (
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: { timeTag: `<span>${cur.value}</span>`, stepNameTag },
+        [unixdate]: { timeTag: `<span style="margin: 5px 0; font-size: 11px; ">${cur.value}</span>`, stepNameTag },
       }
       : {
         ...acc,
@@ -120,7 +120,7 @@ export const _generateTicks = (
   }, stepTicks);
   const slotTicks = slot.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8; ${
+    const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
       selectedLabels.includes('SLOT') ? '' : 'display: none;'
     }" class="${id}-SLOT">${cur.label}</span>`;
     return !acc[unixdate]

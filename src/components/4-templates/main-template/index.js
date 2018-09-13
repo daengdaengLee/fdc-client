@@ -29,6 +29,8 @@ const Top = styled.div`
   height: 35px;
   min-height: 35px;
   overflow: hidden;
+  padding: 0 20px;
+  margin-top: 20px;
 `;
 
 const Center = styled.div`

@@ -33,7 +33,7 @@ const Content = styled.span`
 
 export const ContentTitle = () => (
   <Title>
-    <Icon type="info-circle" theme="filled" style={{ color: '#04bed6' }} />
+    <Icon type="info-circle" theme="filled" style={{ color: '#24ffc8' }} />
     Information
   </Title>
 );

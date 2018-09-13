@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Dropdown, Button, Menu, Checkbox } from 'antd';
+import { Select, Dropdown, Button, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
 import { _getG, _toggleSeries } from '../../2-molecules/chart/helpers';
 
@@ -37,7 +37,6 @@ const Header = styled.div`
 const SelectArea = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 14px;
 `;
 
 const SelectLabel = styled.span`
@@ -138,10 +137,33 @@ class MainChartPresenter extends Component {
           </SelectArea>
           <SelectArea>
             <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
-              <Button>Series</Button>
+              <Button 
+                style={{ 
+                  width: '160px',
+                  borderRadius: '0',
+                  border: '0',
+                  fontSize: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center' }} >
+                Series
+                <Icon type="down" theme="outlined" />
+              </Button>
             </Dropdown>
             <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
-              <Button>Labels</Button>
+              <Button
+                style={{ 
+                  width: '160px',
+                  marginLeft: '10px',
+                  borderRadius: '0',
+                  border: '0',
+                  fontSize: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center' }} >
+                Labels
+                <Icon type="down" theme="outlined" />
+              </Button>
             </Dropdown>
           </SelectArea>
         </Header>
@@ -179,9 +201,13 @@ class MainChartPresenter extends Component {
     const { _onClickLabelsDropdownMenu } = this;
     const { chartLabels } = this.state;
     return (
-      <Menu onClick={_onClickLabelsDropdownMenu}>
+      <Menu 
+        style={{ borderRadius: '0' }}
+        onClick={_onClickLabelsDropdownMenu}>
         {chartLabels.map(label => (
-          <Menu.Item key={label.key}>
+          <Menu.Item 
+            style={{ fontSize: '12px' }}
+            key={label.key}>
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}
