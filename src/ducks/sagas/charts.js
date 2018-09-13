@@ -33,12 +33,12 @@ function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
     lot,
     param,
   );
-  if (!success || !data || !data.data) {
+  if (!success || !data) {
     yield put(
       fetchFail({
         message: !success
           ? 'Failed to fetch'
-          : !data || !data.data
+          : !data
             ? 'No data'
             : 'Uncaught error',
       }),

@@ -298,7 +298,7 @@ export const _onClickCallback = (
     if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
-  const delta = Math.abs(closestSeries.yval - yDataCor);
+  const delta = Math.abs(closestSeries.canvasy - yDomCor);
   if (delta > 10 || isNaN(delta)) {
     _highlightSeries(g, undefined);
     // _updateLegend(legend, undefined, undefined, undefined);
@@ -404,12 +404,13 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
 export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   console.time('render');
   const {
-    data: csv,
+    data: _csv,
     slot: _slot,
     step: _step,
     step_name: _stepName,
     recipe: _recipe,
   } = data;
+  const csv = !_csv ? 'X\n' : _csv;
   const slot = !_slot ? [] : _slot;
   const step = !_step ? [] : _step;
   const stepName = !_stepName ? [] : _stepName;
