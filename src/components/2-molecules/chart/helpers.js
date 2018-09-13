@@ -1,3 +1,4 @@
+import Dygraph from 'dygraphs';
 import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
@@ -266,10 +267,8 @@ export const _onClickCallback = (
   x,
   points,
   id,
-  selectedSeries,
   param,
   lot,
-  legend,
   step,
   stepName,
   slot,
@@ -291,16 +290,16 @@ export const _onClickCallback = (
   const delta = Math.abs(closestSeries.yval - yDataCor);
   if (delta > 10 || isNaN(delta)) {
     _highlightSeries(g, undefined);
-    _updateLegend(legend, undefined, undefined, undefined);
+    // _updateLegend(legend, undefined, undefined, undefined);
     return;
   }
   _highlightSeries(g, closestSeries.name);
-  _updateLegend(
-    legend,
-    closestSeries.xval,
-    closestSeries.yval,
-    closestSeries.name,
-  );
+  // _updateLegend(
+  //   legend,
+  //   closestSeries.xval,
+  //   closestSeries.yval,
+  //   closestSeries.name,
+  // );
 
   const time = getTimeString(x);
 
@@ -390,3 +389,88 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
 //     !isNaN(canvasy) &&
 //     _drawHighlightPoint(g, canvasx, canvasy);
 // };
+
+export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
+  console.time('render');
+  const { data: csv, slot, step, step_name: stepName, recipe } = data;
+  const firstLfIdx = csv.indexOf('\n');
+  const labels = csv
+    .slice(0, firstLfIdx)
+    .split(',')
+    .map(label => label.trim());
+  const lslLabel = labels[3];
+  const lclLabel = labels[4];
+  const uclLabel = labels[5];
+  const uslLabel = labels[6];
+  const series = {
+    [uclLabel]: {
+      strokeWidth: 0,
+      plotter: _plotter(lslLabel, lclLabel, uclLabel, uslLabel),
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [lclLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [uslLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [lslLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+  };
+  const axes = {
+    x: {
+      axisLabelWidth: 160,
+      ticker: (min, max, pixels, opt, g) =>
+        _generateTicks(min, max, g, step, stepName, slot, selectedLabels, id),
+    },
+  };
+  const g = new Dygraph(container.current, csv, {
+    xRangePad: 20,
+    drawPoints: false,
+    highlightCircleSize: 0,
+    highlightSeriesBackgroundAlpha: 1,
+    axisLabelFontSize: 12,
+    legendFormatter: () => '',
+    axes,
+    series: { ...series },
+    interactionModel: {
+      ...Dygraph.defaultInteractionModel,
+      // click: (evt, g, context) =>
+      //   _onClickInteraction(evt, g, context, legend.current),
+      dblclick: _onDoubleClickInteraction,
+      // mousemove: _onMouseMoveInteraction,
+    },
+    zoomCallback: (minX, maxX, yRanges) =>
+      _onZoomCallback(minX, maxX, yRanges, id),
+    clickCallback: (evt, x, points) =>
+      _onClickCallback(
+        evt,
+        x,
+        points,
+        id,
+        param,
+        lot,
+        step,
+        stepName,
+        slot,
+        recipe,
+      ),
+    highlightCallback: (evt, x, points, row, seriesName) =>
+      _onHighlightCallback(evt, x, points, row, seriesName, id),
+  });
+  const initYRange = _addYPadding(g);
+  g.__zoomStack__ = [{ x: null, y: initYRange }];
+  g.__colorOrigin__ = { ...g.colorsMap_ };
+  g.__seriesOrigin__ = series;
+  _registerG(id, g);
+  window.g = g;
+  console.timeEnd('render');
+};

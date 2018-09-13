@@ -46,28 +46,6 @@ const Option = Select.Option;
 class MainChartPresenter extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      chartLabels: [
-        {
-          key: 'STEP',
-          display: 'Step',
-          selected: true,
-        },
-        {
-          key: 'STEP_NAME',
-          display: 'Step Name',
-          selected: true,
-        },
-        {
-          key: 'SLOT',
-          display: 'Slot',
-          selected: true,
-        },
-      ],
-      chartSeries: [],
-      chartId: null,
-    };
-    this._onRegisterChartId = this._onRegisterChartId.bind(this);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
     this._makeSeriesDropdownMenu = this._makeSeriesDropdownMenu.bind(this);
     this._onClickLabelsDropdownMenu = this._onClickLabelsDropdownMenu.bind(
@@ -82,35 +60,17 @@ class MainChartPresenter extends Component {
   }
 
   render() {
-    const {
-      _makeLabelsDropdownMenus,
-      _makeSeriesDropdownMenu,
-      _onRegisterChartId,
-    } = this;
+    const { _makeLabelsDropdownMenus, _makeSeriesDropdownMenu } = this;
     const {
       parameters,
       selectedParams,
       onClickParam,
-      onFetchStart,
-      onFetchSuccess,
-      onFetchFail,
-      fab,
-      mod,
-      from,
-      to,
-      lot,
       location,
+      onSetChartEl,
     } = this.props;
-    const { chartLabels, chartSeries } = this.state;
     const selectedParamObj = parameters.find(obj =>
       selectedParams.includes(obj.PARAM_NAME),
     );
-    const selectedLabels = chartLabels
-      .filter(obj => obj.selected)
-      .map(obj => obj.key);
-    const selectedSeries = chartSeries
-      .filter(obj => obj.selected)
-      .map(obj => obj.key);
     return (
       <Container active={location === 'charts'}>
         <Header>
@@ -134,7 +94,7 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
+            {/* <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
               <Button
                 style={{
                   width: '160px',
@@ -147,9 +107,13 @@ class MainChartPresenter extends Component {
                 }}
               >
                 Series
-                <Icon type="down" theme="outlined" style={{ paddingRight: '0' }} />
+                <Icon
+                  type="down"
+                  theme="outlined"
+                  style={{ paddingRight: '0' }}
+                />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
               <Button
                 style={{
@@ -164,59 +128,47 @@ class MainChartPresenter extends Component {
                 }}
               >
                 Labels
-                <Icon type="down" theme="outlined" style={{ paddingRight: '0' }} />
+                <Icon
+                  type="down"
+                  theme="outlined"
+                  style={{ paddingRight: '0' }}
+                />
               </Button>
             </Dropdown>
           </SelectArea>
         </Header>
         <ChartArea>
           <Chart
-            fab={fab}
-            mod={mod}
-            from={from}
-            to={to}
-            lot={lot}
-            param={selectedParamObj}
-            selectedLabels={selectedLabels}
-            selectedSeries={selectedSeries}
-            onFetchStart={onFetchStart}
-            onFetchSuccess={onFetchSuccess}
-            onFetchFail={onFetchFail}
-            onRegisterId={_onRegisterChartId}
+            param={!selectedParamObj ? '' : selectedParamObj.PARAM_INFO}
+            id="0"
+            onZoomReset={id => {}}
+            onSetChartEl={onSetChartEl}
           />
         </ChartArea>
       </Container>
     );
   }
 
-  _onRegisterChartId(id) {
-    if (id === null) return this.setState({ chartId: null });
-    const g = _getG(id);
-    const labels = g.getLabels();
-    this.setState({
-      chartId: id,
-      chartSeries: labels
-        .slice(1, 3)
-        .map(label => ({ key: label, display: label, selected: true })),
-    });
-  }
-
   _makeLabelsDropdownMenus() {
-    const { _onClickLabelsDropdownMenu } = this;
-    const { chartLabels } = this.state;
+    const { onClickLabelsDropdownMenu, tickLabels } = this.props;
     return (
-      <Menu 
-        className='series-label-select'
+      <Menu
+        className="series-label-select"
         style={{ borderRadius: '0' }}
-        onClick={_onClickLabelsDropdownMenu}>
-        {chartLabels.map(label => (
-          <Menu.Item 
-            style={{ fontSize: '12px', color: label.selected ? '#535353' : '#ccc' }}
-            key={label.key}>
+        onClick={onClickLabelsDropdownMenu}
+      >
+        {tickLabels.map(label => (
+          <Menu.Item
+            style={{
+              fontSize: '12px',
+              color: label.selected ? '#535353' : '#ccc',
+            }}
+            key={label.key}
+          >
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}
-              onChange={() => _onClickLabelsDropdownMenu({ key: label.key })}
+              onChange={() => onClickLabelsDropdownMenu({ key: label.key })}
             />
             {label.display}
           </Menu.Item>
@@ -226,22 +178,30 @@ class MainChartPresenter extends Component {
   }
 
   _makeSeriesDropdownMenu() {
-    const { _onCheckSeriesDropdownMenu, _onClickSeriesDropdownMenu } = this;
-    const { chartSeries } = this.state;
+    const {
+      onCheckSeriesDropdownMenu,
+      onClickSeriesDropdownMenu,
+      chartSeries,
+    } = this.props;
     return (
-      <Menu 
-        className='series-label-select'
+      <Menu
+        className="series-label-select"
         style={{ borderRadius: '0' }}
-        onClick={_onClickSeriesDropdownMenu} >
+        onClick={onClickSeriesDropdownMenu}
+      >
         {chartSeries.map(series => (
-          <Menu.Item 
-            style={{ fontSize: '12px', color: series.selected ? '#535353' : '#ccc' }}
-            key={series.key}>
+          <Menu.Item
+            style={{
+              fontSize: '12px',
+              color: series.selected ? '#535353' : '#ccc',
+            }}
+            key={series.key}
+          >
             <Checkbox
               name={series.key}
               checked={series.selected}
               style={{ marginRight: '10px' }}
-              onChange={_onCheckSeriesDropdownMenu}
+              onChange={onCheckSeriesDropdownMenu}
             />
             {series.display}
           </Menu.Item>

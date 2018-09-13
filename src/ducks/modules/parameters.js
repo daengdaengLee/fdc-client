@@ -4,6 +4,7 @@ export const FETCH_START = 'parameters/FETCH_START';
 export const FETCH_SUCCESS = 'parameters/FETCH_SUCCESS';
 export const FETCH_FAIL = 'parameters/FETCH_FAIL';
 export const SET_PARAMS = 'parameters/SET_PARAMS';
+export const CLICK_PARAM = 'parameters/CLICK_PARAM';
 export const SET_SELECTED = 'parameters/SET_SELECTED';
 
 // Init State
@@ -71,6 +72,13 @@ export function setParams({ params }) {
   return {
     type: SET_PARAMS,
     params,
+  };
+}
+
+export function clickParam({ param }) {
+  return {
+    type: CLICK_PARAM,
+    param,
   };
 }
 

@@ -2,12 +2,31 @@
 export const FETCH_START = 'charts/FETCH_START';
 export const FETCH_SUCCESS = 'charts/FETCH_SUCCESS';
 export const FETCH_FAIL = 'charts/FETCH_FAIL';
+export const SET_CHART_EL = 'charts/SET_CHART_EL';
 export const TOGGLE_TICK_LABEL = 'charts/TOGGLE_TICK_LABEL';
 
 // Init State
 const initState = {
   isLoading: false,
   isError: false,
+  chartEl: {},
+  tickLabels: [
+    {
+      key: 'STEP',
+      display: 'Step',
+      selected: true,
+    },
+    {
+      key: 'STEP_NAME',
+      display: 'Step Name',
+      selected: true,
+    },
+    {
+      key: 'SLOT',
+      display: 'Slot',
+      selected: true,
+    },
+  ],
 };
 
 // Reducer
@@ -19,15 +38,24 @@ export default function chartsReducer(state = initState, action = {}) {
     return applyFetchSuccess(state, action);
   case FETCH_FAIL:
     return applyFetchFail(state, action);
+  case SET_CHART_EL:
+    return applySetChartEl(state, action);
   default:
     return state;
   }
 }
 
 // Action Creators
-export function fetchStart() {
+export function fetchStart({ fab, mod, from, to, lot, param, chartId }) {
   return {
     type: FETCH_START,
+    fab,
+    mod,
+    from,
+    to,
+    lot,
+    param,
+    chartId,
   };
 }
 
@@ -37,9 +65,18 @@ export function fetchSuccess() {
   };
 }
 
-export function fetchFail() {
+export function fetchFail({ message }) {
   return {
     type: FETCH_FAIL,
+    message,
+  };
+}
+
+export function setChartEl({ el, id }) {
+  return {
+    type: SET_CHART_EL,
+    el,
+    id,
   };
 }
 
@@ -63,4 +100,8 @@ function applyFetchSuccess(state) {
 
 function applyFetchFail(state) {
   return { ...state, isLoading: false, isError: true };
+}
+
+function applySetChartEl(state, { el, id }) {
+  return { ...state, chartEl: { ...state.chartEl, [id]: el } };
 }

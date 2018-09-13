@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
-import { setSelected } from '../../../ducks/modules/parameters';
+import { clickParam } from '../../../ducks/modules/parameters';
 import {
   fetchStart,
   fetchSuccess,
   fetchFail,
   toggleTickLabel,
+  setChartEl,
 } from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
@@ -21,16 +22,19 @@ const mapStateToProps = state => {
     to: state.dates.to,
     lot: selectedHistory ? selectedHistory.LOT_ID : '',
     location: state.routes.location,
+    tickLabels: state.charts.tickLabels,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onClickParam: param => dispatch(setSelected({ selected: [param] })),
+  onClickParam: param => dispatch(clickParam({ param })),
   onFetchStart: () => dispatch(fetchStart()),
   onFetchSuccess: () => dispatch(fetchSuccess()),
   onFetchFail: () => dispatch(fetchFail()),
   onToggleTickLabel: (id, label, onOff) =>
     dispatch(toggleTickLabel({ id, label, onOff })),
+  onSetChartEl: (id, el) => dispatch(setChartEl({ el, id })),
+  onClickLabelsDropdownMenu: ({ key }) => {},
 });
 
 export default connect(
