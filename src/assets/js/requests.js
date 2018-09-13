@@ -5,10 +5,11 @@ const BASE_URL = '';
 /**
  *
  * @param {string} fab fab id
+ * @param {boolean} isDeleteCach flag to delete cach or not
  */
-export const getTree = fab =>
+export const getTree = (fab, isDeleteCach) =>
   axios
-    .get(`${BASE_URL}/fdc/module/${fab}`)
+    .get(`${BASE_URL}/fdc/module/${fab}/${isDeleteCach ? 1 : ''}`)
     .then(({ data }) => ({ success: true, data }))
     .catch(() => ({ success: false, data: [] }));
 
