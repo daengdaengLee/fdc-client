@@ -55,9 +55,14 @@ export function notiError(message, desc) {
     description: desc,
     placement: 'bottomRight',
     style: {
-      width: 660,
       marginLeft: -260,
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: 12,
+      borderRadius: 0,
+      bottom: 10,
     },
+    duration: 0,
   });
 }
 

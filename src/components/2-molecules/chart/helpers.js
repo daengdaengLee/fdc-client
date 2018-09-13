@@ -51,7 +51,8 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
       !isNaN(lslPoints[i].canvasy) &&
       !isNaN(lslPoints[i + 1].canvasy)
     ) {
-      ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      // ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      ctx.fillStyle = 'rgba(16, 212, 163, 0.3)';
       ctx.beginPath();
       ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
       ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
@@ -70,7 +71,8 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
       !isNaN(lclPoints[i].canvasy) &&
       !isNaN(lclPoints[i + 1].canvasy)
     ) {
-      ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      // ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      ctx.fillStyle = 'rgba(244, 218, 46, 0.3)';
       ctx.beginPath();
       ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
       ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);

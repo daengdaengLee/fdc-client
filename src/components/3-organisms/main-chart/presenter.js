@@ -18,9 +18,10 @@ const Container = styled.div.attrs({
 `;
 
 const Header = styled.div`
-  height: 80px;
   display: flex;
-  padding: 20px;
+  padding: 0 20px;
+  margin-top: 24px;
+  margin-bottom: 10px;
   justify-content: space-between;
 `;
 
@@ -31,7 +32,7 @@ const SelectArea = styled.div`
 
 const SelectLabel = styled.span`
   margin-right: 10px;
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 const ChartArea = styled.div`
@@ -114,6 +115,7 @@ class MainChartPresenter extends Component {
       <Container active={location === 'charts'}>
         <Header>
           <SelectArea className="parameters">
+            {/* <Icon type="profile" theme="filled" /> */}
             <SelectLabel>Parameters: </SelectLabel>
             <Select
               value={selectedParams}
@@ -145,7 +147,7 @@ class MainChartPresenter extends Component {
                 }}
               >
                 Series
-                <Icon type="down" theme="outlined" />
+                <Icon type="down" theme="outlined" style={{ paddingRight: '0' }} />
               </Button>
             </Dropdown>
             <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
@@ -162,7 +164,7 @@ class MainChartPresenter extends Component {
                 }}
               >
                 Labels
-                <Icon type="down" theme="outlined" />
+                <Icon type="down" theme="outlined" style={{ paddingRight: '0' }} />
               </Button>
             </Dropdown>
           </SelectArea>
@@ -203,9 +205,14 @@ class MainChartPresenter extends Component {
     const { _onClickLabelsDropdownMenu } = this;
     const { chartLabels } = this.state;
     return (
-      <Menu style={{ borderRadius: '0' }} onClick={_onClickLabelsDropdownMenu}>
+      <Menu 
+        className='series-label-select'
+        style={{ borderRadius: '0' }}
+        onClick={_onClickLabelsDropdownMenu}>
         {chartLabels.map(label => (
-          <Menu.Item style={{ fontSize: '12px' }} key={label.key}>
+          <Menu.Item 
+            style={{ fontSize: '12px', color: label.selected ? '#535353' : '#ccc' }}
+            key={label.key}>
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}
@@ -222,9 +229,14 @@ class MainChartPresenter extends Component {
     const { _onCheckSeriesDropdownMenu, _onClickSeriesDropdownMenu } = this;
     const { chartSeries } = this.state;
     return (
-      <Menu style={{ borderRadius: '0' }} onClick={_onClickSeriesDropdownMenu}>
+      <Menu 
+        className='series-label-select'
+        style={{ borderRadius: '0' }}
+        onClick={_onClickSeriesDropdownMenu} >
         {chartSeries.map(series => (
-          <Menu.Item key={series.key}>
+          <Menu.Item 
+            style={{ fontSize: '12px', color: series.selected ? '#535353' : '#ccc' }}
+            key={series.key}>
             <Checkbox
               name={series.key}
               checked={series.selected}

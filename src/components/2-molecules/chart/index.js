@@ -58,17 +58,18 @@ const Legend = styled.div`
   font-weight: 500;
   display: flex;
   align-items: center;
+  
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 40px;
 `;
-// margin-right: 30px;
-// margin-top: 15px;
-// height: 25px;
-//   width: 25px;
 
 const ZoomOutImg = styled.img`
   width: 18px;

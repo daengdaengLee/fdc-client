@@ -30,11 +30,11 @@ const MainHeader = ({ location, onClickHistory, onClickTrace }) => (
       <Fragment>
         <Link onClick={onClickHistory} active={location === 'histories'}>
           <Icon type="table" theme="outlined" 
-            style={{ color: location === 'histories' ? '#208d9b' : '#535353' }} />Lot / Wafer History View
+            style={{ color: location === 'histories' ? '#09a9be' : '#535353' }} />Lot / Wafer History View
         </Link>
         <Link onClick={onClickTrace} active={location === 'charts'}>
           <Icon type="area-chart" theme="outlined"
-            style={{ color: location === 'charts' ? '#208d9b' : '#535353' }} />Trace Data View
+            style={{ color: location === 'charts' ? '#09a9be' : '#535353' }} />Trace Data View
         </Link>
       </Fragment>
     )}

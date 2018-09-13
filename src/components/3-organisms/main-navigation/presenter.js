@@ -187,17 +187,20 @@ class MainNavigation extends Component {
             format={DATE_FORMAT}
             onChange={(_, from) => onSelectFrom(from)}
             style={{ width: 'calc(50% - 3px)', marginRight: '6px' }}
+            dropdownClassName='date-picker'
+            popupStyle={{ backgroundColor: 'red' }}
           />
           <DatePicker
             value={!to ? null : moment(to, DATE_FORMAT)}
             format={DATE_FORMAT}
             onChange={(_, to) => onSelectTo(to)}
             style={{ width: 'calc(50% - 3px)' }}
+            dropdownClassName='date-picker'
           />
         </PickerContainer>
 
         <ButtonContainer>
-          <Dropdown overlay={_generateGoMenu()}>
+          <Dropdown overlay={_generateGoMenu()} trigger={['click']}>
             <Button
               style={{
                 width: '100%',

@@ -150,6 +150,12 @@ const legendNoti = (
     placement: 'bottomRight',
     bottom: 10,
     duration: null,
+    style: {
+      backgroundColor: '#2d2e30e1',
+      marginBottom: '-5px',
+      marginRight: '-5px',
+      borderRadius: 0,
+    },
   });
 
 legendNoti.destroy = () => notification.destroy();
