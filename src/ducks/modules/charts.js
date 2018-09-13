@@ -6,6 +6,9 @@ export const SET_CHART_EL = 'charts/SET_CHART_EL';
 export const TOGGLE_TICK_LABEL = 'charts/TOGGLE_TICK_LABEL';
 export const CLICK_ZOOM_RESET = 'charts/CLICK_ZOOM_RESET';
 export const SET_CHART_SERIES = 'charts/SET_CHART_SERIES';
+export const TOGGLE_CHART_SERIES = 'charts/TOGGLE_CHART_SERIES';
+export const SET_CHART_HIGHLIGHTS = 'charts/SET_CHART_HIGHLIGHTS';
+export const TOGGLE_CHART_HIGHLIGHT = 'charts/TOGGLE_CHART_HIGHLIGHT';
 
 // Init State
 const initState = {
@@ -30,6 +33,7 @@ const initState = {
     },
   ],
   chartSeries: {},
+  chartHighlights: {},
 };
 
 // Reducer
@@ -47,6 +51,10 @@ export default function chartsReducer(state = initState, action = {}) {
     return applyToggleTickLabel(state, action);
   case SET_CHART_SERIES:
     return applySetChartSeries(state, action);
+  case TOGGLE_CHART_SERIES:
+    return applyToggleChartSeries(state, action);
+  case SET_CHART_HIGHLIGHTS:
+    return applySetChartHighlights(state, action);
   default:
     return state;
   }
@@ -111,6 +119,31 @@ export function setChartSeries({ id, series }) {
   };
 }
 
+export function toggleChartSeries({ id, series, onOff }) {
+  return {
+    type: TOGGLE_CHART_SERIES,
+    id,
+    series,
+    onOff,
+  };
+}
+
+export function setChartHighlights({ id, highlights }) {
+  return {
+    type: SET_CHART_HIGHLIGHTS,
+    id,
+    highlights,
+  };
+}
+
+export function toggleChartHighlight({ id, highlight }) {
+  return {
+    type: TOGGLE_CHART_HIGHLIGHT,
+    id,
+    highlight,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return { ...state, isLoading: true, isError: false };
@@ -148,6 +181,35 @@ function applySetChartSeries(state, { id, series }) {
     chartSeries: {
       ...state.chartSeries,
       [id]: series,
+    },
+  };
+}
+
+function applyToggleChartSeries(state, { id, series, onOff }) {
+  const current = state.chartSeries[id];
+  if (!current) return state;
+  const idx = current.findIndex(obj => obj.key === series);
+  if (idx === -1) return state;
+  const target = current[idx];
+  return {
+    ...state,
+    chartSeries: {
+      ...state.chartSeries,
+      [id]: [
+        ...current.slice(0, idx),
+        { ...target, selected: onOff },
+        ...current.slice(idx + 1),
+      ],
+    },
+  };
+}
+
+function applySetChartHighlights(state, { id, highlights }) {
+  return {
+    ...state,
+    chartHighlights: {
+      ...state.chartHighlights,
+      [id]: highlights,
     },
   };
 }

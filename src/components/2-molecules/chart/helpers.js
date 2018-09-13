@@ -1,5 +1,9 @@
 import Dygraph from 'dygraphs';
 import store from '../../../ducks';
+import {
+  setChartSeries,
+  setChartHighlights,
+} from '../../../ducks/modules/charts';
 import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
@@ -14,6 +18,7 @@ export const _releaseG = id => {
   } = store.getState();
   const container = chartEl[id];
   delete _dygraph[id];
+  store.dispatch(setChartSeries({ id, series: undefined }));
   if (!container) return;
   container.current.childNodes.forEach(node => node.remove());
 };
@@ -293,7 +298,7 @@ export const _onClickCallback = (
     if (!isNaN(accDelta) && isNaN(curDelta)) return acc;
     return accDelta < curDelta ? acc : cur;
   });
-  const delta = Math.abs(closestSeries.yval - yDataCor);
+  const delta = Math.abs(closestSeries.canvasy - yDomCor);
   if (delta > 10 || isNaN(delta)) {
     _highlightSeries(g, undefined);
     // _updateLegend(legend, undefined, undefined, undefined);
@@ -399,12 +404,13 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
 export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   console.time('render');
   const {
-    data: csv,
+    data: _csv,
     slot: _slot,
     step: _step,
     step_name: _stepName,
     recipe: _recipe,
   } = data;
+  const csv = !_csv ? 'X\n' : _csv;
   const slot = !_slot ? [] : _slot;
   const step = !_step ? [] : _step;
   const stepName = !_stepName ? [] : _stepName;
@@ -487,6 +493,20 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   g.__colorOrigin__ = { ...g.colorsMap_ };
   g.__seriesOrigin__ = series;
   _registerG(id, g);
+  const chartSeries = g
+    .getLabels()
+    .slice(1, 3)
+    .map(str => ({ key: str, display: str, selected: true }));
+  store.dispatch(setChartSeries({ id, series: chartSeries }));
+  store.dispatch(
+    setChartHighlights({
+      id,
+      highlights: [
+        { key: 'UNHIGHLIGHT_ALL', display: 'Unhighlight All' },
+        ...chartSeries,
+      ],
+    }),
+  );
   window.g = g;
   console.timeEnd('render');
 };

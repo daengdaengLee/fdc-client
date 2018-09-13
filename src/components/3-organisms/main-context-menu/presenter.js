@@ -5,10 +5,10 @@ const calcWidth = theme => {
   switch (theme) {
   case 'HISTORY_TABLE':
     // return '210px';
-    return '190px';
+    return '195px';
   case 'MODULE_TREE':
     // return '150px';
-    return '125px';
+    return '130px';
   default:
     return '150px';
   }

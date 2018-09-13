@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Dropdown, Button, Menu, Checkbox, Icon } from 'antd';
+import { Select, Menu, Checkbox } from 'antd';
 import Chart from '../../2-molecules/chart';
-import {
-  _getG,
-  _toggleSeries,
-  _highlightSeries,
-} from '../../2-molecules/chart/helpers';
+import ChartControllerDropdown from '../../2-molecules/chart-controller-dropdown';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -48,16 +44,17 @@ class MainChartPresenter extends Component {
     super(props);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
     this._makeSeriesDropdownMenu = this._makeSeriesDropdownMenu.bind(this);
-    this._onCheckSeriesDropdownMenu = this._onCheckSeriesDropdownMenu.bind(
-      this,
-    );
-    this._onClickSeriesDropdownMenu = this._onClickSeriesDropdownMenu.bind(
+    this._makeHighlightDropdownMenu = this._makeHighlightDropdownMenu.bind(
       this,
     );
   }
 
   render() {
-    const { _makeLabelsDropdownMenus, _makeSeriesDropdownMenu } = this;
+    const {
+      _makeLabelsDropdownMenus,
+      _makeSeriesDropdownMenu,
+      _makeHighlightDropdownMenu,
+    } = this;
     const {
       parameters,
       selectedParams,
@@ -92,47 +89,18 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            {/* <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
-              <Button
-                style={{
-                  width: '160px',
-                  borderRadius: '0',
-                  border: '0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                Series
-                <Icon
-                  type="down"
-                  theme="outlined"
-                  style={{ paddingRight: '0' }}
-                />
-              </Button>
-            </Dropdown> */}
-            <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
-              <Button
-                style={{
-                  width: '160px',
-                  marginLeft: '10px',
-                  borderRadius: '0',
-                  border: '0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                Labels
-                <Icon
-                  type="down"
-                  theme="outlined"
-                  style={{ paddingRight: '0' }}
-                />
-              </Button>
-            </Dropdown>
+            <ChartControllerDropdown
+              label="Highlights"
+              overlay={_makeHighlightDropdownMenu()}
+            />
+            <ChartControllerDropdown
+              label="Series"
+              overlay={_makeSeriesDropdownMenu()}
+            />
+            <ChartControllerDropdown
+              label="Labels"
+              overlay={_makeLabelsDropdownMenus()}
+            />
           </SelectArea>
         </Header>
         <ChartArea>
@@ -179,18 +147,18 @@ class MainChartPresenter extends Component {
   }
 
   _makeSeriesDropdownMenu() {
-    const {
-      onCheckSeriesDropdownMenu,
-      onClickSeriesDropdownMenu,
-      chartSeries,
-    } = this.props;
+    const { chartSeries, onToggleChartSeries } = this.props;
+    const series = chartSeries[0] || [];
     return (
       <Menu
         className="series-label-select"
         style={{ borderRadius: '0' }}
-        onClick={onClickSeriesDropdownMenu}
+        onClick={({ key }) => {
+          const target = series.find(obj => obj.key === key);
+          onToggleChartSeries(0, key, !target.selected);
+        }}
       >
-        {chartSeries.map(series => (
+        {series.map(series => (
           <Menu.Item
             style={{
               fontSize: '12px',
@@ -202,7 +170,9 @@ class MainChartPresenter extends Component {
               name={series.key}
               checked={series.selected}
               style={{ marginRight: '10px' }}
-              onChange={onCheckSeriesDropdownMenu}
+              onChange={() =>
+                onToggleChartSeries(0, series.key, !series.selected)
+              }
             />
             {series.display}
           </Menu.Item>
@@ -211,30 +181,27 @@ class MainChartPresenter extends Component {
     );
   }
 
-  _onCheckSeriesDropdownMenu({ target: { name: key, checked } }) {
-    const { chartId } = this.state;
-    !!chartId &&
-      this.setState(prevState => {
-        const seriesIdx = prevState.chartSeries.findIndex(
-          obj => obj.key === key,
-        );
-        const series = prevState.chartSeries[seriesIdx];
-        _toggleSeries(chartId, series.key, checked);
-        return {
-          ...prevState,
-          chartSeries: [
-            ...prevState.chartSeries.slice(0, seriesIdx),
-            { ...series, selected: checked },
-            ...prevState.chartSeries.slice(seriesIdx + 1),
-          ],
-        };
-      });
-  }
-
-  _onClickSeriesDropdownMenu({ key }) {
-    const { chartId } = this.state;
-    const g = _getG(chartId);
-    !!g && _highlightSeries(g, key);
+  _makeHighlightDropdownMenu() {
+    const { chartHighlights, onToggleChartHighlight } = this.props;
+    const highlights = chartHighlights[0] || [];
+    return (
+      <Menu
+        className="series-label-select"
+        style={{ borderRadius: '0' }}
+        onClick={({ key }) => onToggleChartHighlight(0, key)}
+      >
+        {highlights.map(highlight => (
+          <Menu.Item
+            style={{
+              fontSize: '12px',
+            }}
+            key={highlight.key}
+          >
+            {highlight.display}
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
   }
 }
 

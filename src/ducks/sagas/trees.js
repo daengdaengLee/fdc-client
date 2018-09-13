@@ -48,8 +48,8 @@ function* validateModule({ mod }) {
 }
 
 // Workers
-function* fetchStartSaga({ fab }) {
-  const { data, success } = yield call(getTree, fab);
+function* fetchStartSaga({ fab, isDeleteCach }) {
+  const { data, success } = yield call(getTree, fab, isDeleteCach);
   yield put(success ? fetchSuccess() : fetchFail());
   yield put(setNodes({ nodes: data }));
 }
@@ -62,7 +62,7 @@ function* clickFabSaga({ fab }) {
 function* setFabSaga({ fab }) {
   yield put(setNodes({ nodes: [] }));
   yield put(push({ location: 'main' }));
-  yield put(fetchStart({ fab }));
+  yield put(fetchStart({ fab, isDeleteCach: false }));
 }
 
 function* clickNodeSaga({ node }) {

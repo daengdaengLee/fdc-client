@@ -431,6 +431,41 @@ table {
   padding: 0;
 }
 
+/* ------ menu 이용 */
+.ant-switch, 
+.ant-switch-checked {
+  background-color: #2d2e30 !important;
+  width: 95px;
+  min-width: 95px;
+  height: 30px !important;
+}
+
+/* .ant-switch-checked {
+  background-color: #04bed6;
+} */
+
+.ant-switch-inner {
+  line-height: 29px;
+  text-indent: 10px;
+  /* color: #535353 !important; */
+}
+
+.ant-switch-checked .ant-switch-inner {
+  height: 30px;
+  line-height: 29px !important;
+  text-align: center;
+  /* color: #535353; */
+}
+
+.ant-switch:before, .ant-switch:after {
+  width: 26px !important;
+  height: 26px !important;
+  background-color: #f8f8f8 !important;
+}
+
+
+
+
 /* filter box */
 .filter .ant-btn-primary {
   background-color: #04bed6;

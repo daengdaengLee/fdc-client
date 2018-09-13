@@ -40,10 +40,11 @@ export default function treesReducer(state = initState, action = {}) {
 }
 
 // Action Creators
-export function fetchStart({ fab }) {
+export function fetchStart({ fab, isDeleteCach }) {
   return {
     type: FETCH_START,
     fab,
+    isDeleteCach,
   };
 }
 

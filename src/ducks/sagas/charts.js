@@ -8,11 +8,17 @@ import {
   FETCH_FAIL,
   fetchSuccess,
   CLICK_ZOOM_RESET,
+  TOGGLE_CHART_SERIES,
+  TOGGLE_CHART_HIGHLIGHT,
 } from '../modules/charts';
 import {
   _drawChart,
   _zoomReset,
+  _toggleSeries,
+  _getG,
+  _highlightSeries,
 } from '../../components/2-molecules/chart/helpers';
+import legendNoti from '../../components/2-molecules/legend';
 
 // Workers
 function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
@@ -27,12 +33,12 @@ function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
     lot,
     param,
   );
-  if (!success || !data || !data.data) {
+  if (!success || !data) {
     yield put(
       fetchFail({
         message: !success
           ? 'Failed to fetch'
-          : !data || !data.data
+          : !data
             ? 'No data'
             : 'Uncaught error',
       }),
@@ -66,6 +72,18 @@ function* toggleTickLabelSaga({ id, label, onOff }) {
   });
 }
 
+function* toggleChartSeriesSaga({ id, series, onOff }) {
+  yield legendNoti.destroy();
+  yield _toggleSeries(id, series, onOff);
+}
+
+function* toggleChartHighlightSaga({ id, highlight }) {
+  highlight === 'UNHIGHLIGHT_ALL' && legendNoti.destroy();
+  const g = yield call(_getG, id);
+  if (!g) return;
+  _highlightSeries(g, highlight === 'UNHIGHLIGHT_ALL' ? undefined : highlight);
+}
+
 function* clickZoomResetSaga({ id }) {
   yield _zoomReset(id);
 }
@@ -83,13 +101,23 @@ function* watchToggleTickLabe() {
   yield takeEvery(TOGGLE_TICK_LABEL, toggleTickLabelSaga);
 }
 
+function* watchToggleChartSeries() {
+  yield takeEvery(TOGGLE_CHART_SERIES, toggleChartSeriesSaga);
+}
+
+function* watchtoggleCharthighlight() {
+  yield takeEvery(TOGGLE_CHART_HIGHLIGHT, toggleChartHighlightSaga);
+}
+
 function* watchClickZoomReset() {
   yield takeEvery(CLICK_ZOOM_RESET, clickZoomResetSaga);
 }
 
 export default function* chartsSaga() {
   yield all([
+    watchToggleChartSeries(),
     watchToggleTickLabe(),
+    watchtoggleCharthighlight(),
     watchFetchStart(),
     watchFetchFail(),
     watchClickZoomReset(),

@@ -5,6 +5,7 @@ import {
   setSelectedNodes,
   clickLotWaferView,
   clickRealTimeView,
+  fetchStart,
 } from '../../../ducks/modules/trees';
 import { open } from '../../../ducks/modules/context-menus';
 import { selectFrom, selectTo } from '../../../ducks/modules/dates';
@@ -28,6 +29,8 @@ const mapDispatchToProps = dispatch => ({
   onResetSelectedNodes: () => dispatch(setSelectedNodes({ nodes: [] })),
   onClickLotWaferView: () => dispatch(clickLotWaferView()),
   onClickRealTimeView: () => dispatch(clickRealTimeView()),
+  onFetchStartModules: (fab, isDeleteCach) =>
+    dispatch(fetchStart({ fab, isDeleteCach })),
 });
 
 export default connect(
