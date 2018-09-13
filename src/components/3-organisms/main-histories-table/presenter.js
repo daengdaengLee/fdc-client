@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Menu, Dropdown, Button, Icon } from 'antd';
+import { Menu, Button, Icon } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
+import DropdownButton from '../../2-molecules/dropdown-button';
 import '../../../index.css';
 import separatorLine from '../../../assets/img/ic-separatorLine.png';
 
@@ -81,33 +82,36 @@ class MainHistoriesTable extends Component {
     return (
       <Container className="lot-wafer" active={location === 'histories'}>
         <HeaderContainer>
-
           <LotWaferArea>
-            <TitleBox 
-              onClick={ () => {onSelectBy('lot');}}
-              style={{ 
+            <TitleBox
+              onClick={() => {
+                onSelectBy('lot');
+              }}
+              style={{
                 fontWeight: by === 'lot' ? '500' : '400',
                 fontSize: by === 'lot' ? '13px' : '12px',
               }}
             >
               Lot
             </TitleBox>
-            <img 
-              src={separatorLine} alt='Text separator line'
+            <img
+              src={separatorLine}
+              alt="Text separator line"
               style={{ width: '9px', height: '12px', margin: '0 10px' }}
             />
-            <TitleBox 
-              onClick={ () => {onSelectBy('wafer');}}
-              style={{ 
-                fontWeight: by === 'wafer' ? '500' : '400', 
+            <TitleBox
+              onClick={() => {
+                onSelectBy('wafer');
+              }}
+              style={{
+                fontWeight: by === 'wafer' ? '500' : '400',
                 fontSize: by === 'wafer' ? '13px' : '12px',
               }}
             >
               Wafer
             </TitleBox>
           </LotWaferArea>
-          
-          
+
           {/* switch */}
           {/* <Switch 
             checkedChildren='Lot' 
@@ -115,7 +119,7 @@ class MainHistoriesTable extends Component {
             checked={by === 'lot'} 
             onChange={checked => onSelectBy(checked ? 'lot' : 'wafer')} 
           /> */}
-          
+
           {/* <Menu
             onClick={({ key }) => onSelectBy(key)}
             selectedKeys={[by]}
@@ -144,20 +148,13 @@ class MainHistoriesTable extends Component {
             </Menu.Item>
           </Menu> */}
 
-
-          <Dropdown overlay={_generateViewTraceDataMenu()}>
-            <Button 
-              style={{ 
-                width: '160px', 
-                backgroundColor: '#f8f8f8', 
-                borderRadius: '0', 
-                fontSize: '12px',
-                border: '0',
-                // borderBottom: '1px solid #b4b4b4' 
-              }}>
-              View Trace Data<Icon type="down" />
-            </Button>
-          </Dropdown>
+          <DropdownButton
+            overlay={_generateViewTraceDataMenu()}
+            style={{ justifyContent: 'space-between' }}
+          >
+            View Trace Data
+            <Icon type="down" />
+          </DropdownButton>
         </HeaderContainer>
         <TableArea>
           <HistoryTable
@@ -194,9 +191,7 @@ class MainHistoriesTable extends Component {
   _generateViewTraceDataMenu() {
     const { _onClickViewTraceDataMenu } = this;
     return (
-      <Menu
-        style={{ borderRadius: '0' }}
-        onClick={_onClickViewTraceDataMenu}>
+      <Menu style={{ borderRadius: '0' }} onClick={_onClickViewTraceDataMenu}>
         <Menu.Item key="time" style={{ fontSize: '12px' }}>
           Time
         </Menu.Item>

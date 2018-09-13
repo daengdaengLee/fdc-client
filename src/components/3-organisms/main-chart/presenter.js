@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Menu, Checkbox } from 'antd';
+import { Select, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
-import ChartControllerDropdown from '../../2-molecules/chart-controller-dropdown';
+import DropdownButton from '../../2-molecules/dropdown-button';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -89,18 +89,39 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            <ChartControllerDropdown
-              label="Highlights"
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeHighlightDropdownMenu()}
-            />
-            <ChartControllerDropdown
-              label="Series"
+            >
+              Highlights
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeSeriesDropdownMenu()}
-            />
-            <ChartControllerDropdown
-              label="Labels"
+            >
+              Series
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeLabelsDropdownMenus()}
-            />
+            >
+              Labels
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
           </SelectArea>
         </Header>
         <ChartArea>

@@ -496,7 +496,12 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   const chartSeries = g
     .getLabels()
     .slice(1, 3)
-    .map(str => ({ key: str, display: str, selected: true }));
+    .map(str => ({
+      key: str,
+      display: str,
+      selected: true,
+      color: g.colorsMap_[str],
+    }));
   store.dispatch(setChartSeries({ id, series: chartSeries }));
   store.dispatch(
     setChartHighlights({
