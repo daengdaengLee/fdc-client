@@ -14,6 +14,7 @@ import {
 import { fetchStart as fetchStartCharts } from '../modules/charts';
 import { getParameters } from '../../assets/js/requests';
 import { _releaseG } from '../../components/2-molecules/chart/helpers';
+import legendNoti from '../../components/2-molecules/legend';
 
 // Helpers
 
@@ -50,6 +51,7 @@ function* setSelectedSaga() {
 }
 
 function* clickParamSaga({ param }) {
+  yield legendNoti.destroy();
   const {
     trees: { fab, selected: selectedMod },
     dates: { from, to },
