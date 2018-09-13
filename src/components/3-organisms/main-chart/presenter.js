@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Select, Dropdown, Button, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
+import ChartControllerDropdown from '../../2-molecules/chart-controller-dropdown';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -81,47 +82,14 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
-              <Button
-                style={{
-                  width: '160px',
-                  borderRadius: '0',
-                  border: '0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                Series
-                <Icon
-                  type="down"
-                  theme="outlined"
-                  style={{ paddingRight: '0' }}
-                />
-              </Button>
-            </Dropdown>
-            <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
-              <Button
-                style={{
-                  width: '160px',
-                  marginLeft: '10px',
-                  borderRadius: '0',
-                  border: '0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                Labels
-                <Icon
-                  type="down"
-                  theme="outlined"
-                  style={{ paddingRight: '0' }}
-                />
-              </Button>
-            </Dropdown>
+            <ChartControllerDropdown
+              label="Series"
+              overlay={_makeSeriesDropdownMenu()}
+            />
+            <ChartControllerDropdown
+              label="Labels"
+              overlay={_makeLabelsDropdownMenus()}
+            />
           </SelectArea>
         </Header>
         <ChartArea>
