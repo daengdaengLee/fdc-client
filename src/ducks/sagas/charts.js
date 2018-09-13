@@ -7,8 +7,12 @@ import {
   fetchFail,
   FETCH_FAIL,
   fetchSuccess,
+  CLICK_ZOOM_RESET,
 } from '../modules/charts';
-import { _drawChart } from '../../components/2-molecules/chart/helpers';
+import {
+  _drawChart,
+  _zoomReset,
+} from '../../components/2-molecules/chart/helpers';
 
 // Workers
 function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
@@ -56,10 +60,14 @@ function* fetchFailSaga({ message }) {
 }
 
 function* toggleTickLabelSaga({ id, label, onOff }) {
-  const selector = `.${id}-${label}`;
+  const selector = `[data-chart-tick="${label}_${id}"]`;
   yield document.querySelectorAll(selector).forEach(tick => {
     tick.style.display = onOff ? 'inline' : 'none';
   });
+}
+
+function* clickZoomResetSaga({ id }) {
+  yield _zoomReset(id);
 }
 
 // Watchers
@@ -75,6 +83,15 @@ function* watchToggleTickLabe() {
   yield takeEvery(TOGGLE_TICK_LABEL, toggleTickLabelSaga);
 }
 
+function* watchClickZoomReset() {
+  yield takeEvery(CLICK_ZOOM_RESET, clickZoomResetSaga);
+}
+
 export default function* chartsSaga() {
-  yield all([watchToggleTickLabe(), watchFetchStart(), watchFetchFail()]);
+  yield all([
+    watchToggleTickLabe(),
+    watchFetchStart(),
+    watchFetchFail(),
+    watchClickZoomReset(),
+  ]);
 }

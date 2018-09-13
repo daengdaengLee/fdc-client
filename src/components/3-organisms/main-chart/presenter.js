@@ -48,9 +48,6 @@ class MainChartPresenter extends Component {
     super(props);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
     this._makeSeriesDropdownMenu = this._makeSeriesDropdownMenu.bind(this);
-    this._onClickLabelsDropdownMenu = this._onClickLabelsDropdownMenu.bind(
-      this,
-    );
     this._onCheckSeriesDropdownMenu = this._onCheckSeriesDropdownMenu.bind(
       this,
     );
@@ -67,6 +64,7 @@ class MainChartPresenter extends Component {
       onClickParam,
       location,
       onSetChartEl,
+      onZoomReset,
     } = this.props;
     const selectedParamObj = parameters.find(obj =>
       selectedParams.includes(obj.PARAM_NAME),
@@ -141,7 +139,7 @@ class MainChartPresenter extends Component {
           <Chart
             param={!selectedParamObj ? '' : selectedParamObj.PARAM_INFO}
             id="0"
-            onZoomReset={id => {}}
+            onZoomReset={onZoomReset}
             onSetChartEl={onSetChartEl}
           />
         </ChartArea>
@@ -150,12 +148,15 @@ class MainChartPresenter extends Component {
   }
 
   _makeLabelsDropdownMenus() {
-    const { onClickLabelsDropdownMenu, tickLabels } = this.props;
+    const { onToggleTickLabel, tickLabels } = this.props;
     return (
       <Menu
         className="series-label-select"
         style={{ borderRadius: '0' }}
-        onClick={onClickLabelsDropdownMenu}
+        onClick={({ key }) => {
+          const label = tickLabels.find(obj => obj.key === key);
+          onToggleTickLabel(0, key, !label.selected);
+        }}
       >
         {tickLabels.map(label => (
           <Menu.Item
@@ -168,7 +169,7 @@ class MainChartPresenter extends Component {
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}
-              onChange={() => onClickLabelsDropdownMenu({ key: label.key })}
+              onChange={() => onToggleTickLabel(0, label.key, !label.selected)}
             />
             {label.display}
           </Menu.Item>
@@ -208,27 +209,6 @@ class MainChartPresenter extends Component {
         ))}
       </Menu>
     );
-  }
-
-  _onClickLabelsDropdownMenu({ key }) {
-    const { onToggleTickLabel } = this.props;
-    const { chartId } = this.state;
-    !!chartId &&
-      this.setState(prevState => {
-        const labelIdx = prevState.chartLabels.findIndex(
-          label => label.key === key,
-        );
-        const label = prevState.chartLabels[labelIdx];
-        onToggleTickLabel(prevState.chartId, label.key, !label.selected);
-        return {
-          ...prevState,
-          chartLabels: [
-            ...prevState.chartLabels.slice(0, labelIdx),
-            { ...label, selected: !label.selected },
-            ...prevState.chartLabels.slice(labelIdx + 1),
-          ],
-        };
-      });
   }
 
   _onCheckSeriesDropdownMenu({ target: { name: key, checked } }) {

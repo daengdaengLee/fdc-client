@@ -6,6 +6,7 @@ import {
   fetchFail,
   toggleTickLabel,
   setChartEl,
+  clickZoomReset,
 } from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
@@ -34,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
   onToggleTickLabel: (id, label, onOff) =>
     dispatch(toggleTickLabel({ id, label, onOff })),
   onSetChartEl: (id, el) => dispatch(setChartEl({ el, id })),
-  onClickLabelsDropdownMenu: ({ key }) => {},
+  onZoomReset: id => dispatch(clickZoomReset({ id })),
 });
 
 export default connect(

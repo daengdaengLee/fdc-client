@@ -101,7 +101,7 @@ export const _generateTicks = (
         timeTag: `<span>${cur.value}</span>`,
         stepTag: `<span style="${
           selectedLabels.includes('STEP') ? '' : 'display: none;'
-        }" class="${id}-STEP">${cur.label}</span>`,
+        }" data-chart-tick="STEP_${id}">${cur.label}</span>`,
       },
     }),
     {},
@@ -110,7 +110,7 @@ export const _generateTicks = (
     const unixdate = new Date(cur.value).getTime();
     const stepNameTag = `<span style="${
       selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
-    }" class="${id}-STEP_NAME">${cur.label}</span>`;
+    }" data-chart-tick="STEP_NAME_${id}">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
@@ -130,7 +130,7 @@ export const _generateTicks = (
     const unixdate = new Date(cur.value).getTime();
     const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
       selectedLabels.includes('SLOT') ? '' : 'display: none;'
-    }" class="${id}-SLOT">${cur.label}</span>`;
+    }" data-chart-tick="SLOT_${id}">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
@@ -248,7 +248,7 @@ export const _updateLegend = (legend, x, y, label) => {
   legend.innerText = `${label} (${timestring}, ${y})`;
 };
 
-export const _zoomReset = id => () => {
+export const _zoomReset = id => {
   legendNoti.destroy();
   const g = _dygraph[id];
   const initZoom = g.__zoomStack__[0];
