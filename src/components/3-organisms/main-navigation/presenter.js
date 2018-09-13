@@ -128,6 +128,7 @@ class MainNavigation extends Component {
       onSelectFrom,
       onSelectTo,
       onClickFab,
+      onFetchStartModules,
     } = this.props;
     const { filter, expandedKeys, autoExpandParent } = this.state;
     const treeData = _encodeTree(_filterNodes(nodes, filter));
@@ -135,7 +136,7 @@ class MainNavigation extends Component {
       <Container className="navigation">
         <LogoContainer onClick={_onClickPageRefresh}>
           {/* 로고 교체할겁니다아! */}
-          <LogoImg src={logoImg} alt='FDC Logo'/>
+          <LogoImg src={logoImg} alt="FDC Logo" />
           {/* FDC */}
         </LogoContainer>
         <SearchContainer>
@@ -144,8 +145,11 @@ class MainNavigation extends Component {
             <Icon style={{ color: '#f8f8f8' }} type="check" />
             Search Condition
           </Title>
-          <RefreshImg 
-            src={IconRefresh} alt='' />
+          <RefreshImg
+            onClick={() => onFetchStartModules(fab, true)}
+            src={IconRefresh}
+            alt="Refersh"
+          />
         </SearchContainer>
 
         <FabContainer>
@@ -303,9 +307,7 @@ class MainNavigation extends Component {
   _generateGoMenu() {
     const { _onClickGoMenu } = this;
     return (
-      <Menu 
-        style={{ borderRadius: '0' }}
-        onClick={_onClickGoMenu}>
+      <Menu style={{ borderRadius: '0' }} onClick={_onClickGoMenu}>
         <Menu.Item disabled style={{ fontSize: '12px' }} key="realtime">
           <Icon type="area-chart" />
           Real Time View
