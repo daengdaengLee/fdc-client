@@ -88,7 +88,7 @@ class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: uuid(),
+      id: `tick-${uuid()}`,
     };
     this.container = React.createRef();
     this.legend = React.createRef();

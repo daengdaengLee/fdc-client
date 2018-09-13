@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Select, Dropdown, Button, Menu, Checkbox } from 'antd';
 import Chart from '../../2-molecules/chart';
+import { _getG, _toggleSeries } from '../../2-molecules/chart/helpers';
 
 // const _hideChartTickLabel = key => {
 //   const selector = `.dygraph-tick-label-${key}`;
@@ -73,17 +74,26 @@ class MainChartPresenter extends Component {
           selected: true,
         },
       ],
+      chartSeries: [],
       chartId: null,
     };
     this._onRegisterChartId = this._onRegisterChartId.bind(this);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
+    this._makeSeriesDropdownMenu = this._makeSeriesDropdownMenu.bind(this);
     this._onClickLabelsDropdownMenu = this._onClickLabelsDropdownMenu.bind(
+      this,
+    );
+    this._onCheckSeriesDropdownMenu = this._onCheckSeriesDropdownMenu.bind(
       this,
     );
   }
 
   render() {
-    const { _makeLabelsDropdownMenus, _onRegisterChartId } = this;
+    const {
+      _makeLabelsDropdownMenus,
+      _makeSeriesDropdownMenu,
+      _onRegisterChartId,
+    } = this;
     const {
       parameters,
       selectedParams,
@@ -127,7 +137,7 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            <Dropdown overlay={<div>hi</div>} trigger={['click']}>
+            <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
               <Button>Series</Button>
             </Dropdown>
             <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
@@ -155,7 +165,14 @@ class MainChartPresenter extends Component {
   }
 
   _onRegisterChartId(id) {
-    this.setState({ chartId: id });
+    const g = _getG(id);
+    const labels = g.getLabels();
+    this.setState({
+      chartId: id,
+      chartSeries: labels
+        .slice(1, 3)
+        .map(label => ({ key: label, display: label, selected: true })),
+    });
   }
 
   _makeLabelsDropdownMenus() {
@@ -170,6 +187,26 @@ class MainChartPresenter extends Component {
               style={{ marginRight: '10px' }}
             />
             {label.display}
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  }
+
+  _makeSeriesDropdownMenu() {
+    const { _onCheckSeriesDropdownMenu } = this;
+    const { chartSeries } = this.state;
+    return (
+      <Menu>
+        {chartSeries.map(series => (
+          <Menu.Item key={series.key}>
+            <Checkbox
+              name={series.key}
+              checked={series.selected}
+              style={{ marginRight: '10px' }}
+              onChange={_onCheckSeriesDropdownMenu}
+            />
+            {series.display}
           </Menu.Item>
         ))}
       </Menu>
@@ -196,6 +233,28 @@ class MainChartPresenter extends Component {
         };
       });
   }
+
+  _onCheckSeriesDropdownMenu({ target: { name: key, checked } }) {
+    const { chartId } = this.state;
+    !!chartId &&
+      this.setState(prevState => {
+        const seriesIdx = prevState.chartSeries.findIndex(
+          obj => obj.key === key,
+        );
+        const series = prevState.chartSeries[seriesIdx];
+        _toggleSeries(chartId, series.key, checked);
+        return {
+          ...prevState,
+          chartSeries: [
+            ...prevState.chartSeries.slice(0, seriesIdx),
+            { ...series, selected: checked },
+            ...prevState.chartSeries.slice(seriesIdx + 1),
+          ],
+        };
+      });
+  }
+
+  _onClickSeriesDropdownMenu() {}
 }
 
 export default MainChartPresenter;

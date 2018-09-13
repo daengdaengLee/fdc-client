@@ -8,6 +8,15 @@ export const _registerG = (id, g) => (_dygraph[id] = g);
 
 export const _releaseG = id => delete _dygraph[id];
 
+export const _getG = id => _dygraph[id];
+
+export const _toggleSeries = (id, seriesName, onOff) => {
+  const g = _getG(id);
+  const labels = g.getLabels();
+  const idx = labels.findIndex(str => str === seriesName);
+  g.setVisibility(idx - 1, onOff);
+};
+
 export const _addYPadding = g => {
   const yRange = g.yAxisExtremes()[0];
   const paddingRange = [yRange[0] - 5, yRange[1]];
@@ -307,7 +316,6 @@ export const _onClickCallback = (
       const curX = new Date(cur.value).getTime();
       return accX < curX ? cur : acc;
     });
-
   legendNoti(
     time,
     points[0].yval,
