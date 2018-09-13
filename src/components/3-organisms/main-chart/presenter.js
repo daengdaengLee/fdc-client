@@ -187,6 +187,7 @@ class MainChartPresenter extends Component {
   }
 
   _onRegisterChartId(id) {
+    if (id === null) return this.setState({ chartId: null });
     const g = _getG(id);
     const labels = g.getLabels();
     this.setState({

@@ -208,8 +208,9 @@ class Chart extends Component {
       .then(({ success, data }) => {
         console.timeEnd('fetch');
         console.time('render');
-        if (!success) return Promise.reject({ message: 'Fetch failed' });
-        if (!data.data) return Promise.reject({ message: 'No data' });
+        if (!success)
+          return Promise.reject({ message: 'Failed to fetch trace data' });
+        if (!data.data) return Promise.reject({ message: 'No trace data' });
         const { data: csv, slot, step, step_name: stepName, recipe } = data;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
