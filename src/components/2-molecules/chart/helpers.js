@@ -208,7 +208,7 @@ export const _highlightSeries = (g, label) => {
       return {
         ...acc,
         [cur]: {
-          color: 'red',
+          color: '#ed3421',
           strokeWidth: 2,
         },
       };
@@ -236,7 +236,7 @@ export const _drawHighlightPoint = (g, x, y) => {
     if (x !== undefined && y !== undefined) {
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = '#ed3421';
       ctx.fill();
     }
   }

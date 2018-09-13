@@ -187,15 +187,14 @@ class MainNavigation extends Component {
             format={DATE_FORMAT}
             onChange={(_, from) => onSelectFrom(from)}
             style={{ width: 'calc(50% - 3px)', marginRight: '6px' }}
-            dropdownClassName='date-picker'
-            popupStyle={{ backgroundColor: 'red' }}
+            popupStyle={{ backgroundColor: '#fff', borderRadius: '0' }}
           />
           <DatePicker
             value={!to ? null : moment(to, DATE_FORMAT)}
             format={DATE_FORMAT}
             onChange={(_, to) => onSelectTo(to)}
             style={{ width: 'calc(50% - 3px)' }}
-            dropdownClassName='date-picker'
+            popupStyle={{ backgroundColor: '#fff', borderRadius: '0' }}
           />
         </PickerContainer>
 

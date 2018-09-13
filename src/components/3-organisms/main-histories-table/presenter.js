@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Menu, Dropdown, Button, Icon } from 'antd';
+import { Menu, Dropdown, Button, Icon, Switch } from 'antd';
 import HistoryTable from '../../2-molecules/history-table';
 import '../../../index.css';
 
@@ -68,6 +68,8 @@ class MainHistoriesTable extends Component {
       <Container className="lot-wafer" active={location === 'histories'}>
         <HeaderContainer>
           
+          {/* switch */}
+          {/* <Switch checkedChildren='Lot' unCheckedChildren='wafer' defaultChecked /> */}
           
           <Menu
             onClick={({ key }) => onSelectBy(key)}

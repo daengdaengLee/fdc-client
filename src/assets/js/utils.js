@@ -58,11 +58,10 @@ export function notiError(message, desc) {
       marginLeft: -260,
       display: 'flex',
       alignItems: 'center',
-      fontSize: 12,
       borderRadius: 0,
       bottom: 10,
+      padding: '10px 24px',
     },
-    duration: 0,
   });
 }
 

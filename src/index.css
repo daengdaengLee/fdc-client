@@ -223,7 +223,7 @@ table {
 
 /* spinner */
 .ant-spin-lg .ant-spin-dot i {
-  background-color: #04bed6;
+  background-color: #24ffc8;
 }
 
 .ant-spin.ant-spin-show-text .ant-spin-text {
@@ -361,11 +361,6 @@ table {
   color: #c5d2da;
 }
 
-.navigation .date-picker {
-  border-radius: 0 !important;
-  background-color: #f8f8f8;
-}
-
 .navigation .ant-calendar-picker-clear,
 .navigation .ant-calendar-picker-clear:hover {
   background: #2d2e30;
@@ -501,18 +496,20 @@ table {
 }
 
 .ant-notification-notice-icon {
-  font-size: 16px !important;
+  font-size: 12px !important;
   margin-left: 0 !important;
 
-}
-
-.ant-notification-notice-close {
-  top: 22px !important;
 }
 
 .ant-notification-notice-with-icon .ant-notification-notice-message {
   margin-left: 28px !important;
   padding-right: 0 !important;
+  font-size: 12px !important;
+}
+
+/* legend noti */
+.ant-notification-notice-close-x:after {
+  color: #868686;
 }
 
 /* Series & Label filter */

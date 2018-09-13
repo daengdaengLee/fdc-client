@@ -6,7 +6,6 @@ import { Icon } from 'antd';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  border-bottom: 1px solid #f8f8f8;
   display: flex;
 `;
 

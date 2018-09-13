@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { notification, Icon } from 'antd';
+import '../../../index.css';
 
 const Title = styled.h1`
   color: #f8f8f8;
