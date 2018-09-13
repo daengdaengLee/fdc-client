@@ -107,11 +107,14 @@ class MainChartPresenter extends Component {
       lot,
       location,
     } = this.props;
-    const { chartLabels } = this.state;
+    const { chartLabels, chartSeries } = this.state;
     const selectedParamObj = parameters.find(obj =>
       selectedParams.includes(obj.PARAM_NAME),
     );
     const selectedLabels = chartLabels
+      .filter(obj => obj.selected)
+      .map(obj => obj.key);
+    const selectedSeries = chartSeries
       .filter(obj => obj.selected)
       .map(obj => obj.key);
     return (
@@ -137,22 +140,24 @@ class MainChartPresenter extends Component {
           </SelectArea>
           <SelectArea>
             <Dropdown overlay={_makeSeriesDropdownMenu()} trigger={['click']}>
-              <Button 
-                style={{ 
+              <Button
+                style={{
                   width: '160px',
                   borderRadius: '0',
                   border: '0',
                   fontSize: '12px',
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center' }} >
+                  alignItems: 'center',
+                }}
+              >
                 Series
                 <Icon type="down" theme="outlined" />
               </Button>
             </Dropdown>
             <Dropdown overlay={_makeLabelsDropdownMenus()} trigger={['click']}>
               <Button
-                style={{ 
+                style={{
                   width: '160px',
                   marginLeft: '10px',
                   borderRadius: '0',
@@ -160,7 +165,9 @@ class MainChartPresenter extends Component {
                   fontSize: '12px',
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center' }} >
+                  alignItems: 'center',
+                }}
+              >
                 Labels
                 <Icon type="down" theme="outlined" />
               </Button>
@@ -176,6 +183,7 @@ class MainChartPresenter extends Component {
             lot={lot}
             param={selectedParamObj}
             selectedLabels={selectedLabels}
+            selectedSeries={selectedSeries}
             onFetchStart={onFetchStart}
             onFetchSuccess={onFetchSuccess}
             onFetchFail={onFetchFail}
@@ -202,13 +210,9 @@ class MainChartPresenter extends Component {
     const { _onClickLabelsDropdownMenu } = this;
     const { chartLabels } = this.state;
     return (
-      <Menu 
-        style={{ borderRadius: '0' }}
-        onClick={_onClickLabelsDropdownMenu}>
+      <Menu style={{ borderRadius: '0' }} onClick={_onClickLabelsDropdownMenu}>
         {chartLabels.map(label => (
-          <Menu.Item 
-            style={{ fontSize: '12px' }}
-            key={label.key}>
+          <Menu.Item style={{ fontSize: '12px' }} key={label.key}>
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}

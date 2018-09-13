@@ -111,7 +111,12 @@ export const _generateTicks = (
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: { timeTag: `<span style="margin: 5px 0; font-size: 11px; ">${cur.value}</span>`, stepNameTag },
+        [unixdate]: {
+          timeTag: `<span style="margin: 5px 0; font-size: 11px; ">${
+            cur.value
+          }</span>`,
+          stepNameTag,
+        },
       }
       : {
         ...acc,
@@ -259,6 +264,7 @@ export const _onClickCallback = (
   x,
   points,
   id,
+  selectedSeries,
   legend,
   step,
   stepName,
@@ -318,14 +324,19 @@ export const _onClickCallback = (
       const curX = new Date(cur.value).getTime();
       return accX < curX ? cur : acc;
     });
+  const labels = g.getLabels().slice(1);
+  const yvals = labels.map(label => {
+    const point = points.find(obj => obj.name === label);
+    return !point ? '' : point.yval;
+  });
   legendNoti(
     time,
-    points[0].yval,
-    points[1].yval,
-    points[2].yval,
-    points[3].yval,
-    points[4].yval,
-    points[5].yval,
+    yvals[0],
+    yvals[1],
+    yvals[2],
+    yvals[3],
+    yvals[4],
+    yvals[5],
     getStepValue.label,
     getStepName.label,
     getSlot.label,
