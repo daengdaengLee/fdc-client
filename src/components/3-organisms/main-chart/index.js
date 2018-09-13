@@ -7,6 +7,7 @@ import {
   toggleTickLabel,
   setChartEl,
   clickZoomReset,
+  toggleChartSeries,
 } from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
@@ -24,6 +25,7 @@ const mapStateToProps = state => {
     lot: selectedHistory ? selectedHistory.LOT_ID : '',
     location: state.routes.location,
     tickLabels: state.charts.tickLabels,
+    chartSeries: state.charts.chartSeries,
   };
 };
 
@@ -36,6 +38,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(toggleTickLabel({ id, label, onOff })),
   onSetChartEl: (id, el) => dispatch(setChartEl({ el, id })),
   onZoomReset: id => dispatch(clickZoomReset({ id })),
+  onToggleChartSeries: (id, series, onOff) =>
+    dispatch(toggleChartSeries({ id, series, onOff })),
 });
 
 export default connect(

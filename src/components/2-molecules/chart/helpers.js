@@ -1,5 +1,6 @@
 import Dygraph from 'dygraphs';
 import store from '../../../ducks';
+import { setChartSeries } from '../../../ducks/modules/charts';
 import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
@@ -14,6 +15,7 @@ export const _releaseG = id => {
   } = store.getState();
   const container = chartEl[id];
   delete _dygraph[id];
+  store.dispatch(setChartSeries({ id, series: undefined }));
   if (!container) return;
   container.current.childNodes.forEach(node => node.remove());
 };
@@ -487,6 +489,10 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   g.__colorOrigin__ = { ...g.colorsMap_ };
   g.__seriesOrigin__ = series;
   _registerG(id, g);
+  const chartSeries = g.getLabels()
+    .slice(1, 3)
+    .map(str => ({ key: str, display: str, selected: true }));
+  store.dispatch(setChartSeries({ id, series: chartSeries }));
   window.g = g;
   console.timeEnd('render');
 };

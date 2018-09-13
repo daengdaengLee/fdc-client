@@ -8,11 +8,14 @@ import {
   FETCH_FAIL,
   fetchSuccess,
   CLICK_ZOOM_RESET,
+  TOGGLE_CHART_SERIES,
 } from '../modules/charts';
 import {
   _drawChart,
   _zoomReset,
+  _toggleSeries,
 } from '../../components/2-molecules/chart/helpers';
+import legendNoti from '../../components/2-molecules/legend';
 
 // Workers
 function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
@@ -66,6 +69,11 @@ function* toggleTickLabelSaga({ id, label, onOff }) {
   });
 }
 
+function* toggleChartSeriesSaga({ id, series, onOff }) {
+  yield legendNoti.destroy();
+  yield _toggleSeries(id, series, onOff);
+}
+
 function* clickZoomResetSaga({ id }) {
   yield _zoomReset(id);
 }
@@ -83,12 +91,17 @@ function* watchToggleTickLabe() {
   yield takeEvery(TOGGLE_TICK_LABEL, toggleTickLabelSaga);
 }
 
+function* watchToggleChartSeries() {
+  yield takeEvery(TOGGLE_CHART_SERIES, toggleChartSeriesSaga);
+}
+
 function* watchClickZoomReset() {
   yield takeEvery(CLICK_ZOOM_RESET, clickZoomResetSaga);
 }
 
 export default function* chartsSaga() {
   yield all([
+    watchToggleChartSeries(),
     watchToggleTickLabe(),
     watchFetchStart(),
     watchFetchFail(),
