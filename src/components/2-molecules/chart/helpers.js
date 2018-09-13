@@ -241,6 +241,7 @@ export const _updateLegend = (legend, x, y, label) => {
 };
 
 export const _zoomReset = id => () => {
+  legendNoti.destroy();
   const g = _dygraph[id];
   const initZoom = g.__zoomStack__[0];
   g.updateOptions({ dateWindow: initZoom.x, valueRange: initZoom.y });
@@ -248,6 +249,7 @@ export const _zoomReset = id => () => {
 };
 
 export const _onZoomCallback = (minX, maxX, yRanges, id) => {
+  legendNoti.destroy();
   const g = _dygraph[id];
   g.__zoomStack__.push({ x: [minX, maxX], y: yRanges[0] });
 };
