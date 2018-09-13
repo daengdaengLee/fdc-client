@@ -1,6 +1,9 @@
 import Dygraph from 'dygraphs';
 import store from '../../../ducks';
-import { setChartSeries } from '../../../ducks/modules/charts';
+import {
+  setChartSeries,
+  setChartHighlights,
+} from '../../../ducks/modules/charts';
 import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
@@ -489,10 +492,20 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   g.__colorOrigin__ = { ...g.colorsMap_ };
   g.__seriesOrigin__ = series;
   _registerG(id, g);
-  const chartSeries = g.getLabels()
+  const chartSeries = g
+    .getLabels()
     .slice(1, 3)
     .map(str => ({ key: str, display: str, selected: true }));
   store.dispatch(setChartSeries({ id, series: chartSeries }));
+  store.dispatch(
+    setChartHighlights({
+      id,
+      highlights: [
+        { key: 'UNHIGHLIGHT_ALL', display: 'Unhighlight All' },
+        ...chartSeries,
+      ],
+    }),
+  );
   window.g = g;
   console.timeEnd('render');
 };

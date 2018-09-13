@@ -8,6 +8,7 @@ import {
   setChartEl,
   clickZoomReset,
   toggleChartSeries,
+  toggleChartHighlight,
 } from '../../../ducks/modules/charts';
 import Presenter from './presenter';
 
@@ -26,6 +27,7 @@ const mapStateToProps = state => {
     location: state.routes.location,
     tickLabels: state.charts.tickLabels,
     chartSeries: state.charts.chartSeries,
+    chartHighlights: state.charts.chartHighlights,
   };
 };
 
@@ -40,6 +42,8 @@ const mapDispatchToProps = dispatch => ({
   onZoomReset: id => dispatch(clickZoomReset({ id })),
   onToggleChartSeries: (id, series, onOff) =>
     dispatch(toggleChartSeries({ id, series, onOff })),
+  onToggleChartHighlight: (id, highlight) =>
+    dispatch(toggleChartHighlight({ id, highlight })),
 });
 
 export default connect(

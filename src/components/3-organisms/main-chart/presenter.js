@@ -44,10 +44,17 @@ class MainChartPresenter extends Component {
     super(props);
     this._makeLabelsDropdownMenus = this._makeLabelsDropdownMenus.bind(this);
     this._makeSeriesDropdownMenu = this._makeSeriesDropdownMenu.bind(this);
+    this._makeHighlightDropdownMenu = this._makeHighlightDropdownMenu.bind(
+      this,
+    );
   }
 
   render() {
-    const { _makeLabelsDropdownMenus, _makeSeriesDropdownMenu } = this;
+    const {
+      _makeLabelsDropdownMenus,
+      _makeSeriesDropdownMenu,
+      _makeHighlightDropdownMenu,
+    } = this;
     const {
       parameters,
       selectedParams,
@@ -82,6 +89,10 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
+            <ChartControllerDropdown
+              label="Highlights"
+              overlay={_makeHighlightDropdownMenu()}
+            />
             <ChartControllerDropdown
               label="Series"
               overlay={_makeSeriesDropdownMenu()}
@@ -164,6 +175,29 @@ class MainChartPresenter extends Component {
               }
             />
             {series.display}
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  }
+
+  _makeHighlightDropdownMenu() {
+    const { chartHighlights, onToggleChartHighlight } = this.props;
+    const highlights = chartHighlights[0] || [];
+    return (
+      <Menu
+        className="series-label-select"
+        style={{ borderRadius: '0' }}
+        onClick={({ key }) => onToggleChartHighlight(0, key)}
+      >
+        {highlights.map(highlight => (
+          <Menu.Item
+            style={{
+              fontSize: '12px',
+            }}
+            key={highlight.key}
+          >
+            {highlight.display}
           </Menu.Item>
         ))}
       </Menu>

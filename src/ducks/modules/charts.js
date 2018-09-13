@@ -7,6 +7,8 @@ export const TOGGLE_TICK_LABEL = 'charts/TOGGLE_TICK_LABEL';
 export const CLICK_ZOOM_RESET = 'charts/CLICK_ZOOM_RESET';
 export const SET_CHART_SERIES = 'charts/SET_CHART_SERIES';
 export const TOGGLE_CHART_SERIES = 'charts/TOGGLE_CHART_SERIES';
+export const SET_CHART_HIGHLIGHTS = 'charts/SET_CHART_HIGHLIGHTS';
+export const TOGGLE_CHART_HIGHLIGHT = 'charts/TOGGLE_CHART_HIGHLIGHT';
 
 // Init State
 const initState = {
@@ -31,6 +33,7 @@ const initState = {
     },
   ],
   chartSeries: {},
+  chartHighlights: {},
 };
 
 // Reducer
@@ -50,6 +53,8 @@ export default function chartsReducer(state = initState, action = {}) {
     return applySetChartSeries(state, action);
   case TOGGLE_CHART_SERIES:
     return applyToggleChartSeries(state, action);
+  case SET_CHART_HIGHLIGHTS:
+    return applySetChartHighlights(state, action);
   default:
     return state;
   }
@@ -123,6 +128,22 @@ export function toggleChartSeries({ id, series, onOff }) {
   };
 }
 
+export function setChartHighlights({ id, highlights }) {
+  return {
+    type: SET_CHART_HIGHLIGHTS,
+    id,
+    highlights,
+  };
+}
+
+export function toggleChartHighlight({ id, highlight }) {
+  return {
+    type: TOGGLE_CHART_HIGHLIGHT,
+    id,
+    highlight,
+  };
+}
+
 // Reducer Functions
 function applyFetchStart(state) {
   return { ...state, isLoading: true, isError: false };
@@ -179,6 +200,16 @@ function applyToggleChartSeries(state, { id, series, onOff }) {
         { ...target, selected: onOff },
         ...current.slice(idx + 1),
       ],
+    },
+  };
+}
+
+function applySetChartHighlights(state, { id, highlights }) {
+  return {
+    ...state,
+    chartHighlights: {
+      ...state.chartHighlights,
+      [id]: highlights,
     },
   };
 }
