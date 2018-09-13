@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import './../../../index.css';
 import logoImg from '../../../assets/img/img-logo.png';
+import IconRefresh from '../../../assets/img/ic-navigation-refresh.png';
 
 import {
   Tree,
@@ -48,6 +49,8 @@ const LogoImg = styled.img`
 `;
 
 const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 14px;
   margin-bottom: 15px;
   margin-top: 40px;
@@ -58,6 +61,14 @@ const SearchContainer = styled.div`
 const Title = styled.h1`
   color: #f8f8f8;
   font-weight: 400;
+`;
+
+const RefreshImg = styled.img`
+  width: 17px;
+  height: 17px;
+  margin-top: 3px;
+  margin-right: 7px;
+  cursor: pointer;
 `;
 
 const FabContainer = styled.div`
@@ -133,6 +144,8 @@ class MainNavigation extends Component {
             <Icon style={{ color: '#f8f8f8' }} type="check" />
             Search Condition
           </Title>
+          <RefreshImg 
+            src={IconRefresh} alt='' />
         </SearchContainer>
 
         <FabContainer>
