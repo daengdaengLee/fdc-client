@@ -212,7 +212,17 @@ class Chart extends Component {
         if (!success)
           return Promise.reject({ message: 'Failed to fetch trace data' });
         if (!data.data) return Promise.reject({ message: 'No trace data' });
-        const { data: csv, slot, step, step_name: stepName, recipe } = data;
+        const {
+          data: csv,
+          slot: _slot,
+          step: _step,
+          step_name: _stepName,
+          recipe: _recipe,
+        } = data;
+        const slot = !_slot ? [] : _slot;
+        const step = !_step ? [] : _step;
+        const stepName = !_stepName ? [] : _stepName;
+        const recipe = !_recipe ? [] : _recipe;
         const firstLfIdx = csv.indexOf('\n');
         const labels = csv
           .slice(0, firstLfIdx)
@@ -287,6 +297,8 @@ class Chart extends Component {
               points,
               id,
               selectedSeries,
+              param,
+              lot,
               legend.current,
               step,
               stepName,

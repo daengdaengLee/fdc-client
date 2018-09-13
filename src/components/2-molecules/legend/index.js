@@ -38,11 +38,25 @@ export const ContentTitle = () => (
   </Title>
 );
 
-export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepName, slot }) => (
+export const Contents = ({
+  time,
+  value,
+  target,
+  usl,
+  ucl,
+  lcl,
+  lsl,
+  step,
+  stepName,
+  slot,
+  param,
+  lot,
+  recipe,
+}) => (
   <div>
     <ContentsLine>
       <InnerTitle>Lot</InnerTitle>
-      <Content>text</Content>
+      <Content>{lot}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Slot</InnerTitle>
@@ -50,11 +64,11 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Substrate</InnerTitle>
-      <Content>text</Content>
+      <Content>{`${lot}_${slot}`}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Recipe</InnerTitle>
-      <Content>text</Content>
+      <Content>{recipe}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Step</InnerTitle>
@@ -70,7 +84,7 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Parameter</InnerTitle>
-      <Content>text</Content>
+      <Content>{param}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Value</InnerTitle>
@@ -99,7 +113,21 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
   </div>
 );
 
-const legendNoti = (time, value, target, lsl, lcl, ucl, usl, step, stepName, slot) =>
+const legendNoti = (
+  time,
+  value,
+  target,
+  lsl,
+  lcl,
+  ucl,
+  usl,
+  step,
+  stepName,
+  slot,
+  recipe,
+  param,
+  lot,
+) =>
   notification.open({
     message: <ContentTitle />,
     description: (
@@ -114,6 +142,9 @@ const legendNoti = (time, value, target, lsl, lcl, ucl, usl, step, stepName, slo
         step={step}
         stepName={stepName}
         slot={slot}
+        param={param}
+        lot={lot}
+        recipe={recipe}
       />
     ),
     placement: 'bottomRight',

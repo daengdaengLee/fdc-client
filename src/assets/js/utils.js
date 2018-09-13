@@ -60,3 +60,14 @@ export function notiError(message, desc) {
     },
   });
 }
+
+export function greatestUnder(list, evaluator, validator) {
+  const filterd = list.filter(obj => validator(evaluator(obj)));
+  return !filterd.length
+    ? undefined
+    : filterd.reduce((acc, cur) => {
+      const accEval = evaluator(acc);
+      const curEval = evaluator(cur);
+      return accEval < curEval ? cur : acc;
+    });
+}

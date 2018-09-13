@@ -1,4 +1,4 @@
-import { getTimeString } from '../../../assets/js/utils';
+import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
 
@@ -265,6 +265,8 @@ export const _onClickCallback = (
   points,
   id,
   selectedSeries,
+  param,
+  lot,
   legend,
   step,
   stepName,
@@ -301,34 +303,33 @@ export const _onClickCallback = (
   const time = getTimeString(x);
 
   // step filter
-  const getStepValue = step
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
+  const getStepValue = greatestUnder(
+    step,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getStepName = greatestUnder(
+    stepName,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getSlot = greatestUnder(
+    slot,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getRecipe = greatestUnder(
+    recipe,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
 
-  const getStepName = stepName
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
-
-  const getSlot = slot
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
   const labels = g.getLabels().slice(1);
   const yvals = labels.map(label => {
     const point = points.find(obj => obj.name === label);
     return !point ? '' : point.yval;
   });
+
   legendNoti(
     time,
     yvals[0],
@@ -340,6 +341,9 @@ export const _onClickCallback = (
     getStepValue.label,
     getStepName.label,
     getSlot.label,
+    getRecipe.label,
+    param,
+    lot,
   );
 };
 
