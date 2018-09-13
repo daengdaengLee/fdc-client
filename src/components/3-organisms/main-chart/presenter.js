@@ -2,21 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Select, Dropdown, Button, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
-import { _getG, _toggleSeries } from '../../2-molecules/chart/helpers';
-
-// const _hideChartTickLabel = key => {
-//   const selector = `.dygraph-tick-label-${key}`;
-//   document.querySelectorAll(selector).forEach(tick => {
-//     tick.style.display = 'none';
-//   });
-// };
-
-// const _showChartTickLabel = key => {
-//   const selector = `.dygraph-tick-label-${key}`;
-//   document.querySelectorAll(selector).forEach(tick => {
-//     tick.style.display = 'inline';
-//   });
-// };
+import {
+  _getG,
+  _toggleSeries,
+  _highlightSeries,
+} from '../../2-molecules/chart/helpers';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -83,6 +73,9 @@ class MainChartPresenter extends Component {
       this,
     );
     this._onCheckSeriesDropdownMenu = this._onCheckSeriesDropdownMenu.bind(
+      this,
+    );
+    this._onClickSeriesDropdownMenu = this._onClickSeriesDropdownMenu.bind(
       this,
     );
   }
@@ -216,6 +209,7 @@ class MainChartPresenter extends Component {
             <Checkbox
               checked={label.selected}
               style={{ marginRight: '10px' }}
+              onChange={() => _onClickLabelsDropdownMenu({ key: label.key })}
             />
             {label.display}
           </Menu.Item>
@@ -225,10 +219,10 @@ class MainChartPresenter extends Component {
   }
 
   _makeSeriesDropdownMenu() {
-    const { _onCheckSeriesDropdownMenu } = this;
+    const { _onCheckSeriesDropdownMenu, _onClickSeriesDropdownMenu } = this;
     const { chartSeries } = this.state;
     return (
-      <Menu>
+      <Menu style={{ borderRadius: '0' }} onClick={_onClickSeriesDropdownMenu}>
         {chartSeries.map(series => (
           <Menu.Item key={series.key}>
             <Checkbox
@@ -285,7 +279,11 @@ class MainChartPresenter extends Component {
       });
   }
 
-  _onClickSeriesDropdownMenu() {}
+  _onClickSeriesDropdownMenu({ key }) {
+    const { chartId } = this.state;
+    const g = _getG(chartId);
+    !!g && _highlightSeries(g, key);
+  }
 }
 
 export default MainChartPresenter;
