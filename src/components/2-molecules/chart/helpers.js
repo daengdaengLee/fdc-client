@@ -1,4 +1,5 @@
 import Dygraph from 'dygraphs';
+import store from '../../../ducks';
 import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
@@ -84,16 +85,9 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   }
 };
 
-export const _generateTicks = (
-  min,
-  max,
-  g,
-  step,
-  stepName,
-  slot,
-  selectedLabels,
-  id,
-) => {
+export const _generateTicks = (min, max, g, step, stepName, slot, id) => {
+  const { charts: { tickLabels } } = store.getState();
+  const selectedLabels = tickLabels.filter(obj => obj.selected).map(obj => obj.key);
   const stepTicks = step.reduce(
     (acc, cur) => ({
       ...acc,
@@ -429,7 +423,7 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
     x: {
       axisLabelWidth: 160,
       ticker: (min, max, pixels, opt, g) =>
-        _generateTicks(min, max, g, step, stepName, slot, selectedLabels, id),
+        _generateTicks(min, max, g, step, stepName, slot, id),
     },
   };
   const g = new Dygraph(container.current, csv, {
