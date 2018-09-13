@@ -55,8 +55,23 @@ export function notiError(message, desc) {
     description: desc,
     placement: 'bottomRight',
     style: {
-      width: 660,
       marginLeft: -260,
+      display: 'flex',
+      alignItems: 'center',
+      borderRadius: 0,
+      bottom: 10,
+      padding: '10px 24px',
     },
   });
+}
+
+export function greatestUnder(list, evaluator, validator) {
+  const filterd = list.filter(obj => validator(evaluator(obj)));
+  return !filterd.length
+    ? undefined
+    : filterd.reduce((acc, cur) => {
+      const accEval = evaluator(acc);
+      const curEval = evaluator(cur);
+      return accEval < curEval ? cur : acc;
+    });
 }

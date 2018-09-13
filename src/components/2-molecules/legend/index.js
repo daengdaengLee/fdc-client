@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { notification, Icon } from 'antd';
+import '../../../index.css';
 
 const Title = styled.h1`
   color: #f8f8f8;
@@ -33,16 +34,30 @@ const Content = styled.span`
 
 export const ContentTitle = () => (
   <Title>
-    <Icon type="info-circle" theme="filled" style={{ color: '#04bed6' }} />
+    <Icon type="info-circle" theme="filled" style={{ color: '#24ffc8' }} />
     Information
   </Title>
 );
 
-export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepName, slot }) => (
+export const Contents = ({
+  time,
+  value,
+  target,
+  usl,
+  ucl,
+  lcl,
+  lsl,
+  step,
+  stepName,
+  slot,
+  param,
+  lot,
+  recipe,
+}) => (
   <div>
     <ContentsLine>
       <InnerTitle>Lot</InnerTitle>
-      <Content>text</Content>
+      <Content>{lot}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Slot</InnerTitle>
@@ -50,11 +65,11 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Substrate</InnerTitle>
-      <Content>text</Content>
+      <Content>{`${lot}_${slot}`}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Recipe</InnerTitle>
-      <Content>text</Content>
+      <Content>{recipe}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Step</InnerTitle>
@@ -70,7 +85,7 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Parameter</InnerTitle>
-      <Content>text</Content>
+      <Content>{param}</Content>
     </ContentsLine>
     <ContentsLine>
       <InnerTitle>Value</InnerTitle>
@@ -99,7 +114,21 @@ export const Contents = ({ time, value, target, usl, ucl, lcl, lsl, step, stepNa
   </div>
 );
 
-const legendNoti = (time, value, target, lsl, lcl, ucl, usl, step, stepName, slot) =>
+const legendNoti = (
+  time,
+  value,
+  target,
+  lsl,
+  lcl,
+  ucl,
+  usl,
+  step,
+  stepName,
+  slot,
+  recipe,
+  param,
+  lot,
+) =>
   notification.open({
     message: <ContentTitle />,
     description: (
@@ -114,11 +143,20 @@ const legendNoti = (time, value, target, lsl, lcl, ucl, usl, step, stepName, slo
         step={step}
         stepName={stepName}
         slot={slot}
+        param={param}
+        lot={lot}
+        recipe={recipe}
       />
     ),
     placement: 'bottomRight',
     bottom: 10,
     duration: null,
+    style: {
+      backgroundColor: '#2d2e30e1',
+      marginBottom: '-5px',
+      marginRight: '-5px',
+      borderRadius: 0,
+    },
   });
 
 legendNoti.destroy = () => notification.destroy();

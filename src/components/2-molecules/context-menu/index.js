@@ -69,7 +69,7 @@ class ContextMenu extends Component {
               onClick={event => _onClickMenu(event, item)}
               disabled={item.disabled}
             >
-              <Icon type={item.icon} />
+              {/* <Icon type={item.icon} /> */}
               {item.name}
             </ContextMenuItem>
           );

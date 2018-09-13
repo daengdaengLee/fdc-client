@@ -154,28 +154,9 @@ table {
   }
 }
 
-/* Contextmenu의 icon */
 .anticon {
   padding-right: 10px;
 }
-
-/* tree -> 해당 파일 묶는 라인 css */
-/* .ant-tree li {
-  position: relative;
-}
-.ant-tree li::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -6px;
-  height: 100%;
-  width: 1px;
-  background-color: tomato;
-} */
-
-/* 
-  Checkbox 
-*/
 
 /* 
   Scroll
@@ -242,32 +223,13 @@ table {
 
 /* spinner */
 .ant-spin-lg .ant-spin-dot i {
-  background-color: #04bed6;
+  background-color: #24ffc8;
 }
 
 .ant-spin.ant-spin-show-text .ant-spin-text {
   color: #fff;
   font-size: 12px;
 }
-
-/* 
-  Tree Style
-*/
-/* DCP 이하 node ...처리 */
-/* .ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper, .ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper {
-  width: 85%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before {
-  background: #ccc !important;
-}
-
-.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
-  background-color: transparent !important;
-} */
 
 /*
 * Navigation style ----------------------
@@ -399,12 +361,17 @@ table {
   color: #c5d2da;
 }
 
+.navigation .ant-calendar-picker-clear,
+.navigation .ant-calendar-picker-clear:hover {
+  background: #2d2e30;
+  color: #24ffc8;
+}
+
 /* Button */
 .navigation .ant-btn {
   border: 0;
   border-radius: 0;
   background-color: #f8f8f8;
-  /* background-image: linear-gradient(to right, #04bed6, #54b3e5, #8da6e1); */
 }
 
 .navigation .ant-btn > span {
@@ -445,19 +412,19 @@ table {
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item:hover {
-  color: #da5e53 !important;
+  color: #04bed6 !important;
   border: 0;
-  border-bottom: 1px solid #da5e53 !important;
+  border-bottom: 1px solid #04bed6 !important;
 }
 
 .lot-wafer .ant-menu-horizontal > .ant-menu-item-selected {
-  color: #da5e53 !important;
-  border-bottom: 2px solid #da5e53 !important;
+  color: #04bed6 !important;
+  border-bottom: 2px solid #04bed6 !important;
   font-weight: 500;
 }
 
 .lot-wafer .ant-btn > i, .ant-btn > span {
-  color: #f8f8f8;
+  color: #535353;
 }
 
 .lot-wafer .anticon-down {
@@ -505,38 +472,49 @@ table {
 /* parameter box */
 .parameters .ant-select-selection--single {
   border-radius: 0;
-  /* border-color: #dedede; */
-  background-color: transparent;
+  background-color: #f8f8f8;
   border: 0;
-  border-bottom: 1px solid #04bed6;
 }
 
 .parameters .ant-select-selection-selected-value {
-  color: #04bed6;
+  color: #535353;
+  font-weight: 500;
 }
 
 .parameters .ant-select-open .ant-select-selection-selected-value {
   font-size: 12px;
 }
 
-/* point tooltip */
+/* error noti */
 .ant-notification {
   width: auto !important;
 }
 
-.ant-notification-notice {
-  padding: 10px 20px 15px 20px !important;
-  border-radius: 0 !important;
-  background: #2d2e30e1 !important;
-  margin-bottom: -5px !important;
-  margin-right: -5px;
+.ant-notification-notice-with-icon {
+  display: flex;
+  align-items: center;
 }
 
-.ant-notification-notice-close {
-  top: 12px;
+.ant-notification-notice-icon {
+  font-size: 12px !important;
+  margin-left: 0 !important;
+
 }
 
-.ant-notification-notice-close-x {
-  color: #f8f8f8;
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  margin-left: 28px !important;
+  padding-right: 0 !important;
+  font-size: 12px !important;
 }
 
+/* legend noti */
+.ant-notification-notice-close-x:after {
+  color: #868686;
+}
+
+/* Series & Label filter */
+.series-label-select .ant-checkbox-checked .ant-checkbox-inner {
+  border-radius: 0;
+  background-color: #10d4a3;
+  border-color: #10d4a3;
+}

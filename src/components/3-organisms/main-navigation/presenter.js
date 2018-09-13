@@ -187,17 +187,19 @@ class MainNavigation extends Component {
             format={DATE_FORMAT}
             onChange={(_, from) => onSelectFrom(from)}
             style={{ width: 'calc(50% - 3px)', marginRight: '6px' }}
+            popupStyle={{ backgroundColor: '#fff', borderRadius: '0' }}
           />
           <DatePicker
             value={!to ? null : moment(to, DATE_FORMAT)}
             format={DATE_FORMAT}
             onChange={(_, to) => onSelectTo(to)}
             style={{ width: 'calc(50% - 3px)' }}
+            popupStyle={{ backgroundColor: '#fff', borderRadius: '0' }}
           />
         </PickerContainer>
 
         <ButtonContainer>
-          <Dropdown overlay={_generateGoMenu()}>
+          <Dropdown overlay={_generateGoMenu()} trigger={['click']}>
             <Button
               style={{
                 width: '100%',
@@ -288,7 +290,9 @@ class MainNavigation extends Component {
   _generateGoMenu() {
     const { _onClickGoMenu } = this;
     return (
-      <Menu onClick={_onClickGoMenu}>
+      <Menu 
+        style={{ borderRadius: '0' }}
+        onClick={_onClickGoMenu}>
         <Menu.Item disabled style={{ fontSize: '12px' }} key="realtime">
           <Icon type="area-chart" />
           Real Time View

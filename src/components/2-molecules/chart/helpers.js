@@ -1,4 +1,6 @@
-import { getTimeString } from '../../../assets/js/utils';
+import Dygraph from 'dygraphs';
+import store from '../../../ducks';
+import { getTimeString, greatestUnder } from '../../../assets/js/utils';
 import '../../../index.css';
 import legendNoti from '../legend';
 
@@ -6,7 +8,24 @@ const _dygraph = {};
 
 export const _registerG = (id, g) => (_dygraph[id] = g);
 
-export const _releaseG = id => delete _dygraph[id];
+export const _releaseG = id => {
+  const {
+    charts: { chartEl },
+  } = store.getState();
+  const container = chartEl[id];
+  delete _dygraph[id];
+  if (!container) return;
+  container.current.childNodes.forEach(node => node.remove());
+};
+
+export const _getG = id => _dygraph[id];
+
+export const _toggleSeries = (id, seriesName, onOff) => {
+  const g = _getG(id);
+  const labels = g.getLabels();
+  const idx = labels.findIndex(str => str === seriesName);
+  g.setVisibility(idx - 1, onOff);
+};
 
 export const _addYPadding = g => {
   const yRange = g.yAxisExtremes()[0];
@@ -42,7 +61,8 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
       !isNaN(lslPoints[i].canvasy) &&
       !isNaN(lslPoints[i + 1].canvasy)
     ) {
-      ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      // ctx.fillStyle = 'rgba(255, 99, 71, 0.3)';
+      ctx.fillStyle = 'rgba(16, 212, 163, 0.3)';
       ctx.beginPath();
       ctx.moveTo(lslPoints[i].canvasx, lslPoints[i].canvasy);
       ctx.lineTo(uslPoints[i].canvasx, uslPoints[i].canvasy);
@@ -61,7 +81,8 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
       !isNaN(lclPoints[i].canvasy) &&
       !isNaN(lclPoints[i + 1].canvasy)
     ) {
-      ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      // ctx.fillStyle = 'rgba(4, 190, 214, 0.3)';
+      ctx.fillStyle = 'rgba(244, 218, 46, 0.3)';
       ctx.beginPath();
       ctx.moveTo(lclPoints[i].canvasx, lclPoints[i].canvasy);
       ctx.lineTo(uclPoints[i].canvasx, uclPoints[i].canvasy);
@@ -72,16 +93,13 @@ export const _plotter = (lslLabel, lclLabel, uclLabel, uslLabel) => e => {
   }
 };
 
-export const _generateTicks = (
-  min,
-  max,
-  g,
-  step,
-  stepName,
-  slot,
-  selectedLabels,
-  id,
-) => {
+export const _generateTicks = (min, max, g, step, stepName, slot, id) => {
+  const {
+    charts: { tickLabels },
+  } = store.getState();
+  const selectedLabels = tickLabels
+    .filter(obj => obj.selected)
+    .map(obj => obj.key);
   const stepTicks = step.reduce(
     (acc, cur) => ({
       ...acc,
@@ -89,7 +107,7 @@ export const _generateTicks = (
         timeTag: `<span>${cur.value}</span>`,
         stepTag: `<span style="${
           selectedLabels.includes('STEP') ? '' : 'display: none;'
-        }" class="${id}-STEP">${cur.label}</span>`,
+        }" data-chart-tick="STEP_${id}">${cur.label}</span>`,
       },
     }),
     {},
@@ -98,11 +116,16 @@ export const _generateTicks = (
     const unixdate = new Date(cur.value).getTime();
     const stepNameTag = `<span style="${
       selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
-    }" class="${id}-STEP_NAME">${cur.label}</span>`;
+    }" data-chart-tick="STEP_NAME_${id}">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
-        [unixdate]: { timeTag: `<span>${cur.value}</span>`, stepNameTag },
+        [unixdate]: {
+          timeTag: `<span style="margin: 5px 0; font-size: 11px; ">${
+            cur.value
+          }</span>`,
+          stepNameTag,
+        },
       }
       : {
         ...acc,
@@ -111,9 +134,9 @@ export const _generateTicks = (
   }, stepTicks);
   const slotTicks = slot.reduce((acc, cur) => {
     const unixdate = new Date(cur.value).getTime();
-    const slotTag = `<span style="display: inline-block; min-width: 10px; background-color: #04bed6; color: #f8f8f8; ${
+    const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
       selectedLabels.includes('SLOT') ? '' : 'display: none;'
-    }" class="${id}-SLOT">${cur.label}</span>`;
+    }" data-chart-tick="SLOT_${id}">${cur.label}</span>`;
     return !acc[unixdate]
       ? {
         ...acc,
@@ -191,7 +214,7 @@ export const _highlightSeries = (g, label) => {
       return {
         ...acc,
         [cur]: {
-          color: 'red',
+          color: '#ed3421',
           strokeWidth: 2,
         },
       };
@@ -219,7 +242,7 @@ export const _drawHighlightPoint = (g, x, y) => {
     if (x !== undefined && y !== undefined) {
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = '#ed3421';
       ctx.fill();
     }
   }
@@ -231,7 +254,8 @@ export const _updateLegend = (legend, x, y, label) => {
   legend.innerText = `${label} (${timestring}, ${y})`;
 };
 
-export const _zoomReset = id => () => {
+export const _zoomReset = id => {
+  legendNoti.destroy();
   const g = _dygraph[id];
   const initZoom = g.__zoomStack__[0];
   g.updateOptions({ dateWindow: initZoom.x, valueRange: initZoom.y });
@@ -239,6 +263,7 @@ export const _zoomReset = id => () => {
 };
 
 export const _onZoomCallback = (minX, maxX, yRanges, id) => {
+  legendNoti.destroy();
   const g = _dygraph[id];
   g.__zoomStack__.push({ x: [minX, maxX], y: yRanges[0] });
 };
@@ -248,7 +273,8 @@ export const _onClickCallback = (
   x,
   points,
   id,
-  legend,
+  param,
+  lot,
   step,
   stepName,
   slot,
@@ -270,55 +296,61 @@ export const _onClickCallback = (
   const delta = Math.abs(closestSeries.yval - yDataCor);
   if (delta > 10 || isNaN(delta)) {
     _highlightSeries(g, undefined);
-    _updateLegend(legend, undefined, undefined, undefined);
+    // _updateLegend(legend, undefined, undefined, undefined);
     return;
   }
   _highlightSeries(g, closestSeries.name);
-  _updateLegend(
-    legend,
-    closestSeries.xval,
-    closestSeries.yval,
-    closestSeries.name,
-  );
+  // _updateLegend(
+  //   legend,
+  //   closestSeries.xval,
+  //   closestSeries.yval,
+  //   closestSeries.name,
+  // );
 
   const time = getTimeString(x);
 
   // step filter
-  const getStepValue = step
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
+  const getStepValue = greatestUnder(
+    step,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getStepName = greatestUnder(
+    stepName,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getSlot = greatestUnder(
+    slot,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
+  const getRecipe = greatestUnder(
+    recipe,
+    obj => new Date(obj.value).getTime(),
+    time => time <= x,
+  ) || { label: '' };
 
-  const getStepName = stepName
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
-
-  const getSlot = slot
-    .filter(obj => new Date(obj.value).getTime() <= x)
-    .reduce((acc, cur) => {
-      const accX = new Date(acc.value).getTime();
-      const curX = new Date(cur.value).getTime();
-      return accX < curX ? cur : acc;
-    });
+  const labels = g.getLabels().slice(1);
+  const yvals = labels.map(label => {
+    const point = points.find(obj => obj.name === label);
+    return !point ? '' : point.yval;
+  });
 
   legendNoti(
     time,
-    points[0].yval,
-    points[1].yval,
-    points[2].yval,
-    points[3].yval,
-    points[4].yval,
-    points[5].yval,
+    yvals[0],
+    yvals[1],
+    yvals[2],
+    yvals[3],
+    yvals[4],
+    yvals[5],
     getStepValue.label,
     getStepName.label,
     getSlot.label,
+    getRecipe.label,
+    param,
+    lot,
   );
 };
 
@@ -363,3 +395,98 @@ export const _onDoubleClickInteraction = (evt, g, context) => {
 //     !isNaN(canvasy) &&
 //     _drawHighlightPoint(g, canvasx, canvasy);
 // };
+
+export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
+  console.time('render');
+  const {
+    data: csv,
+    slot: _slot,
+    step: _step,
+    step_name: _stepName,
+    recipe: _recipe,
+  } = data;
+  const slot = !_slot ? [] : _slot;
+  const step = !_step ? [] : _step;
+  const stepName = !_stepName ? [] : _stepName;
+  const recipe = !_recipe ? [] : _recipe;
+  const firstLfIdx = csv.indexOf('\n');
+  const labels = csv
+    .slice(0, firstLfIdx)
+    .split(',')
+    .map(label => label.trim());
+  const lslLabel = labels[3];
+  const lclLabel = labels[4];
+  const uclLabel = labels[5];
+  const uslLabel = labels[6];
+  const series = {
+    [uclLabel]: {
+      strokeWidth: 0,
+      plotter: _plotter(lslLabel, lclLabel, uclLabel, uslLabel),
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [lclLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [uslLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+    [lslLabel]: {
+      strokeWidth: 0,
+      pointSize: 0,
+      drawPoints: false,
+    },
+  };
+  const axes = {
+    x: {
+      axisLabelWidth: 160,
+      ticker: (min, max, pixels, opt, g) =>
+        _generateTicks(min, max, g, step, stepName, slot, id),
+    },
+  };
+  const g = new Dygraph(container.current, csv, {
+    xRangePad: 20,
+    drawPoints: false,
+    highlightCircleSize: 0,
+    highlightSeriesBackgroundAlpha: 1,
+    axisLabelFontSize: 12,
+    legendFormatter: () => '',
+    axes,
+    series: { ...series },
+    interactionModel: {
+      ...Dygraph.defaultInteractionModel,
+      // click: (evt, g, context) =>
+      //   _onClickInteraction(evt, g, context, legend.current),
+      dblclick: _onDoubleClickInteraction,
+      // mousemove: _onMouseMoveInteraction,
+    },
+    zoomCallback: (minX, maxX, yRanges) =>
+      _onZoomCallback(minX, maxX, yRanges, id),
+    clickCallback: (evt, x, points) =>
+      _onClickCallback(
+        evt,
+        x,
+        points,
+        id,
+        param,
+        lot,
+        step,
+        stepName,
+        slot,
+        recipe,
+      ),
+    highlightCallback: (evt, x, points, row, seriesName) =>
+      _onHighlightCallback(evt, x, points, row, seriesName, id),
+  });
+  const initYRange = _addYPadding(g);
+  g.__zoomStack__ = [{ x: null, y: initYRange }];
+  g.__colorOrigin__ = { ...g.colorsMap_ };
+  g.__seriesOrigin__ = series;
+  _registerG(id, g);
+  window.g = g;
+  console.timeEnd('render');
+};

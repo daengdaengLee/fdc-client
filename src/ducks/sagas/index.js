@@ -5,6 +5,7 @@ import parametersSaga from './parameters';
 import contextMenusSaga from './context-menus';
 import datesSaga from './dates';
 import routesSaga from './routes';
+import chartsSaga from './charts';
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     contextMenusSaga(),
     datesSaga(),
     routesSaga(),
+    chartsSaga(),
   ]);
 }
