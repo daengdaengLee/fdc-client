@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ColorBox = ({ size, color, style }) => (
+const ColorBox = ({ size, backgroundColor, style }) => (
   <span
     style={{
       display: 'inline-block',
-      color,
+      backgroundColor,
       width: size,
       height: size,
       minWidth: size,
@@ -17,13 +17,13 @@ const ColorBox = ({ size, color, style }) => (
 
 ColorBox.defaultProps = {
   size: '16px',
-  color: '#1890ff',
+  backgroundColor: '#1890ff',
   style: {},
 };
 
 ColorBox.propTypes = {
   size: PropTypes.string,
-  color: PropTypes.string,
+  backgroundColor: PropTypes.string,
   style: PropTypes.object,
 };
 

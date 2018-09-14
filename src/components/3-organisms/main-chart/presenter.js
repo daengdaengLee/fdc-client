@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Select, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
 import DropdownButton from '../../2-molecules/dropdown-button';
+import ColorBox from '../../1-atoms/color-box';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -184,18 +185,27 @@ class MainChartPresenter extends Component {
             style={{
               fontSize: '12px',
               color: series.selected ? '#535353' : '#ccc',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
             key={series.key}
           >
-            <Checkbox
-              name={series.key}
-              checked={series.selected}
-              style={{ marginRight: '10px' }}
-              onChange={() =>
-                onToggleChartSeries(0, series.key, !series.selected)
-              }
-            />
-            {series.display}
+            <div>
+              <Checkbox
+                name={series.key}
+                checked={series.selected}
+                style={{ marginRight: '10px' }}
+                onChange={() =>
+                  onToggleChartSeries(0, series.key, !series.selected)
+                }
+              />
+              {series.display}
+            </div>
+            
+            <ColorBox
+              size='10px'
+              backgroundColor={series.color} />
           </Menu.Item>
         ))}
       </Menu>
@@ -205,6 +215,7 @@ class MainChartPresenter extends Component {
   _makeHighlightDropdownMenu() {
     const { chartHighlights, onToggleChartHighlight } = this.props;
     const highlights = chartHighlights[0] || [];
+    console.log(highlights);
     return (
       <Menu
         className="series-label-select"
@@ -215,10 +226,18 @@ class MainChartPresenter extends Component {
           <Menu.Item
             style={{
               fontSize: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: highlight.key === 'UNHIGHLIGHT_ALL' ? '1px solid #efefef' : 'none',
             }}
             key={highlight.key}
           >
             {highlight.display}
+
+            <ColorBox
+              size='10px'
+              backgroundColor={highlight.color} />
           </Menu.Item>
         ))}
       </Menu>

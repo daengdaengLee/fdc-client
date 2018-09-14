@@ -510,7 +510,7 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
         {
           key: 'UNHIGHLIGHT_ALL',
           display: 'Unhighlight All',
-          color: '#ffffff',
+          color: 'transparent',
         },
         ...chartSeries,
       ],
