@@ -507,7 +507,11 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
     setChartHighlights({
       id,
       highlights: [
-        { key: 'UNHIGHLIGHT_ALL', display: 'Unhighlight All' },
+        {
+          key: 'UNHIGHLIGHT_ALL',
+          display: 'Unhighlight All',
+          color: '#ffffff',
+        },
         ...chartSeries,
       ],
     }),
