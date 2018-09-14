@@ -52,10 +52,10 @@ export function getYesterdayString() {
 export function notiError(message, desc) {
   notification.error({
     message: message,
-    // description: desc,
+    description: desc,
 
-    description: 'text...',
-    duration: 0,
+    // description: 'text...',
+    // duration: 0,
 
     placement: 'bottomRight',
     style: {
