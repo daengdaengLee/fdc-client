@@ -153,6 +153,8 @@ class MainChartPresenter extends Component {
             style={{
               fontSize: '12px',
               color: label.selected ? '#535353' : '#ccc',
+              display: 'flex',
+              alignItems: 'center',
             }}
             key={label.key}
           >
@@ -161,7 +163,18 @@ class MainChartPresenter extends Component {
               style={{ marginRight: '10px' }}
               onChange={() => onToggleTickLabel(0, label.key, !label.selected)}
             />
-            {label.display}
+            <span 
+              title={label.display}
+              style={{
+                padding: '0',
+                display: 'inline-block',
+                width: '105px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }} >
+              {label.display}
+            </span>
           </Menu.Item>
         ))}
       </Menu>
@@ -191,7 +204,7 @@ class MainChartPresenter extends Component {
             }}
             key={series.key}
           >
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center'  }}>
               <Checkbox
                 name={series.key}
                 checked={series.selected}
@@ -200,7 +213,19 @@ class MainChartPresenter extends Component {
                   onToggleChartSeries(0, series.key, !series.selected)
                 }
               />
-              {series.display}
+              <span 
+                title={series.display}
+                style={{
+                  padding: '0',
+                  display: 'inline-block',
+                  width: '85px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {series.display}
+              </span>
             </div>
             
             <ColorBox
@@ -233,7 +258,19 @@ class MainChartPresenter extends Component {
             }}
             key={highlight.key}
           >
-            {highlight.display}
+            <span
+              title={highlight.display}
+              style={{
+                padding: '0',
+                display: 'inline-block',
+                width: '115px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {highlight.display}
+            </span>
 
             <ColorBox
               size='10px'

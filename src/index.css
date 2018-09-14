@@ -542,6 +542,11 @@ table {
   font-size: 12px !important;
 }
 
+.ant-notification-notice-with-icon .ant-notification-notice-description {
+  margin: 0;
+  font-size: 12px;
+}
+
 /* legend noti */
 .ant-notification-notice-close-x:after {
   color: #868686;
