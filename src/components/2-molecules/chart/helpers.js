@@ -105,64 +105,66 @@ export const _generateTicks = (min, max, g, step, stepName, slot, id) => {
   const selectedLabels = tickLabels
     .filter(obj => obj.selected)
     .map(obj => obj.key);
-  const stepTicks = step.reduce(
-    (acc, cur) => ({
-      ...acc,
-      [new Date(cur.value).getTime()]: {
-        timeTag: `<span>${cur.value}</span>`,
-        stepTag: `<span style="${
-          selectedLabels.includes('STEP') ? '' : 'display: none;'
-        }" data-chart-tick="STEP_${id}">${cur.label}</span>`,
-      },
-    }),
-    {},
-  );
-  const stepNameTicks = stepName.reduce((acc, cur) => {
-    const unixdate = new Date(cur.value).getTime();
-    const stepNameTag = `<span style="${
-      selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
-    }" data-chart-tick="STEP_NAME_${id}">${cur.label}</span>`;
-    return !acc[unixdate]
-      ? {
-        ...acc,
-        [unixdate]: {
-          timeTag: `<span style="margin: 5px 0; font-size: 11px; ">${
-            cur.value
-          }</span>`,
-          stepNameTag,
-        },
+  const ticks = {};
+  console.time('parse step');
+  if (selectedLabels.includes('STEP')) {
+    const len = step.length;
+    for (let i = 0; i < len; i += 1) {
+      const cur = step[i];
+      const time = new Date(cur.value).getTime();
+      const timeTag = `<span>${cur.value}</span>`;
+      const stepTag = `<span style="${
+        selectedLabels.includes('STEP') ? '' : 'display: none;'
+      }" data-chart-tick="STEP_${id}">${cur.label}</span>`;
+      ticks[time] = { v: time, label: `${timeTag}<br />${stepTag}` };
+    }
+  }
+  console.timeEnd('parse step');
+  console.time('parse step_name');
+  if (selectedLabels.includes('STEP_NAME')) {
+    const len = stepName.length;
+    for (let i = 0; i < len; i += 1) {
+      const cur = stepName[i];
+      const time = new Date(cur.value).getTime();
+      const timeTag = `<span>${cur.value}</span>`;
+      const stepNameTag = `<span style="${
+        selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
+      }" data-chart-tick="STEP_NAME_${id}">${cur.label}</span>`;
+      if (!ticks[time]) {
+        ticks[time] = {
+          v: time,
+          label: `${timeTag}<br /><br />${stepNameTag}`,
+        };
+      } else {
+        ticks[time].label += `<br />${stepNameTag}`;
       }
-      : {
-        ...acc,
-        [unixdate]: { ...acc[unixdate], stepNameTag },
-      };
-  }, stepTicks);
-  const slotTicks = slot.reduce((acc, cur) => {
-    const unixdate = new Date(cur.value).getTime();
-    const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
-      selectedLabels.includes('SLOT') ? '' : 'display: none;'
-    }" data-chart-tick="SLOT_${id}">${cur.label}</span>`;
-    return !acc[unixdate]
-      ? {
-        ...acc,
-        [unixdate]: { timeTag: `<span>${cur.value}</span>`, slotTag },
+    }
+  }
+  console.timeEnd('parse step_name');
+  console.time('parse slot');
+  if (selectedLabels.includes('SLOT')) {
+    const len = slot.length;
+    for (let i = 0; i < len; i += 1) {
+      const cur = slot[i];
+      const time = new Date(cur.value).getTime();
+      const timeTag = `<span>${cur.value}</span>`;
+      const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
+        selectedLabels.includes('SLOT') ? '' : 'display: none;'
+      }" data-chart-tick="SLOT_${id}">${cur.label}</span>`;
+      if (!ticks[time]) {
+        ticks[time] = {
+          v: time,
+          label: `${timeTag}<br /><br /><br />${slotTag}`,
+        };
+      } else if (ticks[time].label.includes('data-chart-tick="STEP_NAME_')) {
+        ticks[time].label += `<br />${slotTag}`;
+      } else {
+        ticks[time].label += `<br /><br />${slotTag}`;
       }
-      : {
-        ...acc,
-        [unixdate]: { ...acc[unixdate], slotTag },
-      };
-  }, stepNameTicks);
-  const ticks = Object.keys(slotTicks).map(v => {
-    const tickObj = slotTicks[v];
-    const { timeTag, stepTag, stepNameTag, slotTag } = tickObj;
-    return {
-      v: parseInt(v, 10),
-      label: `${timeTag}<br />${!stepTag ? '' : stepTag}<br />${
-        !stepNameTag ? '' : stepNameTag
-      }<br />${!slotTag ? '' : slotTag}`,
-    };
-  });
-  return ticks;
+    }
+  }
+  console.timeEnd('parse slot');
+  return Object.values(ticks);
 };
 
 export const _getCoord = (g, evt) => {
@@ -496,13 +498,22 @@ export const _drawChart = (container, data, id, param, lot, selectedLabels) => {
   const chartSeries = g
     .getLabels()
     .slice(1, 3)
-    .map(str => ({ key: str, display: str, selected: true }));
+    .map(str => ({
+      key: str,
+      display: str,
+      selected: true,
+      color: g.colorsMap_[str],
+    }));
   store.dispatch(setChartSeries({ id, series: chartSeries }));
   store.dispatch(
     setChartHighlights({
       id,
       highlights: [
-        { key: 'UNHIGHLIGHT_ALL', display: 'Unhighlight All' },
+        {
+          key: 'UNHIGHLIGHT_ALL',
+          display: 'Unhighlight All',
+          color: 'transparent',
+        },
         ...chartSeries,
       ],
     }),

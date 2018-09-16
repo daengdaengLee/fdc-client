@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Menu, Checkbox } from 'antd';
+import { Select, Menu, Checkbox, Icon } from 'antd';
 import Chart from '../../2-molecules/chart';
-import ChartControllerDropdown from '../../2-molecules/chart-controller-dropdown';
+import DropdownButton from '../../2-molecules/dropdown-button';
+import ColorBox from '../../1-atoms/color-box';
 
 const Container = styled.div.attrs({
   style: props => ({ display: props.active ? null : 'none' }),
@@ -89,18 +90,39 @@ class MainChartPresenter extends Component {
             </Select>
           </SelectArea>
           <SelectArea>
-            <ChartControllerDropdown
-              label="Highlights"
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeHighlightDropdownMenu()}
-            />
-            <ChartControllerDropdown
-              label="Series"
+            >
+              Highlights
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeSeriesDropdownMenu()}
-            />
-            <ChartControllerDropdown
-              label="Labels"
+            >
+              Series
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
+            <DropdownButton
+              style={{ justifyContent: 'space-between' }}
               overlay={_makeLabelsDropdownMenus()}
-            />
+            >
+              Labels
+              <Icon
+                type="down"
+                theme="outlined"
+                style={{ paddingRight: '0' }}
+              />
+            </DropdownButton>
           </SelectArea>
         </Header>
         <ChartArea>
@@ -131,6 +153,8 @@ class MainChartPresenter extends Component {
             style={{
               fontSize: '12px',
               color: label.selected ? '#535353' : '#ccc',
+              display: 'flex',
+              alignItems: 'center',
             }}
             key={label.key}
           >
@@ -139,7 +163,19 @@ class MainChartPresenter extends Component {
               style={{ marginRight: '10px' }}
               onChange={() => onToggleTickLabel(0, label.key, !label.selected)}
             />
-            {label.display}
+            <span
+              title={label.display}
+              style={{
+                padding: '0',
+                display: 'inline-block',
+                width: '105px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {label.display}
+            </span>
           </Menu.Item>
         ))}
       </Menu>
@@ -163,18 +199,37 @@ class MainChartPresenter extends Component {
             style={{
               fontSize: '12px',
               color: series.selected ? '#535353' : '#ccc',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
             key={series.key}
           >
-            <Checkbox
-              name={series.key}
-              checked={series.selected}
-              style={{ marginRight: '10px' }}
-              onChange={() =>
-                onToggleChartSeries(0, series.key, !series.selected)
-              }
-            />
-            {series.display}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Checkbox
+                name={series.key}
+                checked={series.selected}
+                style={{ marginRight: '10px' }}
+                onChange={() =>
+                  onToggleChartSeries(0, series.key, !series.selected)
+                }
+              />
+              <span
+                title={series.display}
+                style={{
+                  padding: '0',
+                  display: 'inline-block',
+                  width: '85px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {series.display}
+              </span>
+            </div>
+
+            <ColorBox size="10px" backgroundColor={series.color} />
           </Menu.Item>
         ))}
       </Menu>
@@ -194,10 +249,31 @@ class MainChartPresenter extends Component {
           <Menu.Item
             style={{
               fontSize: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom:
+                highlight.key === 'UNHIGHLIGHT_ALL'
+                  ? '1px solid #efefef'
+                  : 'none',
             }}
             key={highlight.key}
           >
-            {highlight.display}
+            <span
+              title={highlight.display}
+              style={{
+                padding: '0',
+                display: 'inline-block',
+                width: '115px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {highlight.display}
+            </span>
+
+            <ColorBox size="10px" backgroundColor={highlight.color} />
           </Menu.Item>
         ))}
       </Menu>
