@@ -163,7 +163,7 @@ class MainChartPresenter extends Component {
               style={{ marginRight: '10px' }}
               onChange={() => onToggleTickLabel(0, label.key, !label.selected)}
             />
-            <span 
+            <span
               title={label.display}
               style={{
                 padding: '0',
@@ -172,7 +172,8 @@ class MainChartPresenter extends Component {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-              }} >
+              }}
+            >
               {label.display}
             </span>
           </Menu.Item>
@@ -204,7 +205,7 @@ class MainChartPresenter extends Component {
             }}
             key={series.key}
           >
-            <div style={{ display: 'flex', alignItems: 'center'  }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Checkbox
                 name={series.key}
                 checked={series.selected}
@@ -213,7 +214,7 @@ class MainChartPresenter extends Component {
                   onToggleChartSeries(0, series.key, !series.selected)
                 }
               />
-              <span 
+              <span
                 title={series.display}
                 style={{
                   padding: '0',
@@ -227,10 +228,8 @@ class MainChartPresenter extends Component {
                 {series.display}
               </span>
             </div>
-            
-            <ColorBox
-              size='10px'
-              backgroundColor={series.color} />
+
+            <ColorBox size="10px" backgroundColor={series.color} />
           </Menu.Item>
         ))}
       </Menu>
@@ -240,7 +239,6 @@ class MainChartPresenter extends Component {
   _makeHighlightDropdownMenu() {
     const { chartHighlights, onToggleChartHighlight } = this.props;
     const highlights = chartHighlights[0] || [];
-    console.log(highlights);
     return (
       <Menu
         className="series-label-select"
@@ -254,7 +252,10 @@ class MainChartPresenter extends Component {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              borderBottom: highlight.key === 'UNHIGHLIGHT_ALL' ? '1px solid #efefef' : 'none',
+              borderBottom:
+                highlight.key === 'UNHIGHLIGHT_ALL'
+                  ? '1px solid #efefef'
+                  : 'none',
             }}
             key={highlight.key}
           >
@@ -272,9 +273,7 @@ class MainChartPresenter extends Component {
               {highlight.display}
             </span>
 
-            <ColorBox
-              size='10px'
-              backgroundColor={highlight.color} />
+            <ColorBox size="10px" backgroundColor={highlight.color} />
           </Menu.Item>
         ))}
       </Menu>
