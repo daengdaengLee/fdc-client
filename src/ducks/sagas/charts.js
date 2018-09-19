@@ -17,6 +17,7 @@ import {
   _toggleSeries,
   _getG,
   _highlightSeries,
+  _refreshG,
 } from '../../components/2-molecules/chart/helpers';
 import legendNoti from '../../components/2-molecules/legend';
 
@@ -62,14 +63,15 @@ function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
 }
 
 function* fetchFailSaga({ message }) {
-  yield call(notiError, 'Failed to draw chart', message);
+  yield call(notiError, message);
 }
 
 function* toggleTickLabelSaga({ id, label, onOff }) {
-  const selector = `[data-chart-tick="${label}_${id}"]`;
-  yield document.querySelectorAll(selector).forEach(tick => {
-    tick.style.display = onOff ? 'inline' : 'none';
-  });
+  yield call(_refreshG, id);
+  // const selector = `[data-chart-tick="${label}_${id}"]`;
+  // yield document.querySelectorAll(selector).forEach(tick => {
+  //   tick.style.display = onOff ? 'inline' : 'none';
+  // });
 }
 
 function* toggleChartSeriesSaga({ id, series, onOff }) {

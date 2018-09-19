@@ -25,6 +25,12 @@ export const _releaseG = id => {
 
 export const _getG = id => _dygraph[id];
 
+export const _refreshG = id => {
+  const g = _dygraph[id];
+  const currentZoom = g.__zoomStack__[g.__zoomStack__.length - 1];
+  g.updateOptions({ valueRange: currentZoom.y, dateWindow: currentZoom.x });
+};
+
 export const _toggleSeries = (id, seriesName, onOff) => {
   const g = _getG(id);
   const labels = g.getLabels();
@@ -105,66 +111,108 @@ export const _generateTicks = (min, max, g, step, stepName, slot, id) => {
   const selectedLabels = tickLabels
     .filter(obj => obj.selected)
     .map(obj => obj.key);
-  const ticks = {};
-  console.time('parse step');
+  // default timestamp ticks
+  // If user unselect all tick labels
+  if (selectedLabels.length === 0) {
+    const delta = (max - min) / 6;
+    const ticks = [];
+    for (let i = 1; i <= 5; i += 1) {
+      const timestamp = min + delta * i;
+      const timestring = getTimeString(timestamp);
+      ticks.push({ v: timestamp, label: timestring });
+    }
+    return ticks;
+  }
+
+  const tickHash = {};
+
+  // STEP tick labels
   if (selectedLabels.includes('STEP')) {
-    const len = step.length;
+    const withinRangeStep = step.filter(obj => {
+      const timestamp = new Date(obj.value).getTime();
+      return timestamp > min && timestamp < max;
+    });
+    const len = withinRangeStep.length;
+    const delta = Math.ceil(len / 10);
     for (let i = 0; i < len; i += 1) {
-      const cur = step[i];
+      if (i % delta !== 0) continue;
+      const cur = withinRangeStep[i];
       const time = new Date(cur.value).getTime();
       const timeTag = `<span>${cur.value}</span>`;
-      const stepTag = `<span style="${
-        selectedLabels.includes('STEP') ? '' : 'display: none;'
-      }" data-chart-tick="STEP_${id}">${cur.label}</span>`;
-      ticks[time] = { v: time, label: `${timeTag}<br />${stepTag}` };
+      const stepTag = `<span data-chart-tick="STEP_${id}">${cur.label}</span>`;
+      tickHash[time] = { v: time, label: `${timeTag}<br />${stepTag}` };
     }
   }
-  console.timeEnd('parse step');
-  console.time('parse step_name');
+
+  // STEP_NAME tick labels
   if (selectedLabels.includes('STEP_NAME')) {
-    const len = stepName.length;
+    const withinRangeStepName = stepName.filter(obj => {
+      const timestamp = new Date(obj.value).getTime();
+      return timestamp > min && timestamp < max;
+    });
+    const len = withinRangeStepName.length;
+    const delta = Math.ceil(len / 10);
     for (let i = 0; i < len; i += 1) {
-      const cur = stepName[i];
+      if (i % delta !== 0) continue;
+      const cur = withinRangeStepName[i];
       const time = new Date(cur.value).getTime();
       const timeTag = `<span>${cur.value}</span>`;
-      const stepNameTag = `<span style="${
-        selectedLabels.includes('STEP_NAME') ? '' : 'display: none;'
-      }" data-chart-tick="STEP_NAME_${id}">${cur.label}</span>`;
-      if (!ticks[time]) {
-        ticks[time] = {
+      const stepNameTag = `<span data-chart-tick="STEP_NAME_${id}">${
+        cur.label
+      }</span>`;
+      if (!tickHash[time]) {
+        tickHash[time] = {
           v: time,
           label: `${timeTag}<br /><br />${stepNameTag}`,
         };
       } else {
-        ticks[time].label += `<br />${stepNameTag}`;
+        tickHash[time].label += `<br />${stepNameTag}`;
       }
     }
   }
-  console.timeEnd('parse step_name');
-  console.time('parse slot');
+
+  // SLOT tick labels
   if (selectedLabels.includes('SLOT')) {
-    const len = slot.length;
+    const withinRangeSlot = slot.filter(obj => {
+      const timestamp = new Date(obj.value).getTime();
+      return timestamp > min && timestamp < max;
+    });
+    const len = withinRangeSlot.length;
+    const delta = Math.ceil(len / 10);
     for (let i = 0; i < len; i += 1) {
-      const cur = slot[i];
+      if (i % delta !== 0) continue;
+      const cur = withinRangeSlot[i];
       const time = new Date(cur.value).getTime();
       const timeTag = `<span>${cur.value}</span>`;
-      const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353; ${
-        selectedLabels.includes('SLOT') ? '' : 'display: none;'
-      }" data-chart-tick="SLOT_${id}">${cur.label}</span>`;
-      if (!ticks[time]) {
-        ticks[time] = {
+      const slotTag = `<span style="display: inline-block; padding: 0 5px; margin: 5px 0; font-size: 11px; min-width: 10px; background-color: #24ffc870; color: #535353;" data-chart-tick="SLOT_${id}">${
+        cur.label
+      }</span>`;
+      if (!tickHash[time]) {
+        tickHash[time] = {
           v: time,
           label: `${timeTag}<br /><br /><br />${slotTag}`,
         };
-      } else if (ticks[time].label.includes('data-chart-tick="STEP_NAME_')) {
-        ticks[time].label += `<br />${slotTag}`;
+      } else if (tickHash[time].label.includes('data-chart-tick="STEP_NAME_')) {
+        tickHash[time].label += `<br />${slotTag}`;
       } else {
-        ticks[time].label += `<br /><br />${slotTag}`;
+        tickHash[time].label += `<br /><br />${slotTag}`;
       }
     }
   }
-  console.timeEnd('parse slot');
-  return Object.values(ticks);
+
+  const ticks = Object.values(tickHash);
+
+  // Default timestamp ticks
+  // If there is no ticks matched
+  if (ticks.length === 0) {
+    const delta = (max - min) / 6;
+    for (let i = 1; i <= 5; i += 1) {
+      const timestamp = min + delta * i;
+      const timestring = getTimeString(timestamp);
+      ticks.push({ v: timestamp, label: timestring });
+    }
+  }
+  return ticks;
 };
 
 export const _getCoord = (g, evt) => {
