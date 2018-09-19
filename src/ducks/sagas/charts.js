@@ -63,7 +63,7 @@ function* fetchStartSaga({ fab, mod, from, to, lot, param, chartId }) {
 }
 
 function* fetchFailSaga({ message }) {
-  yield call(notiError, 'Failed to draw chart', message);
+  yield call(notiError, message);
 }
 
 function* toggleTickLabelSaga({ id, label, onOff }) {

@@ -27,7 +27,7 @@ import { push } from '../modules/routes';
 // Helpers
 function* validateDate({ from, to }) {
   if (!from || !to) {
-    yield call(notiError, 'Date is mandatory field', '');
+    yield call(notiError, 'Date is mandatory field');
     return false;
   }
   return true;
@@ -35,7 +35,7 @@ function* validateDate({ from, to }) {
 
 function* validateModule({ mod }) {
   if (!mod) {
-    yield call(notiError, 'Module is mandatory field', '');
+    yield call(notiError, 'Module is mandatory field');
     return false;
   }
   return true;
@@ -43,7 +43,7 @@ function* validateModule({ mod }) {
 
 function* validateLot({ lot }) {
   if (!lot) {
-    yield call(notiError, 'Lot is mandatory field', '');
+    yield call(notiError, 'Lot is mandatory field');
     return false;
   }
   return true;
