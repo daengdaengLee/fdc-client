@@ -49,10 +49,10 @@ export function getYesterdayString() {
   return dateString;
 }
 
-export function notiError(message, desc) {
+export function notiError(message) {
   notification.error({
     message: message,
-    description: desc,
+    description: '',
 
     // description: 'text...',
     // duration: 0,
